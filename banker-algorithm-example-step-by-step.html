@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Banker's Algorithm Example Step by Step (Safety Algorithm)</title>
+
+    <meta name="description"
+        content="Step by step Banker's algorithm example with Allocation, Max, Need, Available tables and safety sequence calculation for operating system students.">
+
+    <meta name="keywords"
+        content="banker algorithm example, banker's algorithm step by step, safety algorithm example, deadlock avoidance example, need matrix calculation">
+
+</head>
+
+<body>
+
+    <h1>Banker's Algorithm Example Step by Step (Safety Algorithm)</h1>
+
+    <p>
+        Banker's Algorithm is a deadlock avoidance algorithm. It checks whether the system is in a safe state by finding
+        a safe sequence of processes.
+    </p>
+
+    <h2>Given</h2>
+
+    <p>
+        We have 5 processes (P0 to P4) and 3 resource types (A, B, C).
+    </p>
+
+    <h3>Allocation Matrix</h3>
+
+    <table border="1">
+        <tr>
+            <th>Process</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+        <tr>
+            <td>P0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>P1</td>
+            <td>2</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>P2</td>
+            <td>3</td>
+            <td>0</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>P3</td>
+            <td>2</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>P4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>2</td>
+        </tr>
+    </table>
+
+    <h3>Max Matrix</h3>
+
+    <table border="1">
+        <tr>
+            <th>Process</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+        <tr>
+            <td>P0</td>
+            <td>7</td>
+            <td>5</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>P1</td>
+            <td>3</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>P2</td>
+            <td>9</td>
+            <td>0</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>P3</td>
+            <td>2</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>P4</td>
+            <td>4</td>
+            <td>3</td>
+            <td>3</td>
+        </tr>
+    </table>
+
+    <h3>Available Vector</h3>
+
+    <pre>
+Available = (3, 3, 2)
+</pre>
+
+    <h2>Step 1: Calculate Need Matrix</h2>
+
+    <pre>
+Need = Max - Allocation
+</pre>
+
+    <table border="1">
+        <tr>
+            <th>Process</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+        <tr>
+            <td>P0</td>
+            <td>7</td>
+            <td>4</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>P1</td>
+            <td>1</td>
+            <td>2</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>P2</td>
+            <td>6</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>P3</td>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>P4</td>
+            <td>4</td>
+            <td>3</td>
+            <td>1</td>
+        </tr>
+    </table>
+
+    <h2>Step 2: Safety Algorithm (Find a Safe Sequence)</h2>
+
+    <p>
+        We try to find a process whose Need is less than or equal to Available. If found, we assume it finishes and
+        releases its Allocation back to Available.
+    </p>
+
+    <h3>Initial</h3>
+
+    <pre>
+Work = Available = (3, 3, 2)
+Finish = [false, false, false, false, false]
+</pre>
+
+    <h3>Check Processes</h3>
+
+    <h4>Pick P1</h4>
+    <pre>
+Need(P1) = (1, 2, 2) <= Work(3, 3, 2)  -> Yes
+Work = Work + Allocation(P1) = (3, 3, 2) + (2, 0, 0) = (5, 3, 2)
+Finish[P1] = true
+Safe Sequence: P1
+</pre>
+
+    <h4>Pick P3</h4>
+    <pre>
+Need(P3) = (0, 1, 1) <= Work(5, 3, 2)  -> Yes
+Work = Work + Allocation(P3) = (5, 3, 2) + (2, 1, 1) = (7, 4, 3)
+Finish[P3] = true
+Safe Sequence: P1 -> P3
+</pre>
+
+    <h4>Pick P4</h4>
+    <pre>
+Need(P4) = (4, 3, 1) <= Work(7, 4, 3)  -> Yes
+Work = Work + Allocation(P4) = (7, 4, 3) + (0, 0, 2) = (7, 4, 5)
+Finish[P4] = true
+Safe Sequence: P1 -> P3 -> P4
+</pre>
+
+    <h4>Pick P0</h4>
+    <pre>
+Need(P0) = (7, 4, 3) <= Work(7, 4, 5)  -> Yes
+Work = Work + Allocation(P0) = (7, 4, 5) + (0, 1, 0) = (7, 5, 5)
+Finish[P0] = true
+Safe Sequence: P1 -> P3 -> P4 -> P0
+</pre>
+
+    <h4>Pick P2</h4>
+    <pre>
+Need(P2) = (6, 0, 0) <= Work(7, 5, 5)  -> Yes
+Work = Work + Allocation(P2) = (7, 5, 5) + (3, 0, 2) = (10, 5, 7)
+Finish[P2] = true
+Safe Sequence: P1 -> P3 -> P4 -> P0 -> P2
+</pre>
+
+    <h2>Result</h2>
+
+    <pre>
+System is in a SAFE state.
+One safe sequence is:
+P1 -> P3 -> P4 -> P0 -> P2
+</pre>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        Banker's Algorithm avoids deadlocks by granting resource requests only if the system remains in a safe state.
+        The key steps are computing the Need matrix and checking for a safe sequence using the safety algorithm.
+    </p>
+
+</body>
+
+</html>

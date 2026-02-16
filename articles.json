@@ -1,0 +1,101 @@
+[
+    {
+        "title": "FIFO Page Replacement Example (Step-by-Step)",
+        "url": "page-replacement-fifo-example.html",
+        "category": "page-replacement",
+        "tags": "fifo page replacement page fault operating systems memory management",
+        "description": "Step-by-step FIFO paging table and total page fault count.",
+        "featured": true,
+        "rank": 1
+    },
+    {
+        "title": "LRU Page Replacement Example (Step-by-Step)",
+        "url": "lru-page-replacement-example.html",
+        "category": "page-replacement",
+        "tags": "lru page replacement least recently used page fault operating systems",
+        "description": "LRU victim selection with a full page-fault table.",
+        "featured": true,
+        "rank": 2
+    },
+    {
+        "title": "Belady's Anomaly Example (FIFO)",
+        "url": "belady-anomaly-example.html",
+        "category": "page-replacement",
+        "tags": "belady anomaly fifo increasing frames page faults operating systems",
+        "description": "Demonstrates how FIFO can have more page faults with more frames.",
+        "featured": false,
+        "rank": 3
+    },
+    {
+        "title": "Round Robin Scheduling Example with Calculation",
+        "url": "round-robin-scheduling-example-with-calculation.html",
+        "category": "scheduling",
+        "tags": "round robin rr scheduling waiting time turnaround time time quantum operating systems",
+        "description": "Gantt chart + completion/turnaround/waiting times and averages.",
+        "featured": true,
+        "rank": 1
+    },
+    {
+        "title": "Shortest Job First (SJF) Scheduling Example",
+        "url": "shortest-job-first-scheduling-example.html",
+        "category": "scheduling",
+        "tags": "sjf shortest job first scheduling waiting time turnaround time non preemptive os",
+        "description": "Non-preemptive SJF with Gantt chart and averages.",
+        "featured": false,
+        "rank": 2
+    },
+    {
+        "title": "Priority Scheduling Example (Non-Preemptive)",
+        "url": "priority-scheduling-example.html",
+        "category": "scheduling",
+        "tags": "priority scheduling waiting time turnaround time non preemptive operating systems",
+        "description": "Priority order, Gantt chart, waiting time, turnaround time.",
+        "featured": false,
+        "rank": 3
+    },
+    {
+        "title": "Context Switch Calculation Example (CPU Utilization)",
+        "url": "context-switch-calculation-example.html",
+        "category": "scheduling",
+        "tags": "context switch overhead cpu utilization scheduling operating systems",
+        "description": "Counts context switches and computes CPU utilization.",
+        "featured": false,
+        "rank": 4
+    },
+    {
+        "title": "Banker's Algorithm Example (Safety Algorithm)",
+        "url": "banker-algorithm-example-step-by-step.html",
+        "category": "deadlock",
+        "tags": "banker algorithm safety sequence deadlock avoidance allocation max need matrix",
+        "description": "Allocation/Max/Need tables and safe sequence derivation.",
+        "featured": true,
+        "rank": 1
+    },
+    {
+        "title": "Deadlock Detection Algorithm Example",
+        "url": "deadlock-detection-example.html",
+        "category": "deadlock",
+        "tags": "deadlock detection request allocation available operating systems",
+        "description": "Work/Finish iteration to determine deadlock state.",
+        "featured": false,
+        "rank": 2
+    },
+    {
+        "title": "Shift Reduce Parsing Example (Step-by-Step)",
+        "url": "shift-reduce-parsing-example-step-by-step.html",
+        "category": "parsing",
+        "tags": "shift reduce parsing bottom up parsing compiler design example",
+        "description": "Stack/input/actions table until accept.",
+        "featured": true,
+        "rank": 1
+    },
+    {
+        "title": "First and Follow Set Example (Step-by-Step)",
+        "url": "first-and-follow-set-example.html",
+        "category": "parsing",
+        "tags": "first follow set ll1 parsing compiler design example",
+        "description": "Rules + final FIRST/FOLLOW tables for a classic grammar.",
+        "featured": false,
+        "rank": 2
+    }
+]

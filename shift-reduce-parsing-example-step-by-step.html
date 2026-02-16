@@ -13,136 +13,174 @@
     <meta name="keywords"
         content="shift reduce parsing example, shift reduce parsing steps, compiler parsing example, bottom up parsing example">
 
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<!-- SITE_WRAPPER_START -->
+<div class="site">
 
+  <header class="header">
+    <div class="brand">
+      <div class="brand-title">CS Homework &amp; Exam Solutions</div>
+      <div class="brand-sub">Shift Reduce Parsing Example Step by Step</div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html#top">Home</a>
+      <a href="index.html#top-examples">Top Examples</a>
+      <a href="articles.html">All Articles</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="card">
     <h1>Shift Reduce Parsing Example Step by Step</h1>
+    
+        <p>
+            Shift reduce parsing is a bottom-up parsing technique used in compiler design to analyze the syntax of
+            programming languages.
+        </p>
+    
+        <h2>Grammar</h2>
+    
+        <pre>
+    E → E + T
+    E → T
+    T → T * F
+    T → F
+    F → ( E )
+    F → id
+    </pre>
+    
+        <h2>Input String</h2>
+    
+        <pre>
+    id + id * id
+    </pre>
+    
+        <h2>Parsing Steps</h2>
+    
+        <table border="1">
+            <tr>
+                <th>Stack</th>
+                <th>Input</th>
+                <th>Action</th>
+            </tr>
+    
+            <tr>
+                <td>$</td>
+                <td>id + id * id $</td>
+                <td>Shift</td>
+            </tr>
+    
+            <tr>
+                <td>$ id</td>
+                <td>+ id * id $</td>
+                <td>Reduce F → id</td>
+            </tr>
+    
+            <tr>
+                <td>$ F</td>
+                <td>+ id * id $</td>
+                <td>Reduce T → F</td>
+            </tr>
+    
+            <tr>
+                <td>$ T</td>
+                <td>+ id * id $</td>
+                <td>Reduce E → T</td>
+            </tr>
+    
+            <tr>
+                <td>$ E</td>
+                <td>+ id * id $</td>
+                <td>Shift</td>
+            </tr>
+    
+            <tr>
+                <td>$ E +</td>
+                <td>id * id $</td>
+                <td>Shift</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + id</td>
+                <td>* id $</td>
+                <td>Reduce F → id</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + F</td>
+                <td>* id $</td>
+                <td>Reduce T → F</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + T</td>
+                <td>* id $</td>
+                <td>Shift</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + T *</td>
+                <td>id $</td>
+                <td>Shift</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + T * id</td>
+                <td>$</td>
+                <td>Reduce F → id</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + T * F</td>
+                <td>$</td>
+                <td>Reduce T → T * F</td>
+            </tr>
+    
+            <tr>
+                <td>$ E + T</td>
+                <td>$</td>
+                <td>Reduce E → E + T</td>
+            </tr>
+    
+            <tr>
+                <td>$ E</td>
+                <td>$</td>
+                <td>Accept</td>
+            </tr>
+    
+        </table>
+    
+        <h2>Conclusion</h2>
+    
+        <p>
+            This example demonstrates how shift reduce parsing works step by step by applying shift and reduce operations
+            until the input string is accepted.
+        </p>
+  </main>
 
-    <p>
-        Shift reduce parsing is a bottom-up parsing technique used in compiler design to analyze the syntax of
-        programming languages.
-    </p>
+  <section class="card">
+    <h2>Related Examples</h2>
+    <p>Auto-generated links to help you continue practicing.</p>
+    <ul class="links">
+      <li><a href="first-and-follow-set-example.html">First and Follow Set Example (Step-by-Step)</a></li>
+      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example (Safety Algorithm)</a></li>
+      <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example (Step-by-Step)</a></li>
+      <li><a href="round-robin-scheduling-example-with-calculation.html">Round Robin Scheduling Example with Calculation</a></li>
+      <li><a href="lru-page-replacement-example.html">LRU Page Replacement Example (Step-by-Step)</a></li>
+      <li><a href="deadlock-detection-example.html">Deadlock Detection Algorithm Example</a></li>
+    </ul>
+  </section>
 
-    <h2>Grammar</h2>
+  <div class="footer">
+    <span class="badge">Updated • 2026-02-16</span>
+  </div>
 
-    <pre>
-E → E + T
-E → T
-T → T * F
-T → F
-F → ( E )
-F → id
-</pre>
-
-    <h2>Input String</h2>
-
-    <pre>
-id + id * id
-</pre>
-
-    <h2>Parsing Steps</h2>
-
-    <table border="1">
-        <tr>
-            <th>Stack</th>
-            <th>Input</th>
-            <th>Action</th>
-        </tr>
-
-        <tr>
-            <td>$</td>
-            <td>id + id * id $</td>
-            <td>Shift</td>
-        </tr>
-
-        <tr>
-            <td>$ id</td>
-            <td>+ id * id $</td>
-            <td>Reduce F → id</td>
-        </tr>
-
-        <tr>
-            <td>$ F</td>
-            <td>+ id * id $</td>
-            <td>Reduce T → F</td>
-        </tr>
-
-        <tr>
-            <td>$ T</td>
-            <td>+ id * id $</td>
-            <td>Reduce E → T</td>
-        </tr>
-
-        <tr>
-            <td>$ E</td>
-            <td>+ id * id $</td>
-            <td>Shift</td>
-        </tr>
-
-        <tr>
-            <td>$ E +</td>
-            <td>id * id $</td>
-            <td>Shift</td>
-        </tr>
-
-        <tr>
-            <td>$ E + id</td>
-            <td>* id $</td>
-            <td>Reduce F → id</td>
-        </tr>
-
-        <tr>
-            <td>$ E + F</td>
-            <td>* id $</td>
-            <td>Reduce T → F</td>
-        </tr>
-
-        <tr>
-            <td>$ E + T</td>
-            <td>* id $</td>
-            <td>Shift</td>
-        </tr>
-
-        <tr>
-            <td>$ E + T *</td>
-            <td>id $</td>
-            <td>Shift</td>
-        </tr>
-
-        <tr>
-            <td>$ E + T * id</td>
-            <td>$</td>
-            <td>Reduce F → id</td>
-        </tr>
-
-        <tr>
-            <td>$ E + T * F</td>
-            <td>$</td>
-            <td>Reduce T → T * F</td>
-        </tr>
-
-        <tr>
-            <td>$ E + T</td>
-            <td>$</td>
-            <td>Reduce E → E + T</td>
-        </tr>
-
-        <tr>
-            <td>$ E</td>
-            <td>$</td>
-            <td>Accept</td>
-        </tr>
-
-    </table>
-
-    <h2>Conclusion</h2>
-
-    <p>
-        This example demonstrates how shift reduce parsing works step by step by applying shift and reduce operations
-        until the input string is accepted.
-    </p>
-
+</div>
+<!-- SITE_WRAPPER_END -->
 </body>
 
 </html>

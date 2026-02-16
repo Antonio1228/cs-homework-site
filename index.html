@@ -2,45 +2,289 @@
 <html lang="en">
 
 <head>
-
     <meta name="google-site-verification" content="_N-mYnQhs9UxI7QA8W-E-KBsNGK2va8lO_MFuCn_V-8" />
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Computer Science Homework Solutions - Algorithms & OS Examples</title>
+    <title>Computer Science Exam Solutions & Worked Examples</title>
 
     <meta name="description"
-        content="Step by step solutions for computer science homework problems including parsing, scheduling algorithms, page replacement, and deadlock detection examples.">
-
+        content="Free step-by-step Operating Systems and Compiler Design worked examples. Includes CPU scheduling, FIFO, LRU, deadlock, parsing, and exam-style numerical solutions.">
     <meta name="keywords"
-        content="shift reduce parsing example, first and follow example, round robin scheduling example, banker algorithm example, page replacement fifo example">
+        content="operating systems examples, cpu scheduling example, round robin example, sjf example, priority scheduling example, page replacement fifo example, lru example, deadlock detection example, shift reduce parsing example, first and follow example">
 
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>Computer Science Homework Solutions</h1>
+    <div class="site">
 
-    <p>
-        This website provides step by step solutions for common computer science homework problems including parsing
-        algorithms, CPU scheduling, page replacement algorithms, and operating system concepts.
-    </p>
+        <header class="header">
+            <div class="brand">
+                <div class="brand-title">CS Homework & Exam Solutions</div>
+                <div class="brand-sub">Worked examples • step-by-step • OS & compiler topics</div>
+            </div>
 
-    <h2>Example Topics</h2>
+            <nav class="nav">
+                <a href="#top">Home</a>
+                <a href="#top-examples">Top Examples</a>
+                <a href="articles.html">All Articles</a>
+                <a href="#categories">Categories</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+        </header>
 
-    <ul>
-        <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example Step by Step</a></li>
-        <li><a href="first-and-follow-set-example.html">First and Follow Set Example</a></li>
-        <li><a href="round-robin-scheduling-example-with-calculation.html">Round Robin Scheduling Example</a></li>
-        <li><a href="banker-algorithm-example-step-by-step.html">Banker Algorithm Example</a></li>
-        <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example</a></li>
-        <li><a href="shortest-job-first-scheduling-example.html">Shortest Job First Scheduling Example</a></li>
-        <li><a href="lru-page-replacement-example.html">LRU Page Replacement Example</a></li>
-        <li><a href="priority-scheduling-example.html">Priority Scheduling Example</a></li>
-        <li><a href="deadlock-detection-example.html">Deadlock Detection Example</a></li>
-        <li><a href="context-switch-calculation-example.html">Context Switch Calculation Example</a></li>
-    </ul>
+        <!-- HERO -->
+        <section id="top" class="hero">
+            <h1>Operating Systems & Compiler Design Worked Examples (Step-by-Step Exam Solutions)</h1>
+            <p>
+                Step-by-step solved problems for Operating Systems and Compiler Design topics —
+                built for students who want fast, clear answers with tables and calculations.
+            </p>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a href="#top-examples"
+                    style="display:inline-block; padding:10px 14px; border-radius:14px; text-decoration:none; font-weight:900; border:1px solid rgba(255,255,255,.14); background:rgba(102,166,255,.18);">
+                    Start with Top Examples →
+                </a>
+                <a href="articles.html"
+                    style="display:inline-block; padding:10px 14px; border-radius:14px; text-decoration:none; font-weight:900; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06);">
+                    Browse All Articles
+                </a>
+            </div>
+
+            <!-- SEARCH -->
+            <div style="margin-top:14px;">
+                <input id="siteSearch" type="text" placeholder="Search: FIFO, LRU, Round Robin, Banker, Parsing..."
+                    style="width:100%; max-width:720px; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.22); color:#e8eefc; font-size:14px;">
+                <div id="searchResults" style="margin-top:10px; display:none;"></div>
+            </div>
+        </section>
+
+        <!-- TOP EXAMPLES -->
+        <section id="top-examples" class="card">
+            <h2>Top Examples (Auto)</h2>
+            <p style="margin-top:-6px; color:#a9b7d6; font-size:13px;">
+                Auto-generated from <code>articles.json</code> where <code>featured:true</code>.
+            </p>
+            <ul class="links" id="topExamplesList"></ul>
+        </section>
+
+        <!-- CATEGORIES -->
+        <div id="categories" class="grid"></div>
+
+        <!-- FAQ -->
+        <section id="faq" class="card">
+            <h2>Frequently Asked Questions</h2>
+            <div id="faqList"></div>
+        </section>
+
+        <div class="footer">
+            <span class="badge">Auto-generated content • GitHub Pages</span>
+        </div>
+
+    </div>
+
+    <script>
+        (async function () {
+
+            const topList = document.getElementById("topExamplesList");
+            const categoriesGrid = document.getElementById("categories");
+            const faqList = document.getElementById("faqList");
+            const input = document.getElementById("siteSearch");
+            const box = document.getElementById("searchResults");
+
+            function escapeHtml(str) {
+                return String(str || "").replace(/[&<>"']/g, function (m) {
+                    return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m];
+                });
+            }
+
+            async function loadJson(path) {
+                const res = await fetch(path, { cache: "no-store" });
+                if (!res.ok) throw new Error(path + " load error");
+                return await res.json();
+            }
+
+            function prettyCategoryTitle(cat) {
+                const c = String(cat || "other").trim().toLowerCase();
+                const map = {
+                    "scheduling": "CPU Scheduling Algorithms",
+                    "page-replacement": "Page Replacement Algorithms",
+                    "deadlock": "Deadlocks",
+                    "parsing": "Parsing & Compiler Design",
+                    "other": "Other Topics"
+                };
+                return map[c] || c.replace(/-/g, " ").replace(/\b\w/g, s => s.toUpperCase());
+            }
+
+            function catSortKey(cat) {
+                const c = String(cat || "other").trim().toLowerCase();
+                const order = ["scheduling", "page-replacement", "deadlock", "parsing", "other"];
+                const idx = order.indexOf(c);
+                return idx === -1 ? 999 : idx;
+            }
+
+            function rankOf(a) {
+                return Number.isFinite(a.rank) ? a.rank : 9999;
+            }
+
+            function renderTop(articles) {
+                const featured = articles
+                    .filter(a => a && a.featured === true)
+                    .slice()
+                    .sort((a, b) => rankOf(a) - rankOf(b) || String(a.title || "").localeCompare(String(b.title || "")));
+
+                if (!featured.length) {
+                    topList.innerHTML = "<li><span style='color:#a9b7d6;'>No featured articles yet.</span></li>";
+                    return;
+                }
+
+                topList.innerHTML = featured.map(a =>
+                    `<li><a href="${a.url}">${escapeHtml(a.title)}</a></li>`
+                ).join("");
+            }
+
+            function renderCategories(articles) {
+                const groups = new Map();
+
+                for (const a of articles) {
+                    const cat = String(a.category || "other").trim().toLowerCase();
+                    if (!groups.has(cat)) groups.set(cat, []);
+                    groups.get(cat).push(a);
+                }
+
+                const cats = Array.from(groups.keys())
+                    .sort((a, b) => catSortKey(a) - catSortKey(b) || a.localeCompare(b));
+
+                categoriesGrid.innerHTML = cats.map(cat => {
+                    const items = groups.get(cat)
+                        .slice()
+                        .sort((a, b) => rankOf(a) - rankOf(b) || String(a.title || "").localeCompare(String(b.title || "")));
+
+                    const links = items.slice(0, 8).map(a =>
+                        `<li><a href="${a.url}">${escapeHtml(a.title)}</a></li>`
+                    ).join("");
+
+                    const more = items.length > 8
+                        ? `<div style="margin-top:10px; color:#a9b7d6; font-size:13px;">
+                               Showing 8 of ${items.length}. <a href="articles.html" style="font-weight:900; text-decoration:none;">See all →</a>
+                           </div>`
+                        : "";
+
+                    return `
+                        <section class="card half">
+                            <h2>${escapeHtml(prettyCategoryTitle(cat))}</h2>
+                            <p>Auto-generated from <code>articles.json</code></p>
+                            <ul class="links">
+                                ${links}
+                            </ul>
+                            ${more}
+                        </section>
+                    `;
+                }).join("");
+            }
+
+            function renderFAQ(faq) {
+                if (!Array.isArray(faq) || !faq.length) {
+                    faqList.innerHTML = `<div style="color:#a9b7d6;">No FAQ items found. (faq.json missing or empty)</div>`;
+                    return;
+                }
+
+                faqList.innerHTML = faq.map(x =>
+                    `<h3>${escapeHtml(x.q)}</h3><p>${escapeHtml(x.a)}</p>`
+                ).join("");
+            }
+
+            function setupSearch(articles) {
+                input.addEventListener("input", function () {
+                    const query = (input.value || "").toLowerCase().trim();
+
+                    if (!query) {
+                        box.style.display = "none";
+                        box.innerHTML = "";
+                        return;
+                    }
+
+                    const parts = query.split(/\s+/).filter(Boolean);
+
+                    function score(a) {
+                        const title = String(a.title || "").toLowerCase();
+                        const tags = String(a.tags || "").toLowerCase();
+                        const cat = String(a.category || "").toLowerCase();
+                        const desc = String(a.description || "").toLowerCase();
+                        const hay = `${title} ${tags} ${cat} ${desc}`;
+
+                        let s = 0;
+                        if (title.includes(query)) s += 8;
+                        if (tags.includes(query)) s += 4;
+                        if (cat.includes(query)) s += 2;
+                        if (desc.includes(query)) s += 2;
+
+                        for (const w of parts) {
+                            if (title.includes(w)) s += 4;
+                            if (tags.includes(w)) s += 2;
+                            if (cat.includes(w)) s += 1;
+                            if (desc.includes(w)) s += 1;
+                            if (hay.includes(w)) s += 1;
+                        }
+
+                        if (a.featured === true) s += 1;
+                        return s;
+                    }
+
+                    const results = articles
+                        .map(a => ({ ...a, _s: score(a) }))
+                        .filter(a => a._s > 0)
+                        .sort((a, b) => b._s - a._s)
+                        .slice(0, 10);
+
+                    if (!results.length) {
+                        box.innerHTML = "<div style='color:#a9b7d6;'>No results.</div>";
+                        box.style.display = "block";
+                        return;
+                    }
+
+                    box.innerHTML = results.map(a =>
+                        `<div style="margin:8px 0; padding:10px 12px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background:rgba(255,255,255,.03);">
+                            <a href="${a.url}" style="font-weight:900; text-decoration:none;">${escapeHtml(a.title)}</a>
+                            <div style="margin-top:4px; font-size:12px; color:#a9b7d6;">${escapeHtml(a.description || "")}</div>
+                            <div style="margin-top:4px; font-size:12px; color:#a9b7d6;">${escapeHtml(a.tags || "")}</div>
+                         </div>`
+                    ).join("");
+
+                    box.style.display = "block";
+                });
+            }
+
+            try {
+                const articles = await loadJson("articles.json");
+                const faq = await loadJson("faq.json");
+
+                const safeArticles = Array.isArray(articles)
+                    ? articles.filter(a => a && a.title && a.url)
+                    : [];
+
+                renderTop(safeArticles);
+                renderCategories(safeArticles);
+                renderFAQ(Array.isArray(faq) ? faq : []);
+                setupSearch(safeArticles);
+
+            } catch (e) {
+                console.error(e);
+                topList.innerHTML = "<li><span style='color:#a9b7d6;'>Error loading JSON files.</span></li>";
+                categoriesGrid.innerHTML = `
+                    <section class="card">
+                        <h2>Error</h2>
+                        <p>Cannot load <code>articles.json</code> or <code>faq.json</code>. Make sure both files exist in repo root.</p>
+                    </section>
+                `;
+                faqList.innerHTML = "<div style='color:#a9b7d6;'>FAQ unavailable.</div>";
+            }
+
+        })();
+    </script>
 
 </body>
 

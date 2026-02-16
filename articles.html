@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>All Worked Examples</title>
+    <meta name="description"
+        content="Browse all step-by-step worked examples for Operating Systems and Compiler Design. Filter by category and search by keywords." />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="site">
+
+        <header class="header">
+            <div class="brand">
+                <div class="brand-title">CS Homework & Exam Solutions</div>
+                <div class="brand-sub">All examples • auto-generated from articles.json</div>
+            </div>
+
+            <nav class="nav">
+                <a href="index.html#top">Home</a>
+                <a href="index.html#top-examples">Top Examples</a>
+                <a href="articles.html">All Articles</a>
+                <a href="index.html#faq">FAQ</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>All Worked Examples</h1>
+            <p>
+                This page is automatically generated from <code>articles.json</code>.
+                Add a new article once, and it appears here automatically.
+            </p>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <input id="q" type="text" placeholder="Search: FIFO, LRU, RR, Banker, parsing..."
+                    style="width:min(720px,100%); padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.22); color:#e8eefc; font-size:14px;">
+                <select id="cat"
+                    style="padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.22); color:#e8eefc; font-size:14px;">
+                    <option value="all">All categories</option>
+                </select>
+            </div>
+
+            <div id="stats" style="margin-top:10px; color:#a9b7d6; font-size:13px;"></div>
+        </section>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="footer">
+            <span class="badge">Auto list • Powered by articles.json</span>
+        </div>
+
+    </div>
+
+    <script>
+        (async function () {
+            const grid = document.getElementById("grid");
+            const q = document.getElementById("q");
+            const cat = document.getElementById("cat");
+            const stats = document.getElementById("stats");
+
+            function escapeHtml(str) {
+                return String(str || "").replace(/[&<>"']/g, function (m) {
+                    return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m];
+                });
+            }
+
+            function prettyCategoryTitle(c) {
+                const x = String(c || "").toLowerCase();
+                const map = {
+                    "scheduling": "CPU Scheduling",
+                    "page-replacement": "Page Replacement",
+                    "deadlock": "Deadlocks",
+                    "parsing": "Parsing / Compiler Design",
+                    "other": "Other"
+                };
+                return map[x] || x.replace(/-/g, " ").replace(/\b\w/g, s => s.toUpperCase());
+            }
+
+            async function loadArticles() {
+                const res = await fetch("articles.json", { cache: "no-store" });
+                if (!res.ok) throw new Error("articles.json not found");
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error("articles.json must be an array");
+                return data.filter(x => x && x.title && x.url);
+            }
+
+            function buildCategoryOptions(articles) {
+                const set = new Set();
+                for (const a of articles) set.add((a.category || "other").toLowerCase());
+                const cats = Array.from(set).sort((a, b) => a.localeCompare(b));
+
+                for (const c of cats) {
+                    const opt = document.createElement("option");
+                    opt.value = c;
+                    opt.textContent = prettyCategoryTitle(c);
+                    cat.appendChild(opt);
+                }
+            }
+
+            function groupByCategory(items) {
+                const groups = {};
+                for (const a of items) {
+                    const c = (a.category || "other").toLowerCase();
+                    if (!groups[c]) groups[c] = [];
+                    groups[c].push(a);
+                }
+                return groups;
+            }
+
+            function sortItems(items) {
+                return items.slice().sort((a, b) => {
+                    const ra = Number.isFinite(a.rank) ? a.rank : 9999;
+                    const rb = Number.isFinite(b.rank) ? b.rank : 9999;
+                    if (ra !== rb) return ra - rb;
+                    return String(a.title || "").localeCompare(String(b.title || ""));
+                });
+            }
+
+            function matches(a, query, category) {
+                const c = (a.category || "other").toLowerCase();
+                if (category !== "all" && c !== category) return false;
+
+                if (!query) return true;
+
+                const hay = (a.title + " " + (a.tags || "") + " " + (a.description || "") + " " + c).toLowerCase();
+                return hay.includes(query);
+            }
+
+            function render(articles) {
+                const query = (q.value || "").trim().toLowerCase();
+                const category = cat.value;
+
+                const filtered = articles.filter(a => matches(a, query, category));
+                const groups = groupByCategory(filtered);
+
+                const catOrder = ["scheduling", "page-replacement", "deadlock", "parsing", "other"];
+                const cats = Object.keys(groups).sort((a, b) => {
+                    const ia = catOrder.indexOf(a); const ib = catOrder.indexOf(b);
+                    const aa = ia === -1 ? 999 : ia;
+                    const bb = ib === -1 ? 999 : ib;
+                    if (aa !== bb) return aa - bb;
+                    return a.localeCompare(b);
+                });
+
+                stats.textContent = `Showing ${filtered.length} / ${articles.length} articles`;
+
+                grid.innerHTML = cats.map(c => {
+                    const items = sortItems(groups[c]);
+
+                    const links = items.map(a => {
+                        const desc = a.description ? `<div style="margin-top:4px; color:#a9b7d6; font-size:12px;">${escapeHtml(a.description)}</div>` : "";
+                        const meta = a.tags ? `<div style="margin-top:4px; color:#a9b7d6; font-size:12px;">${escapeHtml(a.tags)}</div>` : "";
+                        return `
+              <div style="margin:10px 0; padding:10px 12px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background:rgba(255,255,255,.03);">
+                <a href="${a.url}" style="text-decoration:none; font-weight:900;">${escapeHtml(a.title)}</a>
+                ${desc}
+                ${meta}
+              </div>
+            `;
+                    }).join("");
+
+                    return `
+            <section class="card">
+              <h2>${escapeHtml(prettyCategoryTitle(c))}</h2>
+              <p>Auto-generated • ${items.length} item(s)</p>
+              ${links}
+            </section>
+          `;
+                }).join("");
+
+                if (!cats.length) {
+                    grid.innerHTML = `
+            <section class="card">
+              <h2>No results</h2>
+              <p>Try a different keyword (FIFO / LRU / RR / Banker / parsing) or select "All categories".</p>
+            </section>
+          `;
+                }
+            }
+
+            try {
+                const articles = await loadArticles();
+                buildCategoryOptions(articles);
+                render(articles);
+
+                q.addEventListener("input", () => render(articles));
+                cat.addEventListener("change", () => render(articles));
+            } catch (e) {
+                grid.innerHTML = `
+          <section class="card">
+            <h2>Error</h2>
+            <p>Cannot load <code>articles.json</code>. Make sure it exists in the repo root and GitHub Pages is updated.</p>
+          </section>
+        `;
+            }
+        })();
+    </script>
+</body>
+
+</html>

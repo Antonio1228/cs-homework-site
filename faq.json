@@ -1,0 +1,18 @@
+[
+    {
+        "q": "Are these real exam-style questions?",
+        "a": "Yes. The examples are written to match common university midterm and final exam problem styles."
+    },
+    {
+        "q": "Do you show full calculations?",
+        "a": "Yes. Each page includes tables and step-by-step calculations, including final answers."
+    },
+    {
+        "q": "Is this suitable for last-minute revision?",
+        "a": "Yes. The goal is fast understanding through worked examples and clear final results."
+    },
+    {
+        "q": "How do I add a new article so the homepage updates automatically?",
+        "a": "Create the new HTML file, then add one new object into articles.json with title/url/category/tags (and optional featured/rank)."
+    }
+]

@@ -14,108 +14,146 @@
     <meta name="keywords"
         content="context switch calculation example, context switch overhead, cpu utilization context switch, scheduling overhead example">
 
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<!-- SITE_WRAPPER_START -->
+<div class="site">
 
+  <header class="header">
+    <div class="brand">
+      <div class="brand-title">CS Homework &amp; Exam Solutions</div>
+      <div class="brand-sub">Context Switch Calculation Example (CPU Utilization)</div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html#top">Home</a>
+      <a href="index.html#top-examples">Top Examples</a>
+      <a href="articles.html">All Articles</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="card">
     <h1>Context Switch Calculation Example (Step by Step)</h1>
+    
+        <p>
+            A context switch takes CPU time as overhead. This example shows how to calculate CPU utilization when context
+            switch time occurs during scheduling.
+        </p>
+    
+        <h2>Given</h2>
+    
+        <pre>
+    Time Quantum (RR) = 4 ms
+    Context Switch Time = 1 ms (every time the CPU switches from one process to another)
+    
+    Assume 3 processes arrive at time 0:
+    P1 burst = 10 ms
+    P2 burst = 6 ms
+    P3 burst = 8 ms
+    </pre>
+    
+        <h2>Step 1: Build the Round Robin Execution Order</h2>
+    
+        <p>
+            With time quantum 4 ms, each process runs for up to 4 ms each turn.
+        </p>
+    
+        <pre>
+    Cycle 1: P1 (4) -> P2 (4) -> P3 (4)
+    Remaining: P1 6, P2 2, P3 4
+    
+    Cycle 2: P1 (4) -> P2 (2) -> P3 (4)
+    Remaining: P1 2, P2 0, P3 0
+    
+    Cycle 3: P1 (2)
+    Remaining: P1 0
+    </pre>
+    
+        <h2>Step 2: Count Number of CPU Switches</h2>
+    
+        <p>
+            Each time the CPU moves from one process to another, we pay 1 ms overhead.
+        </p>
+    
+        <h3>Execution Segments</h3>
+    
+        <pre>
+    1) P1 (4)
+    2) P2 (4)
+    3) P3 (4)
+    4) P1 (4)
+    5) P2 (2)
+    6) P3 (4)
+    7) P1 (2)
+    </pre>
+    
+        <p>
+            Number of switches between segments = segments - 1 = 7 - 1 = 6
+        </p>
+    
+        <h2>Step 3: Total CPU Work Time (Useful Time)</h2>
+    
+        <pre>
+    Total burst time = 10 + 6 + 8 = 24 ms
+    Useful CPU time = 24 ms
+    </pre>
+    
+        <h2>Step 4: Total Context Switch Overhead</h2>
+    
+        <pre>
+    Overhead = number_of_switches * context_switch_time
+    Overhead = 6 * 1 ms = 6 ms
+    </pre>
+    
+        <h2>Step 5: Total Time and CPU Utilization</h2>
+    
+        <pre>
+    Total time = useful time + overhead
+    Total time = 24 + 6 = 30 ms
+    
+    CPU Utilization = useful time / total time
+    CPU Utilization = 24 / 30 = 0.8 = 80%
+    </pre>
+    
+        <h2>Result</h2>
+    
+        <pre>
+    Useful CPU time = 24 ms
+    Context switch overhead = 6 ms
+    Total elapsed time = 30 ms
+    CPU Utilization = 80%
+    </pre>
+    
+        <h2>Conclusion</h2>
+    
+        <p>
+            Context switching reduces CPU utilization because it adds overhead time. Smaller time quantum may increase the
+            number of context switches, leading to more overhead.
+        </p>
+  </main>
 
-    <p>
-        A context switch takes CPU time as overhead. This example shows how to calculate CPU utilization when context
-        switch time occurs during scheduling.
-    </p>
+  <section class="card">
+    <h2>Related Examples</h2>
+    <p>Auto-generated links to help you continue practicing.</p>
+    <ul class="links">
+      <li><a href="round-robin-scheduling-example-with-calculation.html">Round Robin Scheduling Example with Calculation</a></li>
+      <li><a href="shortest-job-first-scheduling-example.html">Shortest Job First (SJF) Scheduling Example</a></li>
+      <li><a href="priority-scheduling-example.html">Priority Scheduling Example (Non-Preemptive)</a></li>
+      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example (Safety Algorithm)</a></li>
+      <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example (Step-by-Step)</a></li>
+      <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example (Step-by-Step)</a></li>
+    </ul>
+  </section>
 
-    <h2>Given</h2>
+  <div class="footer">
+    <span class="badge">Updated • 2026-02-16</span>
+  </div>
 
-    <pre>
-Time Quantum (RR) = 4 ms
-Context Switch Time = 1 ms (every time the CPU switches from one process to another)
-
-Assume 3 processes arrive at time 0:
-P1 burst = 10 ms
-P2 burst = 6 ms
-P3 burst = 8 ms
-</pre>
-
-    <h2>Step 1: Build the Round Robin Execution Order</h2>
-
-    <p>
-        With time quantum 4 ms, each process runs for up to 4 ms each turn.
-    </p>
-
-    <pre>
-Cycle 1: P1 (4) -> P2 (4) -> P3 (4)
-Remaining: P1 6, P2 2, P3 4
-
-Cycle 2: P1 (4) -> P2 (2) -> P3 (4)
-Remaining: P1 2, P2 0, P3 0
-
-Cycle 3: P1 (2)
-Remaining: P1 0
-</pre>
-
-    <h2>Step 2: Count Number of CPU Switches</h2>
-
-    <p>
-        Each time the CPU moves from one process to another, we pay 1 ms overhead.
-    </p>
-
-    <h3>Execution Segments</h3>
-
-    <pre>
-1) P1 (4)
-2) P2 (4)
-3) P3 (4)
-4) P1 (4)
-5) P2 (2)
-6) P3 (4)
-7) P1 (2)
-</pre>
-
-    <p>
-        Number of switches between segments = segments - 1 = 7 - 1 = 6
-    </p>
-
-    <h2>Step 3: Total CPU Work Time (Useful Time)</h2>
-
-    <pre>
-Total burst time = 10 + 6 + 8 = 24 ms
-Useful CPU time = 24 ms
-</pre>
-
-    <h2>Step 4: Total Context Switch Overhead</h2>
-
-    <pre>
-Overhead = number_of_switches * context_switch_time
-Overhead = 6 * 1 ms = 6 ms
-</pre>
-
-    <h2>Step 5: Total Time and CPU Utilization</h2>
-
-    <pre>
-Total time = useful time + overhead
-Total time = 24 + 6 = 30 ms
-
-CPU Utilization = useful time / total time
-CPU Utilization = 24 / 30 = 0.8 = 80%
-</pre>
-
-    <h2>Result</h2>
-
-    <pre>
-Useful CPU time = 24 ms
-Context switch overhead = 6 ms
-Total elapsed time = 30 ms
-CPU Utilization = 80%
-</pre>
-
-    <h2>Conclusion</h2>
-
-    <p>
-        Context switching reduces CPU utilization because it adds overhead time. Smaller time quantum may increase the
-        number of context switches, leading to more overhead.
-    </p>
-
+</div>
+<!-- SITE_WRAPPER_END -->
 </body>
 
 </html>

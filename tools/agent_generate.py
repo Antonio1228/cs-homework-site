@@ -18,13 +18,14 @@ Optional env:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
 import subprocess
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
 from openai import OpenAI
 
@@ -40,158 +41,135 @@ if not OPENAI_API_KEY:
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-CATEGORY_ORDER = ["scheduling", "page-replacement",
-                  "deadlock", "parsing", "other"]
-BANK_PATH = Path("topic_bank_auto.json")
-
-FEATURED_DEFAULT: Dict[str, Tuple[bool, int]] = {
-    "page-replacement-fifo-example.html": (True, 1),
-    "lru-page-replacement-example.html": (True, 2),
-    "round-robin-scheduling-example-with-calculation.html": (True, 1),
-    "banker-algorithm-example-step-by-step.html": (True, 1),
-    "shift-reduce-parsing-example-step-by-step.html": (True, 1),
-}
+CATEGORY_ORDER = ["scheduling", "page-replacement", "deadlock", "parsing"]
 
 
 def read_text(path: Path) -> str:
-    """Read UTF-8 text (ignore errors)."""
+    """Read a UTF-8 text file (ignore decode errors)."""
     return path.read_text(encoding="utf-8", errors="ignore")
 
 
-def write_text(path: Path, text: str) -> None:
-    """Write UTF-8 text."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+def write_text(path: Path, content: str) -> None:
+    """Write a UTF-8 text file."""
+    path.write_text(content, encoding="utf-8")
 
 
-def write_json(path: Path, obj: Any) -> None:
-    """Write JSON UTF-8 pretty."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, ensure_ascii=False,
-                    indent=2), encoding="utf-8")
+def load_json(path: Path, default: Any) -> Any:
+    """Load JSON file; return default if missing/invalid."""
+    if not path.exists():
+        return default
+    try:
+        return json.loads(read_text(path))
+    except json.JSONDecodeError:
+        return default
 
 
-def list_existing_article_html() -> List[str]:
-    """List root-level *.html except index.html/articles.html."""
-    pages: List[str] = []
+def list_existing_article_files() -> Set[str]:
+    """List existing root article HTML filenames (exclude non-article pages)."""
+    exclude = {"index.html", "articles.html", "404.html"}
+    existing: Set[str] = set()
     for p in Path(".").glob("*.html"):
-        if p.name in {"index.html", "articles.html"}:
+        if p.name in exclude:
             continue
-        pages.append(p.name)
-    return sorted(pages)
-
-
-def run_topic_expand() -> None:
-    """Expand topic bank automatically."""
-    subprocess.run(["python", "tools/topic_expand.py"], check=True)
-    if not BANK_PATH.exists():
-        raise SystemExit("ERROR: topic_bank_auto.json not generated.")
+        existing.add(p.name)
+    return existing
 
 
 def load_topic_bank() -> List[Dict[str, Any]]:
-    """Load topic_bank_auto.json."""
-    data = json.loads(read_text(BANK_PATH))
-    if not isinstance(data, list):
+    """Load topic_bank_auto.json entries with required fields."""
+    bank = load_json(Path("topic_bank_auto.json"), [])
+    if not isinstance(bank, list):
         return []
-    out: List[Dict[str, Any]] = []
-    for x in data:
-        if not isinstance(x, dict):
-            continue
-        if not x.get("filename") or not x.get("prompt") or not x.get("category"):
-            continue
-        out.append(x)
-    return out
+    return [
+        x
+        for x in bank
+        if isinstance(x, dict) and "filename" in x and "prompt" in x
+    ]
 
 
-def extract_title(html: str) -> str:
-    """Extract <title> or first <h1>."""
-    m = re.search(r"<title>(.*?)</title>", html,
-                  flags=re.IGNORECASE | re.DOTALL)
-    if m:
-        return re.sub(r"\s+", " ", m.group(1)).strip()
-    m = re.search(r"<h1[^>]*>(.*?)</h1>", html,
-                  flags=re.IGNORECASE | re.DOTALL)
-    if m:
-        text = re.sub(r"<[^>]+>", "", m.group(1))
-        return re.sub(r"\s+", " ", text).strip()
-    return "Worked Example"
+def rank_of(topic: Dict[str, Any]) -> int:
+    """Get numeric rank from a topic entry (lower is better)."""
+    try:
+        return int(topic.get("rank", 9999))
+    except (TypeError, ValueError):
+        return 9999
 
 
-def extract_meta(html: str, name: str) -> str:
-    """Extract meta name content."""
-    pattern = r'<meta\s+name=["\']' + \
-        re.escape(name) + r'["\']\s+content=["\'](.*?)["\']'
-    m = re.search(pattern, html, flags=re.IGNORECASE | re.DOTALL)
-    if not m:
-        return ""
-    return re.sub(r"\s+", " ", m.group(1)).strip()
+def category_of(topic: Dict[str, Any]) -> str:
+    """Get category string from a topic entry."""
+    c = str(topic.get("category", "")).strip()
+    return c if c else "misc"
 
 
-def category_balance_order(existing_files: Set[str], bank: List[Dict[str, Any]]) -> List[str]:
-    """Prefer categories with fewer existing pages (based on bank mapping when possible)."""
-    bank_by_file = {str(t.get("filename")): t for t in bank}
-
-    counts = {c: 0 for c in CATEGORY_ORDER}
-    for f in existing_files:
-        meta = bank_by_file.get(f, {})
-        cat = str(meta.get("category") or "other")
-        if cat not in counts:
-            counts[cat] = 0
-        counts[cat] += 1
-
-    return sorted(
-        CATEGORY_ORDER,
-        key=lambda c: (counts.get(c, 0), CATEGORY_ORDER.index(c)),
-    )
+def category_priority(cat: str) -> int:
+    """Map category to a stable priority for balancing."""
+    return CATEGORY_ORDER.index(cat) if cat in CATEGORY_ORDER else 999
 
 
-def pick_next_topic(existing_files: Set[str], bank: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def choose_next_topic(
+    bank: List[Dict[str, Any]],
+    existing_files: Set[str],
+) -> Optional[Dict[str, Any]]:
     """
-    Pick one missing topic automatically.
-    Strategy:
-      1) Category balance (fewer pages first)
-      2) Rank ascending
-      3) Stable order
+    Pick next topic:
+    - Not yet generated (filename not in existing_files)
+    - Prefer lower rank
+    - Among best-rank items, prefer earlier category in CATEGORY_ORDER
+    - Stable fallback by filename
     """
-    cats = category_balance_order(existing_files, bank)
+    leftovers = [
+        t for t in bank if str(t.get("filename")) not in existing_files
+    ]
+    if not leftovers:
+        return None
 
-    def rank_of(t: Dict[str, Any]) -> int:
-        r = t.get("rank")
-        return r if isinstance(r, int) else 999
-
-    for cat in cats:
-        candidates = [
-            t for t in bank
-            if str(t.get("category")) == cat and str(t.get("filename")) not in existing_files
-        ]
-        candidates.sort(key=lambda t: (rank_of(t), str(t.get("filename"))))
-        if candidates:
-            return candidates[0]
-
-    leftovers = [t for t in bank if str(
-        t.get("filename")) not in existing_files]
     leftovers.sort(key=lambda t: (rank_of(t), str(t.get("filename"))))
-    return leftovers[0] if leftovers else None
+
+    best_rank = rank_of(leftovers[0])
+    top = [t for t in leftovers if rank_of(t) == best_rank]
+
+    top.sort(
+        key=lambda t: (
+            category_priority(category_of(t)),
+            str(t.get("filename")),
+        )
+    )
+    return top[0] if top else leftovers[0]
 
 
 def generate_one_new_page(topic: Dict[str, Any]) -> str:
-    """Generate one new HTML page from a topic bank item."""
+    """Generate one new HTML page from a topic bank item using OpenAI."""
     fname = str(topic["filename"])
     prompt = str(topic["prompt"]).strip()
 
+    seed_hex = hashlib.sha256((fname + TODAY).encode("utf-8")).hexdigest()[:8]
+    uniqueness_seed = int(seed_hex, 16)
+
     final_prompt = (
         prompt
-        + "\n\nIMPORTANT:\n"
-        "- Output ONLY a valid complete HTML document.\n"
+        + "\n\nIMPORTANT (quality + uniqueness rules):\n"
+        "- Output ONLY a valid complete HTML document. No markdown fences.\n"
         "- Include <meta charset>, viewport, <title>, meta description, meta keywords.\n"
-        "- Use exam-style step-by-step solution.\n"
-        "- Use <table border=\"1\"> for the step table.\n"
+        "- No external CSS/JS. Use only basic HTML tags: "
+        "<h1>, <h2>, <h3>, <p>, <pre>, <table border=\"1\">, <ul>, <li>.\n"
+        "- Target length: 1500–2500+ words (dense, exam-style, but readable).\n"
+        "- MUST include: (1) problem setup, (2) fully worked example with real numbers, "
+        "(3) step-by-step table(s), (4) final numeric answer(s), (5) Common mistakes, "
+        "(6) FAQ with 3–5 Q&As.\n"
+        "- Use <table border=\"1\"> for all calculation / step tables.\n"
+        f"- Uniqueness seed for this page: {uniqueness_seed}. Use it to choose ALL "
+        "numeric values (reference string / burst times / arrivals / etc.) so this page "
+        "is different from others.\n"
+        "- Do NOT reuse the same example numbers across pages. "
+        "Do NOT use placeholders like 'X', 'Y', '...'.\n"
+        "- Vary wording and section headings naturally (avoid looking like a rigid template).\n"
     )
 
     resp = client.responses.create(model=MODEL, input=final_prompt)
     html = (resp.output_text or "").strip()
 
-    if "<html" not in html.lower() or "</html>" not in html.lower():
+    html_lower = html.lower()
+    if "<html" not in html_lower or "</html>" not in html_lower:
         raise RuntimeError(f"Model output for {fname} doesn't look like HTML.")
 
     write_text(Path(fname), html)
@@ -206,159 +184,121 @@ def build_sitemap() -> None:
         "  <url>\n"
         f"    <loc>{SITE_BASE}/</loc>\n"
         f"    <lastmod>{TODAY}</lastmod>\n"
-        "    <changefreq>weekly</changefreq>\n"
-        "    <priority>1.0</priority>\n"
-        "  </url>"
+        "  </url>\n"
     )
     urls.append(
         "  <url>\n"
         f"    <loc>{SITE_BASE}/articles.html</loc>\n"
         f"    <lastmod>{TODAY}</lastmod>\n"
-        "    <changefreq>weekly</changefreq>\n"
-        "    <priority>0.9</priority>\n"
-        "  </url>"
+        "  </url>\n"
     )
 
-    for name in list_existing_article_html():
-        priority = "0.9" if "example" in name else "0.8"
+    exclude = {"index.html", "articles.html", "404.html"}
+    for p in sorted(Path(".").glob("*.html")):
+        if p.name in exclude:
+            continue
         urls.append(
             "  <url>\n"
-            f"    <loc>{SITE_BASE}/{name}</loc>\n"
+            f"    <loc>{SITE_BASE}/{p.name}</loc>\n"
             f"    <lastmod>{TODAY}</lastmod>\n"
-            "    <changefreq>monthly</changefreq>\n"
-            f"    <priority>{priority}</priority>\n"
-            "  </url>"
+            "  </url>\n"
         )
 
-    content = (
+    xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n'
-        + "\n\n".join(urls)
-        + "\n\n</urlset>\n"
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "".join(urls)
+        + "</urlset>\n"
     )
-    write_text(Path("sitemap.xml"), content)
+    write_text(Path("sitemap.xml"), xml)
 
 
-def guess_category(filename: str, title: str) -> str:
-    """Infer category by keywords."""
-    f = filename.lower()
-    t = title.lower()
-
-    def has(*words: str) -> bool:
-        return any(w in f or w in t for w in words)
-
-    if has("page-replacement", "fifo", "lru", "belady", "clock", "second-chance", "optimal"):
-        return "page-replacement"
-    if has("scheduling", "round-robin", "sjf", "srtf", "priority", "mlfq", "fcfs"):
-        return "scheduling"
-    if has("deadlock", "banker", "allocation", "resource"):
-        return "deadlock"
-    if has("parsing", "shift-reduce", "first", "follow", "ll1", "left-recursion"):
-        return "parsing"
-    return "other"
+def extract_title_from_html(html: str, fallback: str) -> str:
+    """Extract <title> from HTML; fallback if missing."""
+    m = re.search(r"<title>(.*?)</title>", html,
+                  flags=re.IGNORECASE | re.DOTALL)
+    if not m:
+        return fallback
+    t = re.sub(r"\s+", " ", m.group(1)).strip()
+    return t if t else fallback
 
 
-def build_articles_json(bank: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Rebuild articles.json from HTML pages and topic bank metadata when available."""
-    bank_by_file = {str(t.get("filename")): t for t in bank}
-    articles: List[Dict[str, Any]] = []
+def rebuild_articles_json() -> None:
+    """Rebuild articles.json from current root html files."""
+    exclude = {"index.html", "articles.html", "404.html"}
 
-    for fname in list_existing_article_html():
-        html = read_text(Path(fname))
-        title = extract_title(html)
-        desc = extract_meta(html, "description")
-        keywords = extract_meta(html, "keywords")
-
-        meta = bank_by_file.get(fname, {})
-        category = str(meta.get("category") or guess_category(fname, title))
-        tags = str(meta.get("tags") or keywords or category)
-
-        featured = bool(meta.get("featured")) if "featured" in meta else False
-        rank_val = meta.get("rank", None)
-
-        if fname in FEATURED_DEFAULT and "featured" not in meta:
-            featured, default_rank = FEATURED_DEFAULT[fname]
-            if rank_val is None:
-                rank_val = default_rank
-
-        if rank_val is None:
-            rank_val = 99
-
-        if not desc:
-            desc = f"Step-by-step {category} worked example with tables and calculations."
-
-        articles.append(
+    items: List[Dict[str, Any]] = []
+    for p in sorted(Path(".").glob("*.html")):
+        if p.name in exclude:
+            continue
+        html = read_text(p)
+        title = extract_title_from_html(html, p.stem.replace("-", " "))
+        items.append(
             {
+                "url": p.name,
                 "title": title,
-                "url": fname,
-                "category": category,
-                "tags": tags,
-                "description": desc,
-                "featured": featured,
-                "rank": int(rank_val),
+                "category": "",
+                "updated": TODAY,
             }
         )
 
-    def cat_index(c: str) -> int:
-        try:
-            return CATEGORY_ORDER.index(c)
-        except ValueError:
-            return 999
-
-    articles.sort(key=lambda a: (
-        cat_index(a["category"]), a["rank"], a["title"].lower()))
-    write_json(Path("articles.json"), articles)
-    return articles
+    write_text(Path("articles.json"), json.dumps(
+        items, ensure_ascii=False, indent=2))
 
 
-def build_faq_json(articles: List[Dict[str, Any]]) -> None:
-    """Build FAQ JSON automatically (dynamic counts)."""
-    total = len(articles)
-    cats = sorted({(a.get("category") or "other") for a in articles})
-    featured_count = sum(1 for a in articles if a.get("featured") is True)
-
+def rebuild_faq_json() -> None:
+    """Create a minimal faq.json if missing (keeps index stable)."""
+    p = Path("faq.json")
+    if p.exists():
+        return
     faq = [
-        {"q": "Are these real exam-style questions?",
-            "a": "Yes. The examples are written to match common university exam styles."},
-        {"q": "Do you show full calculations?",
-            "a": "Yes. Each page includes step-by-step tables and calculations with final answers."},
-        {"q": "How many worked examples are available right now?",
-            "a": f"Currently {total} worked example pages across {len(cats)} categories. Featured/top examples: {featured_count}."},
-        {"q": "Do I need to edit index.html after adding new pages?",
-            "a": "No. Homepage uses articles.json and faq.json, which are auto-rebuilt."},
+        {
+            "q": "How are these examples generated?",
+            "a": "Each page is an exam-style worked example with step tables and final answers.",
+        },
+        {
+            "q": "Can I request a topic?",
+            "a": "Yes. New topics are added continuously based on common search suggestions.",
+        },
+        {
+            "q": "Do pages include worked calculations?",
+            "a": "Yes. Tables show each step and the final numeric results.",
+        },
     ]
-    write_json(Path("faq.json"), faq)
+    write_text(p, json.dumps(faq, ensure_ascii=False, indent=2))
 
 
-def unify_pages() -> None:
-    """Run tools/unify_pages.py to apply wrapper layout + related posts."""
+def run_unify_pages() -> None:
+    """Run tools/unify_pages.py to wrap all pages consistently."""
     subprocess.run(["python", "tools/unify_pages.py"], check=True)
+
+
+def run_topic_expand() -> None:
+    """Run tools/topic_expand.py to refresh topic_bank_auto.json."""
+    subprocess.run(["python", "tools/topic_expand.py"], check=True)
 
 
 def main() -> None:
     """Entry point."""
     run_topic_expand()
+
     bank = load_topic_bank()
+    if not bank:
+        raise SystemExit("ERROR: topic_bank_auto.json is empty or invalid.")
 
-    existing_files = set(list_existing_article_html())
-    topic = pick_next_topic(existing_files, bank)
+    existing = list_existing_article_files()
+    topic = choose_next_topic(bank, existing)
+    if not topic:
+        raise SystemExit(
+            "No new topics to generate (all filenames already exist).")
 
-    created: Optional[str] = None
-    if topic is not None:
-        created = generate_one_new_page(topic)
-        print(f"Generated new page: {created}")
-    else:
-        print("No available topic to generate (topic bank exhausted).")
+    created = generate_one_new_page(topic)
+    print(f"Generated: {created}")
 
+    rebuild_articles_json()
+    rebuild_faq_json()
     build_sitemap()
-    articles = build_articles_json(bank)
-    build_faq_json(articles)
-    unify_pages()
-
-    if created:
-        print("DONE: expanded bank + generated + rebuilt + unified.")
-    else:
-        print("DONE: expanded bank + rebuilt + unified (no new page).")
+    run_unify_pages()
 
 
 if __name__ == "__main__":

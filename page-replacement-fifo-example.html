@@ -15,6 +15,7 @@
         content="FIFO page replacement example, page replacement algorithm example, operating system page replacement, FIFO page fault calculation">
 
   <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://antonio1228.github.io/cs-homework-site/page-replacement-fifo-example.html">
 </head>
 
 <body>
@@ -37,154 +38,154 @@
 
   <main class="card">
     <h1>FIFO Page Replacement Example (Step by Step)</h1>
-    
-        <p>
-            FIFO (First In First Out) page replacement algorithm replaces the oldest page in memory when a new page needs
-            to be loaded.
-        </p>
-    
-        <h2>Given</h2>
-    
-        <pre>
-    Number of Frames = 3
-    Reference String = 1 2 3 4 1 2 5 1 2 3 4 5
-    </pre>
-    
-        <h2>Step by Step Solution</h2>
-    
-        <table border="1">
-            <tr>
-                <th>Step</th>
-                <th>Reference</th>
-                <th>Frame 1</th>
-                <th>Frame 2</th>
-                <th>Frame 3</th>
-                <th>Page Fault</th>
-            </tr>
-    
-            <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>-</td>
-                <td>-</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>1</td>
-                <td>2</td>
-                <td>-</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>3</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>4</td>
-                <td>4</td>
-                <td>2</td>
-                <td>3</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>1</td>
-                <td>4</td>
-                <td>1</td>
-                <td>3</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>2</td>
-                <td>4</td>
-                <td>1</td>
-                <td>2</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td>5</td>
-                <td>5</td>
-                <td>1</td>
-                <td>2</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>1</td>
-                <td>5</td>
-                <td>1</td>
-                <td>2</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>9</td>
-                <td>2</td>
-                <td>5</td>
-                <td>1</td>
-                <td>2</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td>3</td>
-                <td>5</td>
-                <td>3</td>
-                <td>2</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>11</td>
-                <td>4</td>
-                <td>5</td>
-                <td>3</td>
-                <td>4</td>
-                <td>Yes</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>5</td>
-                <td>5</td>
-                <td>3</td>
-                <td>4</td>
-                <td>No</td>
-            </tr>
-    
-        </table>
-    
-        <h2>Total Page Faults</h2>
-    
-        <pre>
-    Total Page Faults = 9
-    </pre>
-    
-        <h2>Conclusion</h2>
-    
-        <p>
-            FIFO replaces the oldest loaded page first. Although simple to implement, it may suffer from Belady's anomaly,
-            where increasing the number of frames increases the number of page faults.
-        </p>
+        
+            <p>
+                FIFO (First In First Out) page replacement algorithm replaces the oldest page in memory when a new page needs
+                to be loaded.
+            </p>
+        
+            <h2>Given</h2>
+        
+            <pre>
+        Number of Frames = 3
+        Reference String = 1 2 3 4 1 2 5 1 2 3 4 5
+        </pre>
+        
+            <h2>Step by Step Solution</h2>
+        
+            <table border="1">
+                <tr>
+                    <th>Step</th>
+                    <th>Reference</th>
+                    <th>Frame 1</th>
+                    <th>Frame 2</th>
+                    <th>Frame 3</th>
+                    <th>Page Fault</th>
+                </tr>
+        
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>-</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>2</td>
+                    <td>5</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>No</td>
+                </tr>
+        
+            </table>
+        
+            <h2>Total Page Faults</h2>
+        
+            <pre>
+        Total Page Faults = 9
+        </pre>
+        
+            <h2>Conclusion</h2>
+        
+            <p>
+                FIFO replaces the oldest loaded page first. Although simple to implement, it may suffer from Belady's anomaly,
+                where increasing the number of frames increases the number of page faults.
+            </p>
   </main>
 
   <section class="card">
     <h2>Related Examples</h2>
     <p>Auto-generated links to help you continue practicing.</p>
     <ul class="links">
-      <li><a href="lru-page-replacement-example.html">LRU Page Replacement Example (Step-by-Step)</a></li>
-      <li><a href="belady-anomaly-example.html">Belady&#39;s Anomaly Example (FIFO)</a></li>
-      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example (Safety Algorithm)</a></li>
+      <li><a href="belady-anomaly-example.html">Belady&#39;s Anomaly Example (FIFO) with Step by Step Solution</a></li>
+      <li><a href="lru-page-replacement-example.html">LRU Page Replacement Example with Step by Step Solution</a></li>
+      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example Step by Step (Safety Algorithm)</a></li>
       <li><a href="round-robin-scheduling-example-with-calculation.html">Round Robin Scheduling Example with Calculation</a></li>
-      <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example (Step-by-Step)</a></li>
-      <li><a href="deadlock-detection-example.html">Deadlock Detection Algorithm Example</a></li>
+      <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example Step by Step</a></li>
+      <li><a href="mlfq-scheduling-example.html">mlfq scheduling example</a></li>
     </ul>
   </section>
 

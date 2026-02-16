@@ -15,6 +15,7 @@
         content="round robin scheduling example, round robin scheduling calculation, os scheduling example, cpu scheduling example">
 
   <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://antonio1228.github.io/cs-homework-site/round-robin-scheduling-example-with-calculation.html">
 </head>
 
 <body>
@@ -37,160 +38,160 @@
 
   <main class="card">
     <h1>Round Robin Scheduling Example with Calculation</h1>
-    
-        <p>
-            Round Robin Scheduling is a CPU scheduling algorithm in which each process is assigned a fixed time quantum in a
-            cyclic order.
-        </p>
-    
-        <h2>Given Processes</h2>
-    
-        <table border="1">
-            <tr>
-                <th>Process</th>
-                <th>Burst Time</th>
-            </tr>
-    
-            <tr>
-                <td>P1</td>
-                <td>24</td>
-            </tr>
-    
-            <tr>
-                <td>P2</td>
-                <td>3</td>
-            </tr>
-    
-            <tr>
-                <td>P3</td>
-                <td>3</td>
-            </tr>
-    
-        </table>
-    
-        <h2>Time Quantum</h2>
-    
-        <pre>
-    Time Quantum = 4
-    </pre>
-    
-        <h2>Scheduling Sequence</h2>
-    
-        <pre>
-    P1 → P2 → P3 → P1 → P1 → P1 → P1 → P1
-    </pre>
-    
-        <h2>Completion Time</h2>
-    
-        <table border="1">
-            <tr>
-                <th>Process</th>
-                <th>Completion Time</th>
-            </tr>
-    
-            <tr>
-                <td>P1</td>
-                <td>30</td>
-            </tr>
-    
-            <tr>
-                <td>P2</td>
-                <td>7</td>
-            </tr>
-    
-            <tr>
-                <td>P3</td>
-                <td>10</td>
-            </tr>
-    
-        </table>
-    
-        <h2>Turnaround Time</h2>
-    
-        <pre>
-    Turnaround Time = Completion Time - Arrival Time
-    </pre>
-    
-        <table border="1">
-            <tr>
-                <th>Process</th>
-                <th>Turnaround Time</th>
-            </tr>
-    
-            <tr>
-                <td>P1</td>
-                <td>30</td>
-            </tr>
-    
-            <tr>
-                <td>P2</td>
-                <td>7</td>
-            </tr>
-    
-            <tr>
-                <td>P3</td>
-                <td>10</td>
-            </tr>
-    
-        </table>
-    
-        <h2>Waiting Time</h2>
-    
-        <pre>
-    Waiting Time = Turnaround Time - Burst Time
-    </pre>
-    
-        <table border="1">
-            <tr>
-                <th>Process</th>
-                <th>Waiting Time</th>
-            </tr>
-    
-            <tr>
-                <td>P1</td>
-                <td>6</td>
-            </tr>
-    
-            <tr>
-                <td>P2</td>
-                <td>4</td>
-            </tr>
-    
-            <tr>
-                <td>P3</td>
-                <td>7</td>
-            </tr>
-    
-        </table>
-    
-        <h2>Average Waiting Time</h2>
-    
-        <pre>
-    (6 + 4 + 7) / 3 = 5.67
-    </pre>
-    
-        <h2>Average Turnaround Time</h2>
-    
-        <pre>
-    (30 + 7 + 10) / 3 = 15.67
-    </pre>
-    
-        <p>
-            This example demonstrates the calculation of completion time, waiting time, and turnaround time using Round
-            Robin Scheduling algorithm.
-        </p>
+        
+            <p>
+                Round Robin Scheduling is a CPU scheduling algorithm in which each process is assigned a fixed time quantum in a
+                cyclic order.
+            </p>
+        
+            <h2>Given Processes</h2>
+        
+            <table border="1">
+                <tr>
+                    <th>Process</th>
+                    <th>Burst Time</th>
+                </tr>
+        
+                <tr>
+                    <td>P1</td>
+                    <td>24</td>
+                </tr>
+        
+                <tr>
+                    <td>P2</td>
+                    <td>3</td>
+                </tr>
+        
+                <tr>
+                    <td>P3</td>
+                    <td>3</td>
+                </tr>
+        
+            </table>
+        
+            <h2>Time Quantum</h2>
+        
+            <pre>
+        Time Quantum = 4
+        </pre>
+        
+            <h2>Scheduling Sequence</h2>
+        
+            <pre>
+        P1 → P2 → P3 → P1 → P1 → P1 → P1 → P1
+        </pre>
+        
+            <h2>Completion Time</h2>
+        
+            <table border="1">
+                <tr>
+                    <th>Process</th>
+                    <th>Completion Time</th>
+                </tr>
+        
+                <tr>
+                    <td>P1</td>
+                    <td>30</td>
+                </tr>
+        
+                <tr>
+                    <td>P2</td>
+                    <td>7</td>
+                </tr>
+        
+                <tr>
+                    <td>P3</td>
+                    <td>10</td>
+                </tr>
+        
+            </table>
+        
+            <h2>Turnaround Time</h2>
+        
+            <pre>
+        Turnaround Time = Completion Time - Arrival Time
+        </pre>
+        
+            <table border="1">
+                <tr>
+                    <th>Process</th>
+                    <th>Turnaround Time</th>
+                </tr>
+        
+                <tr>
+                    <td>P1</td>
+                    <td>30</td>
+                </tr>
+        
+                <tr>
+                    <td>P2</td>
+                    <td>7</td>
+                </tr>
+        
+                <tr>
+                    <td>P3</td>
+                    <td>10</td>
+                </tr>
+        
+            </table>
+        
+            <h2>Waiting Time</h2>
+        
+            <pre>
+        Waiting Time = Turnaround Time - Burst Time
+        </pre>
+        
+            <table border="1">
+                <tr>
+                    <th>Process</th>
+                    <th>Waiting Time</th>
+                </tr>
+        
+                <tr>
+                    <td>P1</td>
+                    <td>6</td>
+                </tr>
+        
+                <tr>
+                    <td>P2</td>
+                    <td>4</td>
+                </tr>
+        
+                <tr>
+                    <td>P3</td>
+                    <td>7</td>
+                </tr>
+        
+            </table>
+        
+            <h2>Average Waiting Time</h2>
+        
+            <pre>
+        (6 + 4 + 7) / 3 = 5.67
+        </pre>
+        
+            <h2>Average Turnaround Time</h2>
+        
+            <pre>
+        (30 + 7 + 10) / 3 = 15.67
+        </pre>
+        
+            <p>
+                This example demonstrates the calculation of completion time, waiting time, and turnaround time using Round
+                Robin Scheduling algorithm.
+            </p>
   </main>
 
   <section class="card">
     <h2>Related Examples</h2>
     <p>Auto-generated links to help you continue practicing.</p>
     <ul class="links">
-      <li><a href="shortest-job-first-scheduling-example.html">Shortest Job First (SJF) Scheduling Example</a></li>
-      <li><a href="priority-scheduling-example.html">Priority Scheduling Example (Non-Preemptive)</a></li>
-      <li><a href="context-switch-calculation-example.html">Context Switch Calculation Example (CPU Utilization)</a></li>
-      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example (Safety Algorithm)</a></li>
-      <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example (Step-by-Step)</a></li>
-      <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example (Step-by-Step)</a></li>
+      <li><a href="mlfq-scheduling-example.html">mlfq scheduling example</a></li>
+      <li><a href="priority-scheduling-example.html">Priority Scheduling Example with Calculation (Non-Preemptive)</a></li>
+      <li><a href="shortest-job-first-scheduling-example.html">Shortest Job First Scheduling Example with Calculation</a></li>
+      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example Step by Step (Safety Algorithm)</a></li>
+      <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example with Step by Step Solution</a></li>
+      <li><a href="shift-reduce-parsing-example-step-by-step.html">Shift Reduce Parsing Example Step by Step</a></li>
     </ul>
   </section>
 

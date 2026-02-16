@@ -1,110 +1,80 @@
 [
   {
-    "title": "Round Robin Scheduling Example with Calculation",
-    "url": "round-robin-scheduling-example-with-calculation.html",
-    "category": "scheduling",
-    "tags": "round robin scheduling example, round robin scheduling calculation, os scheduling example, cpu scheduling example",
-    "description": "Step by step Round Robin scheduling example with waiting time and turnaround time calculation for operating system students.",
-    "featured": true,
-    "rank": 1
-  },
-  {
-    "title": "mlfq scheduling example",
-    "url": "mlfq-scheduling-example.html",
-    "category": "scheduling",
-    "tags": "mlfq scheduling example",
-    "description": "Worked example of Multi-Level Feedback Queue (MLFQ) CPU scheduling with step-by-step solution, Gantt chart, completion/turnaround/waiting times and averages.",
-    "featured": false,
-    "rank": 90
-  },
-  {
-    "title": "Priority Scheduling Example with Calculation (Non-Preemptive)",
-    "url": "priority-scheduling-example.html",
-    "category": "scheduling",
-    "tags": "priority scheduling example, priority scheduling calculation, cpu scheduling example, waiting time turnaround time priority scheduling",
-    "description": "Step by step Priority CPU scheduling example (non-preemptive) with Gantt chart, waiting time and turnaround time calculation for OS students.",
-    "featured": false,
-    "rank": 99
-  },
-  {
-    "title": "Shortest Job First Scheduling Example with Calculation",
-    "url": "shortest-job-first-scheduling-example.html",
-    "category": "scheduling",
-    "tags": "shortest job first scheduling example, sjf scheduling calculation, cpu scheduling example, waiting time turnaround time sjf",
-    "description": "Step by step Shortest Job First (SJF) CPU scheduling example with Gantt chart, waiting time and turnaround time calculation for OS students.",
-    "featured": false,
-    "rank": 99
-  },
-  {
-    "title": "FIFO Page Replacement Example with Step by Step Solution",
-    "url": "page-replacement-fifo-example.html",
-    "category": "page-replacement",
-    "tags": "FIFO page replacement example, page replacement algorithm example, operating system page replacement, FIFO page fault calculation",
-    "description": "Step by step FIFO page replacement example with page fault calculation for operating system students. Clear explanation and table illustration.",
-    "featured": true,
-    "rank": 1
-  },
-  {
-    "title": "Belady's Anomaly Example (FIFO) with Step by Step Solution",
-    "url": "belady-anomaly-example.html",
-    "category": "page-replacement",
-    "tags": "belady anomaly example",
-    "description": "Step-by-step FIFO paging example showing Belady",
-    "featured": false,
-    "rank": 90
-  },
-  {
-    "title": "LRU Page Replacement Example with Step by Step Solution",
-    "url": "lru-page-replacement-example.html",
-    "category": "page-replacement",
-    "tags": "lru page replacement example",
-    "description": "Step by step LRU page replacement example with page fault calculation for operating system students. Includes clear table and explanation.",
-    "featured": false,
-    "rank": 90
-  },
-  {
-    "title": "Banker's Algorithm Example Step by Step (Safety Algorithm)",
     "url": "banker-algorithm-example-step-by-step.html",
-    "category": "deadlock",
-    "tags": "banker algorithm example, banker",
-    "description": "Step by step Banker",
-    "featured": true,
-    "rank": 1
+    "title": "Banker's Algorithm Example Step by Step (Safety Algorithm)",
+    "category": "",
+    "updated": "2026-02-16"
   },
   {
-    "title": "Deadlock Detection Example Step by Step (OS)",
-    "url": "deadlock-detection-example.html",
-    "category": "deadlock",
-    "tags": "deadlock detection example, deadlock detection algorithm, operating system deadlock detection, request allocation available example",
-    "description": "Step by step deadlock detection algorithm example with Allocation, Request, Available tables and detection process to find deadlocked processes.",
-    "featured": false,
-    "rank": 99
+    "url": "belady-anomaly-example.html",
+    "title": "Belady's Anomaly Example (FIFO) with Step by Step Solution",
+    "category": "",
+    "updated": "2026-02-16"
   },
   {
-    "title": "Shift Reduce Parsing Example Step by Step",
-    "url": "shift-reduce-parsing-example-step-by-step.html",
-    "category": "parsing",
-    "tags": "shift reduce parsing example, shift reduce parsing steps, compiler parsing example, bottom up parsing example",
-    "description": "Step by step shift reduce parsing example with detailed stack operations and parsing table explanation for compiler design students.",
-    "featured": true,
-    "rank": 1
-  },
-  {
-    "title": "First and Follow Set Example Step by Step (Compiler Design)",
-    "url": "first-and-follow-set-example.html",
-    "category": "parsing",
-    "tags": "first and follow set example, first set example, follow set example, compiler design first follow, parsing first follow sets",
-    "description": "Step by step First and Follow set example with detailed computation rules and final FIRST/FOLLOW tables for compiler design and parsing students.",
-    "featured": false,
-    "rank": 99
-  },
-  {
-    "title": "Context Switch Calculation Example (CPU Utilization)",
     "url": "context-switch-calculation-example.html",
-    "category": "other",
-    "tags": "context switch calculation example, context switch overhead, cpu utilization context switch, scheduling overhead example",
-    "description": "Step by step context switch calculation example showing overhead time, CPU utilization, and effective CPU time for operating system scheduling problems.",
-    "featured": false,
-    "rank": 99
+    "title": "Context Switch Calculation Example (CPU Utilization)",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "deadlock-detection-example.html",
+    "title": "Deadlock Detection Example Step by Step (OS)",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "first-and-follow-set-example.html",
+    "title": "First and Follow Set Example Step by Step (Compiler Design)",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "lru-page-replacement-example.html",
+    "title": "LRU Page Replacement Example with Step by Step Solution",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "mlfq-scheduling-example.html",
+    "title": "mlfq scheduling example",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "multilevel-feedback-queue-scheduling-algorithm-example.html",
+    "title": "multilevel feedback queue scheduling algorithm example",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "page-replacement-fifo-example.html",
+    "title": "FIFO Page Replacement Example with Step by Step Solution",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "priority-scheduling-example.html",
+    "title": "Priority Scheduling Example with Calculation (Non-Preemptive)",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "round-robin-scheduling-example-with-calculation.html",
+    "title": "Round Robin Scheduling Example with Calculation",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "shift-reduce-parsing-example-step-by-step.html",
+    "title": "Shift Reduce Parsing Example Step by Step",
+    "category": "",
+    "updated": "2026-02-16"
+  },
+  {
+    "url": "shortest-job-first-scheduling-example.html",
+    "title": "Shortest Job First Scheduling Example with Calculation",
+    "category": "",
+    "updated": "2026-02-16"
   }
 ]

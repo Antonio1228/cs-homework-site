@@ -29,81 +29,81 @@
 
   <main class="card">
     <h1>Belady's Anomaly Example (FIFO) with Step by Step Solution</h1>
-                
-                  <h2>Introduction</h2>
-                  <p>
-                    Belady's anomaly is the counterintuitive situation in some page replacement algorithms (notably FIFO) where increasing the number of page frames can increase the number of page faults for the same reference string. Below is a simple worked example that demonstrates this behavior using the FIFO page replacement algorithm.
-                  </p>
-                
-                  <h2>Given</h2>
-                  <pre>
-                Reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
-                Consider two cases using FIFO:
-                  - Case A: 3 frames
-                  - Case B: 4 frames
-                  </pre>
-                
-                  <h2>FIFO step-by-step (3 frames)</h2>
-                  <table border="1" cellpadding="4" cellspacing="0">
-                    <tr>
-                      <th>Step</th>
-                      <th>Page</th>
-                      <th>Frame 1</th>
-                      <th>Frame 2</th>
-                      <th>Frame 3</th>
-                      <th>Page Fault?</th>
-                    </tr>
-                    <tr><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>Yes</td></tr>
-                    <tr><td>2</td><td>2</td><td>1</td><td>2</td><td>-</td><td>Yes</td></tr>
-                    <tr><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>Yes</td></tr>
-                    <tr><td>4</td><td>4</td><td>4</td><td>2</td><td>3</td><td>Yes (replace 1)</td></tr>
-                    <tr><td>5</td><td>1</td><td>4</td><td>1</td><td>3</td><td>Yes (replace 2)</td></tr>
-                    <tr><td>6</td><td>2</td><td>4</td><td>1</td><td>2</td><td>Yes (replace 3)</td></tr>
-                    <tr><td>7</td><td>5</td><td>5</td><td>1</td><td>2</td><td>Yes (replace 4)</td></tr>
-                    <tr><td>8</td><td>1</td><td>5</td><td>1</td><td>2</td><td>No (already in frame 2)</td></tr>
-                    <tr><td>9</td><td>2</td><td>5</td><td>1</td><td>2</td><td>No (already in frame 3)</td></tr>
-                    <tr><td>10</td><td>3</td><td>5</td><td>3</td><td>2</td><td>Yes (replace oldest 1)</td></tr>
-                    <tr><td>11</td><td>4</td><td>5</td><td>3</td><td>4</td><td>Yes (replace oldest 2)</td></tr>
-                    <tr><td>12</td><td>5</td><td>5</td><td>3</td><td>4</td><td>No (already in frame 1)</td></tr>
-                  </table>
-                  <p>Total page faults with 3 frames: 9</p>
-                
-                  <h2>FIFO step-by-step (4 frames)</h2>
-                  <table border="1" cellpadding="4" cellspacing="0">
-                    <tr>
-                      <th>Step</th>
-                      <th>Page</th>
-                      <th>Frame 1</th>
-                      <th>Frame 2</th>
-                      <th>Frame 3</th>
-                      <th>Frame 4</th>
-                      <th>Page Fault?</th>
-                    </tr>
-                    <tr><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>Yes</td></tr>
-                    <tr><td>2</td><td>2</td><td>1</td><td>2</td><td>-</td><td>-</td><td>Yes</td></tr>
-                    <tr><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>-</td><td>Yes</td></tr>
-                    <tr><td>4</td><td>4</td><td>1</td><td>2</td><td>3</td><td>4</td><td>Yes</td></tr>
-                    <tr><td>5</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>No</td></tr>
-                    <tr><td>6</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>No</td></tr>
-                    <tr><td>7</td><td>5</td><td>5</td><td>2</td><td>3</td><td>4</td><td>Yes (replace 1)</td></tr>
-                    <tr><td>8</td><td>1</td><td>5</td><td>1</td><td>3</td><td>4</td><td>Yes (replace 2)</td></tr>
-                    <tr><td>9</td><td>2</td><td>5</td><td>1</td><td>2</td><td>4</td><td>Yes (replace 3)</td></tr>
-                    <tr><td>10</td><td>3</td><td>5</td><td>1</td><td>2</td><td>3</td><td>Yes (replace 4)</td></tr>
-                    <tr><td>11</td><td>4</td><td>4</td><td>1</td><td>2</td><td>3</td><td>Yes (replace 5)</td></tr>
-                    <tr><td>12</td><td>5</td><td>4</td><td>5</td><td>2</td><td>3</td><td>Yes (replace 1)</td></tr>
-                  </table>
-                  <p>Total page faults with 4 frames: 10</p>
-                
-                  <h2>Comparison and Conclusion</h2>
-                  <p>
-                    - Page faults with 3 frames (FIFO): 9<br>
-                    - Page faults with 4 frames (FIFO): 10
-                  </p>
-                  <p>
-                    Increasing the number of frames from 3 to 4 caused the number of page faults to increase (9 -> 10). This illustrates Belady's anomaly: under FIFO page replacement, adding more frames can sometimes increase the number of page faults rather than decrease them.
-                  </p>
-                
-                  <p><small>Worked example based on the classic reference string: 1,2,3,4,1,2,5,1,2,3,4,5.</small></p>
+                    
+                      <h2>Introduction</h2>
+                      <p>
+                        Belady's anomaly is the counterintuitive situation in some page replacement algorithms (notably FIFO) where increasing the number of page frames can increase the number of page faults for the same reference string. Below is a simple worked example that demonstrates this behavior using the FIFO page replacement algorithm.
+                      </p>
+                    
+                      <h2>Given</h2>
+                      <pre>
+                    Reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+                    Consider two cases using FIFO:
+                      - Case A: 3 frames
+                      - Case B: 4 frames
+                      </pre>
+                    
+                      <h2>FIFO step-by-step (3 frames)</h2>
+                      <table border="1" cellpadding="4" cellspacing="0">
+                        <tr>
+                          <th>Step</th>
+                          <th>Page</th>
+                          <th>Frame 1</th>
+                          <th>Frame 2</th>
+                          <th>Frame 3</th>
+                          <th>Page Fault?</th>
+                        </tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>Yes</td></tr>
+                        <tr><td>2</td><td>2</td><td>1</td><td>2</td><td>-</td><td>Yes</td></tr>
+                        <tr><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>Yes</td></tr>
+                        <tr><td>4</td><td>4</td><td>4</td><td>2</td><td>3</td><td>Yes (replace 1)</td></tr>
+                        <tr><td>5</td><td>1</td><td>4</td><td>1</td><td>3</td><td>Yes (replace 2)</td></tr>
+                        <tr><td>6</td><td>2</td><td>4</td><td>1</td><td>2</td><td>Yes (replace 3)</td></tr>
+                        <tr><td>7</td><td>5</td><td>5</td><td>1</td><td>2</td><td>Yes (replace 4)</td></tr>
+                        <tr><td>8</td><td>1</td><td>5</td><td>1</td><td>2</td><td>No (already in frame 2)</td></tr>
+                        <tr><td>9</td><td>2</td><td>5</td><td>1</td><td>2</td><td>No (already in frame 3)</td></tr>
+                        <tr><td>10</td><td>3</td><td>5</td><td>3</td><td>2</td><td>Yes (replace oldest 1)</td></tr>
+                        <tr><td>11</td><td>4</td><td>5</td><td>3</td><td>4</td><td>Yes (replace oldest 2)</td></tr>
+                        <tr><td>12</td><td>5</td><td>5</td><td>3</td><td>4</td><td>No (already in frame 1)</td></tr>
+                      </table>
+                      <p>Total page faults with 3 frames: 9</p>
+                    
+                      <h2>FIFO step-by-step (4 frames)</h2>
+                      <table border="1" cellpadding="4" cellspacing="0">
+                        <tr>
+                          <th>Step</th>
+                          <th>Page</th>
+                          <th>Frame 1</th>
+                          <th>Frame 2</th>
+                          <th>Frame 3</th>
+                          <th>Frame 4</th>
+                          <th>Page Fault?</th>
+                        </tr>
+                        <tr><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>Yes</td></tr>
+                        <tr><td>2</td><td>2</td><td>1</td><td>2</td><td>-</td><td>-</td><td>Yes</td></tr>
+                        <tr><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>-</td><td>Yes</td></tr>
+                        <tr><td>4</td><td>4</td><td>1</td><td>2</td><td>3</td><td>4</td><td>Yes</td></tr>
+                        <tr><td>5</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>No</td></tr>
+                        <tr><td>6</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>No</td></tr>
+                        <tr><td>7</td><td>5</td><td>5</td><td>2</td><td>3</td><td>4</td><td>Yes (replace 1)</td></tr>
+                        <tr><td>8</td><td>1</td><td>5</td><td>1</td><td>3</td><td>4</td><td>Yes (replace 2)</td></tr>
+                        <tr><td>9</td><td>2</td><td>5</td><td>1</td><td>2</td><td>4</td><td>Yes (replace 3)</td></tr>
+                        <tr><td>10</td><td>3</td><td>5</td><td>1</td><td>2</td><td>3</td><td>Yes (replace 4)</td></tr>
+                        <tr><td>11</td><td>4</td><td>4</td><td>1</td><td>2</td><td>3</td><td>Yes (replace 5)</td></tr>
+                        <tr><td>12</td><td>5</td><td>4</td><td>5</td><td>2</td><td>3</td><td>Yes (replace 1)</td></tr>
+                      </table>
+                      <p>Total page faults with 4 frames: 10</p>
+                    
+                      <h2>Comparison and Conclusion</h2>
+                      <p>
+                        - Page faults with 3 frames (FIFO): 9<br>
+                        - Page faults with 4 frames (FIFO): 10
+                      </p>
+                      <p>
+                        Increasing the number of frames from 3 to 4 caused the number of page faults to increase (9 -> 10). This illustrates Belady's anomaly: under FIFO page replacement, adding more frames can sometimes increase the number of page faults rather than decrease them.
+                      </p>
+                    
+                      <p><small>Worked example based on the classic reference string: 1,2,3,4,1,2,5,1,2,3,4,5.</small></p>
   </main>
 
   <section class="card">
@@ -120,7 +120,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-16</span>
+    <span class="badge">Updated • 2026-02-17</span>
   </div>
 
 </div>

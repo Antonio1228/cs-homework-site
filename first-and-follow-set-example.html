@@ -38,206 +38,206 @@
 
   <main class="card">
     <h1>First and Follow Set Example (Step by Step)</h1>
-                
-                    <p>
-                        FIRST and FOLLOW sets are used in compiler design (parsing) to build predictive parsing tables for LL(1)
-                        grammars.
-                    </p>
-                
-                    <h2>Grammar</h2>
-                
-                    <pre>
-                E  → T E'
-                E' → + T E' | ε
-                T  → F T'
-                T' → * F T' | ε
-                F  → ( E ) | id
-                </pre>
-                
-                    <h2>Rules Used</h2>
-                
-                    <h3>FIRST Rules</h3>
-                    <ul>
-                        <li>FIRST(terminal) = terminal</li>
-                        <li>If X → ε, then ε ∈ FIRST(X)</li>
-                        <li>If X → Y1 Y2 ... Yk, add FIRST(Y1) (except ε). If ε ∈ FIRST(Y1), continue to Y2, etc.</li>
-                    </ul>
-                
-                    <h3>FOLLOW Rules</h3>
-                    <ul>
-                        <li>Put $ in FOLLOW(start symbol)</li>
-                        <li>If A → α B β, then add FIRST(β) (except ε) to FOLLOW(B)</li>
-                        <li>If A → α B (or A → α B β and ε ∈ FIRST(β)), then add FOLLOW(A) to FOLLOW(B)</li>
-                    </ul>
-                
-                    <h2>Step 1: Compute FIRST Sets</h2>
-                
-                    <h3>FIRST(F)</h3>
-                    <pre>
-                F → ( E ) | id
-                FIRST(F) = { (, id }
-                </pre>
-                
-                    <h3>FIRST(T')</h3>
-                    <pre>
-                T' → * F T' | ε
-                FIRST(T') = { *, ε }
-                </pre>
-                
-                    <h3>FIRST(T)</h3>
-                    <pre>
-                T → F T'
-                FIRST(T) = FIRST(F) = { (, id }
-                </pre>
-                
-                    <h3>FIRST(E')</h3>
-                    <pre>
-                E' → + T E' | ε
-                FIRST(E') = { +, ε }
-                </pre>
-                
-                    <h3>FIRST(E)</h3>
-                    <pre>
-                E → T E'
-                FIRST(E) = FIRST(T) = { (, id }
-                </pre>
-                
-                    <h2>Final FIRST Table</h2>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Non-terminal</th>
-                            <th>FIRST</th>
-                        </tr>
-                        <tr>
-                            <td>E</td>
-                            <td>{ (, id }</td>
-                        </tr>
-                        <tr>
-                            <td>E'</td>
-                            <td>{ +, ε }</td>
-                        </tr>
-                        <tr>
-                            <td>T</td>
-                            <td>{ (, id }</td>
-                        </tr>
-                        <tr>
-                            <td>T'</td>
-                            <td>{ *, ε }</td>
-                        </tr>
-                        <tr>
-                            <td>F</td>
-                            <td>{ (, id }</td>
-                        </tr>
-                    </table>
-                
-                    <h2>Step 2: Compute FOLLOW Sets</h2>
-                
-                    <h3>Initialize</h3>
-                    <pre>
-                Start symbol: E
-                FOLLOW(E) includes { $ }
-                </pre>
-                
-                    <h3>Use productions to add symbols</h3>
-                
-                    <h4>From F → ( E )</h4>
-                    <pre>
-                After E comes ')'
-                So ')' ∈ FOLLOW(E)
-                FOLLOW(E) = { $, ) }
-                </pre>
-                
-                    <h4>From E → T E'</h4>
-                    <pre>
-                After T comes E'
-                Add FIRST(E') except ε => '+'
-                So '+' ∈ FOLLOW(T)
-                
-                Since ε ∈ FIRST(E'), also add FOLLOW(E) to FOLLOW(T)
-                FOLLOW(T) includes { +, $, ) }
-                </pre>
-                
-                    <h4>From E' → + T E'</h4>
-                    <pre>
-                After T comes E'
-                Add FIRST(E') except ε => '+'
-                So '+' ∈ FOLLOW(T) (already)
-                
-                Since ε ∈ FIRST(E'), also add FOLLOW(E') to FOLLOW(T)
-                (We will finalize FOLLOW(E') soon and propagate)
-                </pre>
-                
-                    <h4>From T → F T'</h4>
-                    <pre>
-                After F comes T'
-                Add FIRST(T') except ε => '*'
-                So '*' ∈ FOLLOW(F)
-                
-                Since ε ∈ FIRST(T'), also add FOLLOW(T) to FOLLOW(F)
-                FOLLOW(F) includes { *, +, $, ) }
-                </pre>
-                
-                    <h4>From T' → * F T'</h4>
-                    <pre>
-                After F comes T'
-                Add FIRST(T') except ε => '*'
-                So '*' ∈ FOLLOW(F) (already)
-                
-                Since ε ∈ FIRST(T'), also add FOLLOW(T') to FOLLOW(F)
-                (We will finalize FOLLOW(T') soon and propagate)
-                </pre>
-                
-                    <h3>FOLLOW(E')</h3>
-                    <pre>
-                E → T E'
-                E' is at the end, so FOLLOW(E) ⊆ FOLLOW(E')
-                FOLLOW(E') = { $, ) }
-                </pre>
-                
-                    <h3>FOLLOW(T')</h3>
-                    <pre>
-                T → F T'
-                T' is at the end, so FOLLOW(T) ⊆ FOLLOW(T')
-                FOLLOW(T') = { +, $, ) }
-                </pre>
-                
-                    <h2>Final FOLLOW Table</h2>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Non-terminal</th>
-                            <th>FOLLOW</th>
-                        </tr>
-                        <tr>
-                            <td>E</td>
-                            <td>{ $, ) }</td>
-                        </tr>
-                        <tr>
-                            <td>E'</td>
-                            <td>{ $, ) }</td>
-                        </tr>
-                        <tr>
-                            <td>T</td>
-                            <td>{ +, $, ) }</td>
-                        </tr>
-                        <tr>
-                            <td>T'</td>
-                            <td>{ +, $, ) }</td>
-                        </tr>
-                        <tr>
-                            <td>F</td>
-                            <td>{ *, +, $, ) }</td>
-                        </tr>
-                    </table>
-                
-                    <h2>Conclusion</h2>
-                
-                    <p>
-                        FIRST sets determine which terminals can start strings derived from a non-terminal. FOLLOW sets determine which
-                        terminals can appear immediately to the right of a non-terminal in sentential forms. These sets are essential
-                        for building LL(1) parsing tables.
-                    </p>
+                    
+                        <p>
+                            FIRST and FOLLOW sets are used in compiler design (parsing) to build predictive parsing tables for LL(1)
+                            grammars.
+                        </p>
+                    
+                        <h2>Grammar</h2>
+                    
+                        <pre>
+                    E  → T E'
+                    E' → + T E' | ε
+                    T  → F T'
+                    T' → * F T' | ε
+                    F  → ( E ) | id
+                    </pre>
+                    
+                        <h2>Rules Used</h2>
+                    
+                        <h3>FIRST Rules</h3>
+                        <ul>
+                            <li>FIRST(terminal) = terminal</li>
+                            <li>If X → ε, then ε ∈ FIRST(X)</li>
+                            <li>If X → Y1 Y2 ... Yk, add FIRST(Y1) (except ε). If ε ∈ FIRST(Y1), continue to Y2, etc.</li>
+                        </ul>
+                    
+                        <h3>FOLLOW Rules</h3>
+                        <ul>
+                            <li>Put $ in FOLLOW(start symbol)</li>
+                            <li>If A → α B β, then add FIRST(β) (except ε) to FOLLOW(B)</li>
+                            <li>If A → α B (or A → α B β and ε ∈ FIRST(β)), then add FOLLOW(A) to FOLLOW(B)</li>
+                        </ul>
+                    
+                        <h2>Step 1: Compute FIRST Sets</h2>
+                    
+                        <h3>FIRST(F)</h3>
+                        <pre>
+                    F → ( E ) | id
+                    FIRST(F) = { (, id }
+                    </pre>
+                    
+                        <h3>FIRST(T')</h3>
+                        <pre>
+                    T' → * F T' | ε
+                    FIRST(T') = { *, ε }
+                    </pre>
+                    
+                        <h3>FIRST(T)</h3>
+                        <pre>
+                    T → F T'
+                    FIRST(T) = FIRST(F) = { (, id }
+                    </pre>
+                    
+                        <h3>FIRST(E')</h3>
+                        <pre>
+                    E' → + T E' | ε
+                    FIRST(E') = { +, ε }
+                    </pre>
+                    
+                        <h3>FIRST(E)</h3>
+                        <pre>
+                    E → T E'
+                    FIRST(E) = FIRST(T) = { (, id }
+                    </pre>
+                    
+                        <h2>Final FIRST Table</h2>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Non-terminal</th>
+                                <th>FIRST</th>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>{ (, id }</td>
+                            </tr>
+                            <tr>
+                                <td>E'</td>
+                                <td>{ +, ε }</td>
+                            </tr>
+                            <tr>
+                                <td>T</td>
+                                <td>{ (, id }</td>
+                            </tr>
+                            <tr>
+                                <td>T'</td>
+                                <td>{ *, ε }</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>{ (, id }</td>
+                            </tr>
+                        </table>
+                    
+                        <h2>Step 2: Compute FOLLOW Sets</h2>
+                    
+                        <h3>Initialize</h3>
+                        <pre>
+                    Start symbol: E
+                    FOLLOW(E) includes { $ }
+                    </pre>
+                    
+                        <h3>Use productions to add symbols</h3>
+                    
+                        <h4>From F → ( E )</h4>
+                        <pre>
+                    After E comes ')'
+                    So ')' ∈ FOLLOW(E)
+                    FOLLOW(E) = { $, ) }
+                    </pre>
+                    
+                        <h4>From E → T E'</h4>
+                        <pre>
+                    After T comes E'
+                    Add FIRST(E') except ε => '+'
+                    So '+' ∈ FOLLOW(T)
+                    
+                    Since ε ∈ FIRST(E'), also add FOLLOW(E) to FOLLOW(T)
+                    FOLLOW(T) includes { +, $, ) }
+                    </pre>
+                    
+                        <h4>From E' → + T E'</h4>
+                        <pre>
+                    After T comes E'
+                    Add FIRST(E') except ε => '+'
+                    So '+' ∈ FOLLOW(T) (already)
+                    
+                    Since ε ∈ FIRST(E'), also add FOLLOW(E') to FOLLOW(T)
+                    (We will finalize FOLLOW(E') soon and propagate)
+                    </pre>
+                    
+                        <h4>From T → F T'</h4>
+                        <pre>
+                    After F comes T'
+                    Add FIRST(T') except ε => '*'
+                    So '*' ∈ FOLLOW(F)
+                    
+                    Since ε ∈ FIRST(T'), also add FOLLOW(T) to FOLLOW(F)
+                    FOLLOW(F) includes { *, +, $, ) }
+                    </pre>
+                    
+                        <h4>From T' → * F T'</h4>
+                        <pre>
+                    After F comes T'
+                    Add FIRST(T') except ε => '*'
+                    So '*' ∈ FOLLOW(F) (already)
+                    
+                    Since ε ∈ FIRST(T'), also add FOLLOW(T') to FOLLOW(F)
+                    (We will finalize FOLLOW(T') soon and propagate)
+                    </pre>
+                    
+                        <h3>FOLLOW(E')</h3>
+                        <pre>
+                    E → T E'
+                    E' is at the end, so FOLLOW(E) ⊆ FOLLOW(E')
+                    FOLLOW(E') = { $, ) }
+                    </pre>
+                    
+                        <h3>FOLLOW(T')</h3>
+                        <pre>
+                    T → F T'
+                    T' is at the end, so FOLLOW(T) ⊆ FOLLOW(T')
+                    FOLLOW(T') = { +, $, ) }
+                    </pre>
+                    
+                        <h2>Final FOLLOW Table</h2>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Non-terminal</th>
+                                <th>FOLLOW</th>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>{ $, ) }</td>
+                            </tr>
+                            <tr>
+                                <td>E'</td>
+                                <td>{ $, ) }</td>
+                            </tr>
+                            <tr>
+                                <td>T</td>
+                                <td>{ +, $, ) }</td>
+                            </tr>
+                            <tr>
+                                <td>T'</td>
+                                <td>{ +, $, ) }</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>{ *, +, $, ) }</td>
+                            </tr>
+                        </table>
+                    
+                        <h2>Conclusion</h2>
+                    
+                        <p>
+                            FIRST sets determine which terminals can start strings derived from a non-terminal. FOLLOW sets determine which
+                            terminals can appear immediately to the right of a non-terminal in sentential forms. These sets are essential
+                            for building LL(1) parsing tables.
+                        </p>
   </main>
 
   <section class="card">
@@ -254,7 +254,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-16</span>
+    <span class="badge">Updated • 2026-02-17</span>
   </div>
 
 </div>

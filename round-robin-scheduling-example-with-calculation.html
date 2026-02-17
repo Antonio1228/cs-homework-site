@@ -38,148 +38,148 @@
 
   <main class="card">
     <h1>Round Robin Scheduling Example with Calculation</h1>
-                
-                    <p>
-                        Round Robin Scheduling is a CPU scheduling algorithm in which each process is assigned a fixed time quantum in a
-                        cyclic order.
-                    </p>
-                
-                    <h2>Given Processes</h2>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Process</th>
-                            <th>Burst Time</th>
-                        </tr>
-                
-                        <tr>
-                            <td>P1</td>
-                            <td>24</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P2</td>
-                            <td>3</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P3</td>
-                            <td>3</td>
-                        </tr>
-                
-                    </table>
-                
-                    <h2>Time Quantum</h2>
-                
-                    <pre>
-                Time Quantum = 4
-                </pre>
-                
-                    <h2>Scheduling Sequence</h2>
-                
-                    <pre>
-                P1 → P2 → P3 → P1 → P1 → P1 → P1 → P1
-                </pre>
-                
-                    <h2>Completion Time</h2>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Process</th>
-                            <th>Completion Time</th>
-                        </tr>
-                
-                        <tr>
-                            <td>P1</td>
-                            <td>30</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P2</td>
-                            <td>7</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P3</td>
-                            <td>10</td>
-                        </tr>
-                
-                    </table>
-                
-                    <h2>Turnaround Time</h2>
-                
-                    <pre>
-                Turnaround Time = Completion Time - Arrival Time
-                </pre>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Process</th>
-                            <th>Turnaround Time</th>
-                        </tr>
-                
-                        <tr>
-                            <td>P1</td>
-                            <td>30</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P2</td>
-                            <td>7</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P3</td>
-                            <td>10</td>
-                        </tr>
-                
-                    </table>
-                
-                    <h2>Waiting Time</h2>
-                
-                    <pre>
-                Waiting Time = Turnaround Time - Burst Time
-                </pre>
-                
-                    <table border="1">
-                        <tr>
-                            <th>Process</th>
-                            <th>Waiting Time</th>
-                        </tr>
-                
-                        <tr>
-                            <td>P1</td>
-                            <td>6</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P2</td>
-                            <td>4</td>
-                        </tr>
-                
-                        <tr>
-                            <td>P3</td>
-                            <td>7</td>
-                        </tr>
-                
-                    </table>
-                
-                    <h2>Average Waiting Time</h2>
-                
-                    <pre>
-                (6 + 4 + 7) / 3 = 5.67
-                </pre>
-                
-                    <h2>Average Turnaround Time</h2>
-                
-                    <pre>
-                (30 + 7 + 10) / 3 = 15.67
-                </pre>
-                
-                    <p>
-                        This example demonstrates the calculation of completion time, waiting time, and turnaround time using Round
-                        Robin Scheduling algorithm.
-                    </p>
+                    
+                        <p>
+                            Round Robin Scheduling is a CPU scheduling algorithm in which each process is assigned a fixed time quantum in a
+                            cyclic order.
+                        </p>
+                    
+                        <h2>Given Processes</h2>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Process</th>
+                                <th>Burst Time</th>
+                            </tr>
+                    
+                            <tr>
+                                <td>P1</td>
+                                <td>24</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P2</td>
+                                <td>3</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P3</td>
+                                <td>3</td>
+                            </tr>
+                    
+                        </table>
+                    
+                        <h2>Time Quantum</h2>
+                    
+                        <pre>
+                    Time Quantum = 4
+                    </pre>
+                    
+                        <h2>Scheduling Sequence</h2>
+                    
+                        <pre>
+                    P1 → P2 → P3 → P1 → P1 → P1 → P1 → P1
+                    </pre>
+                    
+                        <h2>Completion Time</h2>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Process</th>
+                                <th>Completion Time</th>
+                            </tr>
+                    
+                            <tr>
+                                <td>P1</td>
+                                <td>30</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P2</td>
+                                <td>7</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P3</td>
+                                <td>10</td>
+                            </tr>
+                    
+                        </table>
+                    
+                        <h2>Turnaround Time</h2>
+                    
+                        <pre>
+                    Turnaround Time = Completion Time - Arrival Time
+                    </pre>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Process</th>
+                                <th>Turnaround Time</th>
+                            </tr>
+                    
+                            <tr>
+                                <td>P1</td>
+                                <td>30</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P2</td>
+                                <td>7</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P3</td>
+                                <td>10</td>
+                            </tr>
+                    
+                        </table>
+                    
+                        <h2>Waiting Time</h2>
+                    
+                        <pre>
+                    Waiting Time = Turnaround Time - Burst Time
+                    </pre>
+                    
+                        <table border="1">
+                            <tr>
+                                <th>Process</th>
+                                <th>Waiting Time</th>
+                            </tr>
+                    
+                            <tr>
+                                <td>P1</td>
+                                <td>6</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P2</td>
+                                <td>4</td>
+                            </tr>
+                    
+                            <tr>
+                                <td>P3</td>
+                                <td>7</td>
+                            </tr>
+                    
+                        </table>
+                    
+                        <h2>Average Waiting Time</h2>
+                    
+                        <pre>
+                    (6 + 4 + 7) / 3 = 5.67
+                    </pre>
+                    
+                        <h2>Average Turnaround Time</h2>
+                    
+                        <pre>
+                    (30 + 7 + 10) / 3 = 15.67
+                    </pre>
+                    
+                        <p>
+                            This example demonstrates the calculation of completion time, waiting time, and turnaround time using Round
+                            Robin Scheduling algorithm.
+                        </p>
   </main>
 
   <section class="card">
@@ -196,7 +196,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-16</span>
+    <span class="badge">Updated • 2026-02-17</span>
   </div>
 
 </div>

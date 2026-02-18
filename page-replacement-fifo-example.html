@@ -38,142 +38,142 @@
 
   <main class="card">
     <h1>FIFO Page Replacement Example (Step by Step)</h1>
-                    
-                        <p>
-                            FIFO (First In First Out) page replacement algorithm replaces the oldest page in memory when a new page needs
-                            to be loaded.
-                        </p>
-                    
-                        <h2>Given</h2>
-                    
-                        <pre>
-                    Number of Frames = 3
-                    Reference String = 1 2 3 4 1 2 5 1 2 3 4 5
-                    </pre>
-                    
-                        <h2>Step by Step Solution</h2>
-                    
-                        <table border="1">
-                            <tr>
-                                <th>Step</th>
-                                <th>Reference</th>
-                                <th>Frame 1</th>
-                                <th>Frame 2</th>
-                                <th>Frame 3</th>
-                                <th>Page Fault</th>
-                            </tr>
-                    
-                            <tr>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>-</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>4</td>
-                                <td>4</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>1</td>
-                                <td>4</td>
-                                <td>1</td>
-                                <td>3</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>2</td>
-                                <td>4</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td>1</td>
-                                <td>5</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>2</td>
-                                <td>5</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>3</td>
-                                <td>2</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>11</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>12</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>No</td>
-                            </tr>
-                    
-                        </table>
-                    
-                        <h2>Total Page Faults</h2>
-                    
-                        <pre>
-                    Total Page Faults = 9
-                    </pre>
-                    
-                        <h2>Conclusion</h2>
-                    
-                        <p>
-                            FIFO replaces the oldest loaded page first. Although simple to implement, it may suffer from Belady's anomaly,
-                            where increasing the number of frames increases the number of page faults.
-                        </p>
+                        
+                            <p>
+                                FIFO (First In First Out) page replacement algorithm replaces the oldest page in memory when a new page needs
+                                to be loaded.
+                            </p>
+                        
+                            <h2>Given</h2>
+                        
+                            <pre>
+                        Number of Frames = 3
+                        Reference String = 1 2 3 4 1 2 5 1 2 3 4 5
+                        </pre>
+                        
+                            <h2>Step by Step Solution</h2>
+                        
+                            <table border="1">
+                                <tr>
+                                    <th>Step</th>
+                                    <th>Reference</th>
+                                    <th>Frame 1</th>
+                                    <th>Frame 2</th>
+                                    <th>Frame 3</th>
+                                    <th>Page Fault</th>
+                                </tr>
+                        
+                                <tr>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>-</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>4</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>4</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>4</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>1</td>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>2</td>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>3</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>2</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>No</td>
+                                </tr>
+                        
+                            </table>
+                        
+                            <h2>Total Page Faults</h2>
+                        
+                            <pre>
+                        Total Page Faults = 9
+                        </pre>
+                        
+                            <h2>Conclusion</h2>
+                        
+                            <p>
+                                FIFO replaces the oldest loaded page first. Although simple to implement, it may suffer from Belady's anomaly,
+                                where increasing the number of frames increases the number of page faults.
+                            </p>
   </main>
 
   <section class="card">
@@ -190,7 +190,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-17</span>
+    <span class="badge">Updated • 2026-02-18</span>
   </div>
 
 </div>

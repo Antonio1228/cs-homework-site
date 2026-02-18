@@ -29,175 +29,175 @@
 
   <main class="card">
     <h1>MLFQ Scheduling Example</h1>
-                
-                  <p>This is an exam-style, step-by-step worked example of Multi-Level Feedback Queue (MLFQ) scheduling. We use two levels:
-                  - Queue 1: Round Robin with quantum = 4
-                  - Queue 2: FCFS (processes demoted from Q1 run to completion)</p>
-                
-                  <h2>Given Processes</h2>
-                  <p>Process table (Arrival Time and Burst Time):</p>
-                  <table border="1">
-                    <tr>
-                      <th>Process</th>
-                      <th>Arrival Time</th>
-                      <th>Burst Time</th>
-                    </tr>
-                    <tr><td>P1</td><td>0</td><td>10</td></tr>
-                    <tr><td>P2</td><td>1</td><td>4</td></tr>
-                    <tr><td>P3</td><td>2</td><td>5</td></tr>
-                    <tr><td>P4</td><td>3</td><td>3</td></tr>
-                  </table>
-                
-                  <h2>Scheduling Rules</h2>
-                  <p>Rules applied in this example (typical simple MLFQ policy):</p>
-                  <ol>
-                    <li>All new processes enter Queue 1 (RR, quantum = 4).</li>
-                    <li>If a process uses its entire quantum in Queue 1 without finishing, it is demoted to Queue 2.</li>
-                    <li>Queue 2 is FCFS and runs processes to completion (no further demotion).</li>
-                    <li>At any time, Queue 1 has priority over Queue 2. Only when Queue 1 is empty do we schedule Queue 2 processes.</li>
-                  </ol>
-                
-                  <h2>Step-by-step Execution (Exam-style)</h2>
-                
-                  <p>We simulate time from t = 0 onwards and show queue contents, actions, and remaining bursts at key events.</p>
-                
-                  <table border="1">
-                    <tr>
-                      <th>Step</th>
-                      <th>Time</th>
-                      <th>Action / Queue</th>
-                      <th>Running Process (interval)</th>
-                      <th>Notes / Remaining burst after run</th>
-                    </tr>
-                
-                    <tr>
-                      <td>1</td>
-                      <td>0</td>
-                      <td>Start; Q1 contains P1</td>
-                      <td>P1 (0–4)</td>
-                      <td>P1 ran 4 (quantum), remaining = 10 − 4 = 6 → demote to Q2 at t=4</td>
-                    </tr>
-                
-                    <tr>
-                      <td>2</td>
-                      <td>1–3 (arrivals)</td>
-                      <td>P2 arrives at 1, P3 at 2, P4 at 3 → all go to Q1</td>
-                      <td>—</td>
-                      <td>At t=4 Q1 order: P2, P3, P4. Q2: P1(rem=6)</td>
-                    </tr>
-                
-                    <tr>
-                      <td>3</td>
-                      <td>4</td>
-                      <td>Q1 still has processes; schedule next RR quantum</td>
-                      <td>P2 (4–8)</td>
-                      <td>P2 burst = 4 → finishes at t=8 (no demotion)</td>
-                    </tr>
-                
-                    <tr>
-                      <td>4</td>
-                      <td>8</td>
-                      <td>Next in Q1: P3</td>
-                      <td>P3 (8–12)</td>
-                      <td>P3 ran 4 (quantum), remaining = 5 − 4 = 1 → demote to Q2 at t=12</td>
-                    </tr>
-                
-                    <tr>
-                      <td>5</td>
-                      <td>12</td>
-                      <td>Next in Q1: P4</td>
-                      <td>P4 (12–15)</td>
-                      <td>P4 burst = 3 → finishes at t=15 (used < quantum)</td>
-                    </tr>
-                
-                    <tr>
-                      <td>6</td>
-                      <td>15</td>
-                      <td>Q1 is now empty ⇒ run Q2 (FCFS). Q2 order by demotion time: P1(rem6), P3(rem1)</td>
-                      <td>P1 (15–21)</td>
-                      <td>P1 remaining 6 → finishes at t=21</td>
-                    </tr>
-                
-                    <tr>
-                      <td>7</td>
-                      <td>21</td>
-                      <td>Continue Q2</td>
-                      <td>P3 (21–22)</td>
-                      <td>P3 remaining 1 → finishes at t=22</td>
-                    </tr>
-                
-                  </table>
-                
-                  <h2>Gantt Chart (text)</h2>
-                  <pre>
-                0    4    8    12   15   21   22
-                |----|----|----|----|----|----|
-                 P1   P2   P3   P4   P1   P3
-                (0-4)(4-8)(8-12)(12-15)(15-21)(21-22)
-                  </pre>
-                
-                  <h2>Completion, Turnaround, Waiting Times (Worked Calculations)</h2>
-                  <p>Completion Time (CT), Turnaround Time (TAT = CT − Arrival), Waiting Time (WT = TAT − Burst)</p>
-                
-                  <table border="1">
-                    <tr>
-                      <th>Process</th>
-                      <th>Arrival</th>
-                      <th>Burst</th>
-                      <th>Completion Time (CT)</th>
-                      <th>Turnaround Time (TAT = CT − Arrival)</th>
-                      <th>Waiting Time (WT = TAT − Burst)</th>
-                    </tr>
-                    <tr>
-                      <td>P1</td>
-                      <td>0</td>
-                      <td>10</td>
-                      <td>21</td>
-                      <td>21 − 0 = 21</td>
-                      <td>21 − 10 = 11</td>
-                    </tr>
-                    <tr>
-                      <td>P2</td>
-                      <td>1</td>
-                      <td>4</td>
-                      <td>8</td>
-                      <td>8 − 1 = 7</td>
-                      <td>7 − 4 = 3</td>
-                    </tr>
-                    <tr>
-                      <td>P3</td>
-                      <td>2</td>
-                      <td>5</td>
-                      <td>22</td>
-                      <td>22 − 2 = 20</td>
-                      <td>20 − 5 = 15</td>
-                    </tr>
-                    <tr>
-                      <td>P4</td>
-                      <td>3</td>
-                      <td>3</td>
-                      <td>15</td>
-                      <td>15 − 3 = 12</td>
-                      <td>12 − 3 = 9</td>
-                    </tr>
-                  </table>
-                
-                  <h2>Averages (Final Answer)</h2>
-                  <p>Average Turnaround Time = (21 + 7 + 20 + 12) / 4 = 60 / 4 = 15.0</p>
-                  <p>Average Waiting Time = (11 + 3 + 15 + 9) / 4 = 38 / 4 = 9.5</p>
-                
-                  <h2>Summary</h2>
-                  <p>Final completion times and performance metrics:</p>
-                  <table border="1">
-                    <tr><th>Metric</th><th>Value</th></tr>
-                    <tr><td>Completion Times</td><td>P1=21, P2=8, P3=22, P4=15</td></tr>
-                    <tr><td>Turnaround Times</td><td>P1=21, P2=7, P3=20, P4=12</td></tr>
-                    <tr><td>Waiting Times</td><td>P1=11, P2=3, P3=15, P4=9</td></tr>
-                    <tr><td>Average Turnaround Time</td><td>15.0</td></tr>
-                    <tr><td>Average Waiting Time</td><td>9.5</td></tr>
-                  </table>
-                
-                  <p>End of worked example.</p>
+                    
+                      <p>This is an exam-style, step-by-step worked example of Multi-Level Feedback Queue (MLFQ) scheduling. We use two levels:
+                      - Queue 1: Round Robin with quantum = 4
+                      - Queue 2: FCFS (processes demoted from Q1 run to completion)</p>
+                    
+                      <h2>Given Processes</h2>
+                      <p>Process table (Arrival Time and Burst Time):</p>
+                      <table border="1">
+                        <tr>
+                          <th>Process</th>
+                          <th>Arrival Time</th>
+                          <th>Burst Time</th>
+                        </tr>
+                        <tr><td>P1</td><td>0</td><td>10</td></tr>
+                        <tr><td>P2</td><td>1</td><td>4</td></tr>
+                        <tr><td>P3</td><td>2</td><td>5</td></tr>
+                        <tr><td>P4</td><td>3</td><td>3</td></tr>
+                      </table>
+                    
+                      <h2>Scheduling Rules</h2>
+                      <p>Rules applied in this example (typical simple MLFQ policy):</p>
+                      <ol>
+                        <li>All new processes enter Queue 1 (RR, quantum = 4).</li>
+                        <li>If a process uses its entire quantum in Queue 1 without finishing, it is demoted to Queue 2.</li>
+                        <li>Queue 2 is FCFS and runs processes to completion (no further demotion).</li>
+                        <li>At any time, Queue 1 has priority over Queue 2. Only when Queue 1 is empty do we schedule Queue 2 processes.</li>
+                      </ol>
+                    
+                      <h2>Step-by-step Execution (Exam-style)</h2>
+                    
+                      <p>We simulate time from t = 0 onwards and show queue contents, actions, and remaining bursts at key events.</p>
+                    
+                      <table border="1">
+                        <tr>
+                          <th>Step</th>
+                          <th>Time</th>
+                          <th>Action / Queue</th>
+                          <th>Running Process (interval)</th>
+                          <th>Notes / Remaining burst after run</th>
+                        </tr>
+                    
+                        <tr>
+                          <td>1</td>
+                          <td>0</td>
+                          <td>Start; Q1 contains P1</td>
+                          <td>P1 (0–4)</td>
+                          <td>P1 ran 4 (quantum), remaining = 10 − 4 = 6 → demote to Q2 at t=4</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>2</td>
+                          <td>1–3 (arrivals)</td>
+                          <td>P2 arrives at 1, P3 at 2, P4 at 3 → all go to Q1</td>
+                          <td>—</td>
+                          <td>At t=4 Q1 order: P2, P3, P4. Q2: P1(rem=6)</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>3</td>
+                          <td>4</td>
+                          <td>Q1 still has processes; schedule next RR quantum</td>
+                          <td>P2 (4–8)</td>
+                          <td>P2 burst = 4 → finishes at t=8 (no demotion)</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>4</td>
+                          <td>8</td>
+                          <td>Next in Q1: P3</td>
+                          <td>P3 (8–12)</td>
+                          <td>P3 ran 4 (quantum), remaining = 5 − 4 = 1 → demote to Q2 at t=12</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>5</td>
+                          <td>12</td>
+                          <td>Next in Q1: P4</td>
+                          <td>P4 (12–15)</td>
+                          <td>P4 burst = 3 → finishes at t=15 (used < quantum)</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>6</td>
+                          <td>15</td>
+                          <td>Q1 is now empty ⇒ run Q2 (FCFS). Q2 order by demotion time: P1(rem6), P3(rem1)</td>
+                          <td>P1 (15–21)</td>
+                          <td>P1 remaining 6 → finishes at t=21</td>
+                        </tr>
+                    
+                        <tr>
+                          <td>7</td>
+                          <td>21</td>
+                          <td>Continue Q2</td>
+                          <td>P3 (21–22)</td>
+                          <td>P3 remaining 1 → finishes at t=22</td>
+                        </tr>
+                    
+                      </table>
+                    
+                      <h2>Gantt Chart (text)</h2>
+                      <pre>
+                    0    4    8    12   15   21   22
+                    |----|----|----|----|----|----|
+                     P1   P2   P3   P4   P1   P3
+                    (0-4)(4-8)(8-12)(12-15)(15-21)(21-22)
+                      </pre>
+                    
+                      <h2>Completion, Turnaround, Waiting Times (Worked Calculations)</h2>
+                      <p>Completion Time (CT), Turnaround Time (TAT = CT − Arrival), Waiting Time (WT = TAT − Burst)</p>
+                    
+                      <table border="1">
+                        <tr>
+                          <th>Process</th>
+                          <th>Arrival</th>
+                          <th>Burst</th>
+                          <th>Completion Time (CT)</th>
+                          <th>Turnaround Time (TAT = CT − Arrival)</th>
+                          <th>Waiting Time (WT = TAT − Burst)</th>
+                        </tr>
+                        <tr>
+                          <td>P1</td>
+                          <td>0</td>
+                          <td>10</td>
+                          <td>21</td>
+                          <td>21 − 0 = 21</td>
+                          <td>21 − 10 = 11</td>
+                        </tr>
+                        <tr>
+                          <td>P2</td>
+                          <td>1</td>
+                          <td>4</td>
+                          <td>8</td>
+                          <td>8 − 1 = 7</td>
+                          <td>7 − 4 = 3</td>
+                        </tr>
+                        <tr>
+                          <td>P3</td>
+                          <td>2</td>
+                          <td>5</td>
+                          <td>22</td>
+                          <td>22 − 2 = 20</td>
+                          <td>20 − 5 = 15</td>
+                        </tr>
+                        <tr>
+                          <td>P4</td>
+                          <td>3</td>
+                          <td>3</td>
+                          <td>15</td>
+                          <td>15 − 3 = 12</td>
+                          <td>12 − 3 = 9</td>
+                        </tr>
+                      </table>
+                    
+                      <h2>Averages (Final Answer)</h2>
+                      <p>Average Turnaround Time = (21 + 7 + 20 + 12) / 4 = 60 / 4 = 15.0</p>
+                      <p>Average Waiting Time = (11 + 3 + 15 + 9) / 4 = 38 / 4 = 9.5</p>
+                    
+                      <h2>Summary</h2>
+                      <p>Final completion times and performance metrics:</p>
+                      <table border="1">
+                        <tr><th>Metric</th><th>Value</th></tr>
+                        <tr><td>Completion Times</td><td>P1=21, P2=8, P3=22, P4=15</td></tr>
+                        <tr><td>Turnaround Times</td><td>P1=21, P2=7, P3=20, P4=12</td></tr>
+                        <tr><td>Waiting Times</td><td>P1=11, P2=3, P3=15, P4=9</td></tr>
+                        <tr><td>Average Turnaround Time</td><td>15.0</td></tr>
+                        <tr><td>Average Waiting Time</td><td>9.5</td></tr>
+                      </table>
+                    
+                      <p>End of worked example.</p>
   </main>
 
   <section class="card">
@@ -214,7 +214,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-17</span>
+    <span class="badge">Updated • 2026-02-18</span>
   </div>
 
 </div>

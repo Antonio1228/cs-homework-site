@@ -38,102 +38,102 @@
 
   <main class="card">
     <h1>Context Switch Calculation Example (Step by Step)</h1>
-                        
-                            <p>
-                                A context switch takes CPU time as overhead. This example shows how to calculate CPU utilization when context
-                                switch time occurs during scheduling.
-                            </p>
-                        
-                            <h2>Given</h2>
-                        
-                            <pre>
-                        Time Quantum (RR) = 4 ms
-                        Context Switch Time = 1 ms (every time the CPU switches from one process to another)
-                        
-                        Assume 3 processes arrive at time 0:
-                        P1 burst = 10 ms
-                        P2 burst = 6 ms
-                        P3 burst = 8 ms
-                        </pre>
-                        
-                            <h2>Step 1: Build the Round Robin Execution Order</h2>
-                        
-                            <p>
-                                With time quantum 4 ms, each process runs for up to 4 ms each turn.
-                            </p>
-                        
-                            <pre>
-                        Cycle 1: P1 (4) -> P2 (4) -> P3 (4)
-                        Remaining: P1 6, P2 2, P3 4
-                        
-                        Cycle 2: P1 (4) -> P2 (2) -> P3 (4)
-                        Remaining: P1 2, P2 0, P3 0
-                        
-                        Cycle 3: P1 (2)
-                        Remaining: P1 0
-                        </pre>
-                        
-                            <h2>Step 2: Count Number of CPU Switches</h2>
-                        
-                            <p>
-                                Each time the CPU moves from one process to another, we pay 1 ms overhead.
-                            </p>
-                        
-                            <h3>Execution Segments</h3>
-                        
-                            <pre>
-                        1) P1 (4)
-                        2) P2 (4)
-                        3) P3 (4)
-                        4) P1 (4)
-                        5) P2 (2)
-                        6) P3 (4)
-                        7) P1 (2)
-                        </pre>
-                        
-                            <p>
-                                Number of switches between segments = segments - 1 = 7 - 1 = 6
-                            </p>
-                        
-                            <h2>Step 3: Total CPU Work Time (Useful Time)</h2>
-                        
-                            <pre>
-                        Total burst time = 10 + 6 + 8 = 24 ms
-                        Useful CPU time = 24 ms
-                        </pre>
-                        
-                            <h2>Step 4: Total Context Switch Overhead</h2>
-                        
-                            <pre>
-                        Overhead = number_of_switches * context_switch_time
-                        Overhead = 6 * 1 ms = 6 ms
-                        </pre>
-                        
-                            <h2>Step 5: Total Time and CPU Utilization</h2>
-                        
-                            <pre>
-                        Total time = useful time + overhead
-                        Total time = 24 + 6 = 30 ms
-                        
-                        CPU Utilization = useful time / total time
-                        CPU Utilization = 24 / 30 = 0.8 = 80%
-                        </pre>
-                        
-                            <h2>Result</h2>
-                        
-                            <pre>
-                        Useful CPU time = 24 ms
-                        Context switch overhead = 6 ms
-                        Total elapsed time = 30 ms
-                        CPU Utilization = 80%
-                        </pre>
-                        
-                            <h2>Conclusion</h2>
-                        
-                            <p>
-                                Context switching reduces CPU utilization because it adds overhead time. Smaller time quantum may increase the
-                                number of context switches, leading to more overhead.
-                            </p>
+                            
+                                <p>
+                                    A context switch takes CPU time as overhead. This example shows how to calculate CPU utilization when context
+                                    switch time occurs during scheduling.
+                                </p>
+                            
+                                <h2>Given</h2>
+                            
+                                <pre>
+                            Time Quantum (RR) = 4 ms
+                            Context Switch Time = 1 ms (every time the CPU switches from one process to another)
+                            
+                            Assume 3 processes arrive at time 0:
+                            P1 burst = 10 ms
+                            P2 burst = 6 ms
+                            P3 burst = 8 ms
+                            </pre>
+                            
+                                <h2>Step 1: Build the Round Robin Execution Order</h2>
+                            
+                                <p>
+                                    With time quantum 4 ms, each process runs for up to 4 ms each turn.
+                                </p>
+                            
+                                <pre>
+                            Cycle 1: P1 (4) -> P2 (4) -> P3 (4)
+                            Remaining: P1 6, P2 2, P3 4
+                            
+                            Cycle 2: P1 (4) -> P2 (2) -> P3 (4)
+                            Remaining: P1 2, P2 0, P3 0
+                            
+                            Cycle 3: P1 (2)
+                            Remaining: P1 0
+                            </pre>
+                            
+                                <h2>Step 2: Count Number of CPU Switches</h2>
+                            
+                                <p>
+                                    Each time the CPU moves from one process to another, we pay 1 ms overhead.
+                                </p>
+                            
+                                <h3>Execution Segments</h3>
+                            
+                                <pre>
+                            1) P1 (4)
+                            2) P2 (4)
+                            3) P3 (4)
+                            4) P1 (4)
+                            5) P2 (2)
+                            6) P3 (4)
+                            7) P1 (2)
+                            </pre>
+                            
+                                <p>
+                                    Number of switches between segments = segments - 1 = 7 - 1 = 6
+                                </p>
+                            
+                                <h2>Step 3: Total CPU Work Time (Useful Time)</h2>
+                            
+                                <pre>
+                            Total burst time = 10 + 6 + 8 = 24 ms
+                            Useful CPU time = 24 ms
+                            </pre>
+                            
+                                <h2>Step 4: Total Context Switch Overhead</h2>
+                            
+                                <pre>
+                            Overhead = number_of_switches * context_switch_time
+                            Overhead = 6 * 1 ms = 6 ms
+                            </pre>
+                            
+                                <h2>Step 5: Total Time and CPU Utilization</h2>
+                            
+                                <pre>
+                            Total time = useful time + overhead
+                            Total time = 24 + 6 = 30 ms
+                            
+                            CPU Utilization = useful time / total time
+                            CPU Utilization = 24 / 30 = 0.8 = 80%
+                            </pre>
+                            
+                                <h2>Result</h2>
+                            
+                                <pre>
+                            Useful CPU time = 24 ms
+                            Context switch overhead = 6 ms
+                            Total elapsed time = 30 ms
+                            CPU Utilization = 80%
+                            </pre>
+                            
+                                <h2>Conclusion</h2>
+                            
+                                <p>
+                                    Context switching reduces CPU utilization because it adds overhead time. Smaller time quantum may increase the
+                                    number of context switches, leading to more overhead.
+                                </p>
   </main>
 
   <section class="card">
@@ -150,7 +150,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-18</span>
+    <span class="badge">Updated • 2026-02-19</span>
   </div>
 
 </div>

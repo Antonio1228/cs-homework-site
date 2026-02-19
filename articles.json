@@ -3,96 +3,102 @@
     "url": "banker-algorithm-example-step-by-step.html",
     "title": "Banker's Algorithm Example Step by Step (Safety Algorithm)",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "belady-anomaly-example.html",
     "title": "Belady's Anomaly Example (FIFO) with Step by Step Solution",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "context-switch-calculation-example.html",
     "title": "Context Switch Calculation Example (CPU Utilization)",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "deadlock-detection-example.html",
     "title": "Deadlock Detection Example Step by Step (OS)",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "first-and-follow-set-example.html",
     "title": "First and Follow Set Example Step by Step (Compiler Design)",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "lru-page-replacement-example.html",
     "title": "LRU Page Replacement Example with Step by Step Solution",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "mlfq-scheduling-example.html",
     "title": "mlfq scheduling example",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "multilevel-feedback-queue-scheduling-algorithm-example.html",
     "title": "multilevel feedback queue scheduling algorithm example",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "multilevel-feedback-queue-scheduling-example-with-gantt-chart.html",
     "title": "multilevel feedback queue scheduling example with gantt chart",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "multilevel-feedback-queue-scheduling-example.html",
     "title": "multilevel feedback queue scheduling example",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "multilevel-feedback-queue-scheduling-solved-examples.html",
     "title": "multilevel feedback queue scheduling solved examples",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
+  },
+  {
+    "url": "non-preemptive-priority-scheduling-algorithm-example-in-os.html",
+    "title": "non preemptive priority scheduling algorithm example in os",
+    "category": "",
+    "updated": "2026-02-19"
   },
   {
     "url": "page-replacement-fifo-example.html",
     "title": "FIFO Page Replacement Example with Step by Step Solution",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "priority-scheduling-example.html",
     "title": "Priority Scheduling Example with Calculation (Non-Preemptive)",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "round-robin-scheduling-example-with-calculation.html",
     "title": "Round Robin Scheduling Example with Calculation",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "shift-reduce-parsing-example-step-by-step.html",
     "title": "Shift Reduce Parsing Example Step by Step",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   },
   {
     "url": "shortest-job-first-scheduling-example.html",
     "title": "Shortest Job First Scheduling Example with Calculation",
     "category": "",
-    "updated": "2026-02-18"
+    "updated": "2026-02-19"
   }
 ]

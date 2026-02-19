@@ -38,157 +38,157 @@
 
   <main class="card">
     <h1>LRU Page Replacement Example (Step by Step)</h1>
-                        
-                            <p>
-                                LRU (Least Recently Used) page replacement algorithm replaces the page that has not been used for the longest
-                                time when a new page needs to be loaded into memory.
-                            </p>
-                        
-                            <h2>Given</h2>
-                        
-                            <pre>
-                        Number of Frames = 3
-                        Reference String = 7 0 1 2 0 3 0 4 2 3 0 3 2
-                        </pre>
-                        
-                            <h2>Step by Step Solution</h2>
-                        
-                            <table border="1">
-                                <tr>
-                                    <th>Step</th>
-                                    <th>Reference</th>
-                                    <th>Frame 1</th>
-                                    <th>Frame 2</th>
-                                    <th>Frame 3</th>
-                                    <th>Page Fault</th>
-                                </tr>
-                        
-                                <tr>
-                                    <td>1</td>
-                                    <td>7</td>
-                                    <td>7</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>7</td>
-                                    <td>0</td>
-                                    <td>-</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>1</td>
-                                    <td>7</td>
-                                    <td>0</td>
-                                    <td>1</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>2</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>1</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>0</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>1</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>3</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>0</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>4</td>
-                                    <td>4</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>2</td>
-                                    <td>4</td>
-                                    <td>0</td>
-                                    <td>2</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                    <td>3</td>
-                                    <td>2</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>11</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>2</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>12</td>
-                                    <td>3</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>2</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>13</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>2</td>
-                                    <td>No</td>
-                                </tr>
-                        
-                            </table>
-                        
-                            <h2>Total Page Faults</h2>
-                        
-                            <pre>
-                        Total Page Faults = 9
-                        </pre>
-                        
-                            <h2>How LRU Decides the Victim Page</h2>
-                        
-                            <p>
-                                When a page fault happens and the frames are full, LRU chooses the page that was used least recently (the one
-                                with the oldest last-used time) and replaces it with the new page.
-                            </p>
-                        
-                            <h2>Conclusion</h2>
-                        
-                            <p>
-                                LRU often performs better than FIFO because it uses recent usage history. However, it may be more expensive to
-                                implement because the system must track page usage order.
-                            </p>
+                            
+                                <p>
+                                    LRU (Least Recently Used) page replacement algorithm replaces the page that has not been used for the longest
+                                    time when a new page needs to be loaded into memory.
+                                </p>
+                            
+                                <h2>Given</h2>
+                            
+                                <pre>
+                            Number of Frames = 3
+                            Reference String = 7 0 1 2 0 3 0 4 2 3 0 3 2
+                            </pre>
+                            
+                                <h2>Step by Step Solution</h2>
+                            
+                                <table border="1">
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>Reference</th>
+                                        <th>Frame 1</th>
+                                        <th>Frame 2</th>
+                                        <th>Frame 3</th>
+                                        <th>Page Fault</th>
+                                    </tr>
+                            
+                                    <tr>
+                                        <td>1</td>
+                                        <td>7</td>
+                                        <td>7</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>7</td>
+                                        <td>0</td>
+                                        <td>-</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>1</td>
+                                        <td>7</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>0</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>3</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>0</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>4</td>
+                                        <td>4</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>2</td>
+                                        <td>4</td>
+                                        <td>0</td>
+                                        <td>2</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                        <td>3</td>
+                                        <td>2</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>2</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>3</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>2</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>2</td>
+                                        <td>No</td>
+                                    </tr>
+                            
+                                </table>
+                            
+                                <h2>Total Page Faults</h2>
+                            
+                                <pre>
+                            Total Page Faults = 9
+                            </pre>
+                            
+                                <h2>How LRU Decides the Victim Page</h2>
+                            
+                                <p>
+                                    When a page fault happens and the frames are full, LRU chooses the page that was used least recently (the one
+                                    with the oldest last-used time) and replaces it with the new page.
+                                </p>
+                            
+                                <h2>Conclusion</h2>
+                            
+                                <p>
+                                    LRU often performs better than FIFO because it uses recent usage history. However, it may be more expensive to
+                                    implement because the system must track page usage order.
+                                </p>
   </main>
 
   <section class="card">
@@ -205,7 +205,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-18</span>
+    <span class="badge">Updated • 2026-02-19</span>
   </div>
 
 </div>

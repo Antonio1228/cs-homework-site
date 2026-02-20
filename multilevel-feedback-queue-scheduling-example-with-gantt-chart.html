@@ -29,229 +29,229 @@
 
   <main class="card">
     <h1>Multilevel Feedback Queue Scheduling — Worked Example (seed 2517454940)</h1>
-                
-                <p>This is a complete exam-style worked example of a Multilevel Feedback Queue (MLFQ) scheduling run. All numeric values in this example were deterministically derived from the uniqueness seed 2517454940 (see mapping below), so this instance is different from other pages. The solution is presented step-by-step, with intermediate tables, a textual Gantt chart, final numeric answers, common mistakes, and a short FAQ.</p>
-                
-                <h2>Seed mapping and MLFQ parameters</h2>
-                
-                <p>We derive numeric values from seed = 2517454940 as follows (explicit mapping so the example is reproducible):</p>
-                
-                <ul>
-                  <li>Use the first five digits for arrival times (in time units): 2, 5, 1, 7, 4 → Arrival times for P1..P5 respectively.</li>
-                  <li>Use the last five digits, transform each digit d into a burst time with formula burst = 4*d + 9. The last five digits are 5,4,9,4,0 → bursts 29, 25, 45, 25, 9 for P1..P5 respectively.</li>
-                  <li>Number of queues = (second digit mod 3) + 2 = (5 mod 3) + 2 = 4 queues (Q0..Q3).</li>
-                  <li>Base time quantum = (last digit mod 5) + 4 = (0 mod 5) + 4 = 4. The queue quanta double each level: Q0=4, Q1=8, Q2=16, Q3=32.</li>
-                  <li>Aging threshold = (third digit) * 10 = 1 * 10 = 10 time units (used for explanation; aging does not trigger in this short example).</li>
-                </ul>
-                
-                <h2>Problem setup — processes and parameters</h2>
-                
-                <table border="1">
-                  <tr>
-                    <th>Process</th>
-                    <th>Arrival Time</th>
-                    <th>Burst Time</th>
-                  </tr>
-                  <tr><td>P1</td><td>2</td><td>29</td></tr>
-                  <tr><td>P2</td><td>5</td><td>25</td></tr>
-                  <tr><td>P3</td><td>1</td><td>45</td></tr>
-                  <tr><td>P4</td><td>7</td><td>25</td></tr>
-                  <tr><td>P5</td><td>4</td><td>9</td></tr>
-                </table>
-                
-                <p>MLFQ configuration (derived from seed): 4 queues Q0..Q3 with time quanta 4, 8, 16, 32 respectively. New arrivals enter Q0. If a process exhausts its quantum in a queue without finishing, it is demoted to the next lower queue. The lowest queue (Q3) uses RR with quantum 32 (effectively long). Preemption: any arrival to a higher-priority queue will preempt running lower-priority work at the next scheduling decision. We assume context-switch overhead = 0 for clarity.</p>
-                
-                <h2>High-level scheduling plan</h2>
-                
-                <p>We simulate from time 0 onward. Important arrival times: P3 at 1, P1 at 2, P5 at 4, P2 at 5, P4 at 7. We will show each queue's dispatch events in chronological order and record remaining time and demotion/completion actions.</p>
-                
-                <h2>Step-by-step run (Queue-by-queue dispatch table)</h2>
-                
-                <p>All step tables below use the format: interval, process, run length, remaining after run, action (demoted/finished).</p>
-                
-                <h3>Q0 (highest priority) — quantum = 4</h3>
-                
-                <table border="1">
-                  <tr>
-                    <th>Time interval</th>
-                    <th>Process</th>
-                    <th>Run length</th>
-                    <th>Remaining after run</th>
-                    <th>Action</th>
-                    <th>Notes / arrivals during this interval</th>
-                  </tr>
-                  <tr><td>0 – 1</td><td>—</td><td>idle</td><td>—</td><td>idle</td><td>no processes yet</td></tr>
-                  <tr><td>1 – 5</td><td>P3</td><td>4</td><td>41</td><td>demoted to Q1</td><td>P1 arrives at 2, P5 at 4</td></tr>
-                  <tr><td>5 – 9</td><td>P1</td><td>4</td><td>25</td><td>demoted to Q1</td><td>P2 arrives at 5; P4 will arrive later at 7</td></tr>
-                  <tr><td>9 – 13</td><td>P5</td><td>4</td><td>5</td><td>demoted to Q1</td><td>P4 arrives at 7 (before this run finishes)</td></tr>
-                  <tr><td>13 – 17</td><td>P2</td><td>4</td><td>21</td><td>demoted to Q1</td><td>—</td></tr>
-                  <tr><td>17 – 21</td><td>P4</td><td>4</td><td>21</td><td>demoted to Q1</td><td>—</td></tr>
-                  <tr><td>21</td><td colspan="5">Q0 is now empty; move to Q1</td></tr>
-                </table>
-                
-                <h3>Q1 — quantum = 8</h3>
-                
-                <p>Order of processes that have been demoted into Q1 (by demotion time): P3 (demoted at 5), P1 (9), P5 (13), P2 (17), P4 (21).</p>
-                
-                <table border="1">
-                  <tr>
-                    <th>Time interval</th>
-                    <th>Process</th>
-                    <th>Run length</th>
-                    <th>Remaining after run</th>
-                    <th>Action</th>
-                    <th>Notes</th>
-                  </tr>
-                  <tr><td>21 – 29</td><td>P3</td><td>8</td><td>33</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
-                  <tr><td>29 – 37</td><td>P1</td><td>8</td><td>17</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
-                  <tr><td>37 – 42</td><td>P5</td><td>5</td><td>0</td><td>finished</td><td>P5 required < 8, so completes here (CT = 42)</td></tr>
-                  <tr><td>42 – 50</td><td>P2</td><td>8</td><td>13</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
-                  <tr><td>50 – 58</td><td>P4</td><td>8</td><td>13</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
-                  <tr><td>58</td><td colspan="5">Q1 is now empty; move to Q2</td></tr>
-                </table>
-                
-                <h3>Q2 — quantum = 16</h3>
-                
-                <p>Order of processes in Q2 (by time they were demoted): P3 (demoted at 29), P1 (37), P2 (50), P4 (58).</p>
-                
-                <table border="1">
-                  <tr>
-                    <th>Time interval</th>
-                    <th>Process</th>
-                    <th>Run length</th>
-                    <th>Remaining after run</th>
-                    <th>Action</th>
-                    <th>Notes</th>
-                  </tr>
-                  <tr><td>58 – 74</td><td>P3</td><td>16</td><td>17</td><td>demoted to Q3</td><td>Used full Q2 quantum</td></tr>
-                  <tr><td>74 – 90</td><td>P1</td><td>16</td><td>1</td><td>demoted to Q3</td><td>Used full Q2 quantum, small remaining</td></tr>
-                  <tr><td>90 – 103</td><td>P2</td><td>13</td><td>0</td><td>finished</td><td>P2 completes (CT = 103)</td></tr>
-                  <tr><td>103 – 116</td><td>P4</td><td>13</td><td>0</td><td>finished</td><td>P4 completes (CT = 116)</td></tr>
-                  <tr><td>116</td><td colspan="5">Q2 is now empty; move to Q3</td></tr>
-                </table>
-                
-                <h3>Q3 (lowest) — quantum = 32</h3>
-                
-                <p>Remaining processes at entry to Q3: P3 (remaining 17), P1 (remaining 1). Q3 is the last queue; long quantum means processes will usually finish when scheduled here.</p>
-                
-                <table border="1">
-                  <tr>
-                    <th>Time interval</th>
-                    <th>Process</th>
-                    <th>Run length</th>
-                    <th>Remaining after run</th>
-                    <th>Action</th>
-                    <th>Notes</th>
-                  </tr>
-                  <tr><td>116 – 133</td><td>P3</td><td>17</td><td>0</td><td>finished</td><td>P3 completes (CT = 133)</td></tr>
-                  <tr><td>133 – 134</td><td>P1</td><td>1</td><td>0</td><td>finished</td><td>P1 completes (CT = 134)</td></tr>
-                  <tr><td>134</td><td colspan="5">All processes finished</td></tr>
-                </table>
-                
-                <h2>Textual Gantt chart (compressed timeline)</h2>
-                
-                <pre>
-                Time:   0    1    5    9   13   17   21   29   37   42   50   58   74   90  103  116  133  134
-                        |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
-                Event:  idle P3   P1   P5   P2   P4   P3   P1   P5   P2   P4   P3   P1   P2   P4   P3   P1   end
-                        [1-5][5-9][9-13][13-17][17-21][21-29][29-37][37-42][42-50][50-58][58-74][74-90][90-103][103-116][116-133][133-134]
-                
-                Legend: bracketed intervals show which process was on CPU. Processes are demoted when they use the full quantum in a queue.
-                </pre>
-                
-                <h2>Final completion / turnaround / waiting time calculations</h2>
-                
-                <p>Completion times (CT) were recorded when each process finished. Turnaround Time (TAT) = CT − Arrival. Waiting Time (WT) = TAT − Burst.</p>
-                
-                <table border="1">
-                  <tr>
-                    <th>Process</th>
-                    <th>Arrival</th>
-                    <th>Burst</th>
-                    <th>Completion (CT)</th>
-                    <th>Turnaround (CT − Arrival)</th>
-                    <th>Waiting (TAT − Burst)</th>
-                  </tr>
-                  <tr><td>P1</td><td>2</td><td>29</td><td>134</td><td>132</td><td>103</td></tr>
-                  <tr><td>P2</td><td>5</td><td>25</td><td>103</td><td>98</td><td>73</td></tr>
-                  <tr><td>P3</td><td>1</td><td>45</td><td>133</td><td>132</td><td>87</td></tr>
-                  <tr><td>P4</td><td>7</td><td>25</td><td>116</td><td>109</td><td>84</td></tr>
-                  <tr><td>P5</td><td>4</td><td>9</td><td>42</td><td>38</td><td>29</td></tr>
-                </table>
-                
-                <p>Check sums for averages:</p>
-                
-                <table border="1">
-                  <tr>
-                    <th>Sum of Turnaround times</th><th>509</th>
-                  </tr>
-                  <tr>
-                    <th>Average Turnaround time = 509 / 5</th><th>101.8</th>
-                  </tr>
-                  <tr>
-                    <th>Sum of Waiting times</th><th>376</th>
-                  </tr>
-                  <tr>
-                    <th>Average Waiting time = 376 / 5</th><th>75.2</th>
-                  </tr>
-                </table>
-                
-                <h2>Final numeric answers (summary)</h2>
-                
-                <table border="1">
-                  <tr><th>Metric</th><th>Value</th></tr>
-                  <tr><td>Average Turnaround Time</td><td>101.8 time units</td></tr>
-                  <tr><td>Average Waiting Time</td><td>75.2 time units</td></tr>
-                  <tr><td>Completion Times</td><td>P1=134, P2=103, P3=133, P4=116, P5=42</td></tr>
-                </table>
-                
-                <h2>Step-by-step reasoning recap (exam-style)</h2>
-                
-                <p>1) Identify arrivals and initial queue: earliest arrival is P3 at t=1. CPU sits idle from 0 to 1. All arriving processes enter Q0.</p>
-                
-                <p>2) Apply Q0 round-robin with quantum 4. Each process gets up to 4 units. If it doesn't finish, it is demoted to Q1. Track arrivals that happen while the CPU is busy; newly arriving processes join Q0 at the back of the Q0 ready list.</p>
-                
-                <p>3) After Q0 empties at t=21, switch to Q1 and process each entry with quantum 8. If process completes within the quantum, mark its completion time; otherwise demote to Q2. Continue until Q1 empties.</p>
-                
-                <p>4) Repeat for Q2 (quantum 16), demoting to Q3 if needed. Finally process Q3 with quantum 32; processes typically finish here.</p>
-                
-                <p>5) At every demotion and completion, record remaining burst and CT when completed. Finally compute TAT and WT using the simple formulae.</p>
-                
-                <h2>Common mistakes to avoid (brief checklist)</h2>
-                
-                <ul>
-                  <li>Confusing arrival times ordering: always insert newly arriving processes into Q0 immediately; they can preempt later when scheduler cycles back to Q0.</li>
-                  <li>Forgetting demotion after the quantum: if a process uses the entire quantum at a level and is not finished, it must be demoted to the next lower queue.</li>
-                  <li>Applying aging rules incorrectly: aging moves processes up after waiting threshold is exceeded. In this example aging threshold = 10; however none of the processes waited that long in a lower queue before being scheduled (so aging did not change order). Always check aging triggers explicitly.</li>
-                  <li>Mixing up turnaround and waiting times: Turnaround = completion − arrival; Waiting = turnaround − burst. Do not subtract arrival from burst or mix up the two.</li>
-                  <li>Rounding errors: keep integer time units consistent; do not introduce fractional times unless the model requires them.</li>
-                </ul>
-                
-                <h2>Frequently Asked Questions (FAQ)</h2>
-                
-                <h3>Q1: Why does a process get demoted in MLFQ?</h3>
-                <p>A1: The MLFQ design assumes that short jobs should get fast service at high priority queues. If a job uses a full quantum at a higher queue, the system assumes it is "long" and demotes it so that interactive/short tasks in higher queues receive the CPU more often. Demotion therefore helps prioritize short/interactive workloads.</p>
-                
-                <h3>Q2: What if a new process arrives while a lower-queued process is running?</h3>
-                <p>A2: New arrivals go into Q0 (highest priority). They do not immediately preempt the running process mid-quantum in this simplified simulation (we assumed preemption happens at scheduling decision points). In preemptive MLFQ variants, an arrival to a higher-priority queue may preempt a running lower-priority job immediately; always state your preemption model clearly.</p>
-                
-                <h3>Q3: How would aging change this example?</h3>
-                <p>A3: Aging periodically promotes waiting processes to prevent starvation. If a process in a lower queue waits longer than the aging threshold (here computed as 10), it would be moved up a queue. In this specific run none of the processes waited continuously in a lower queue beyond 10 units before being scheduled, so aging did not alter the order. If aging had promoted a long-waiting job, it could have been scheduled earlier and would change completion and waiting times.</p>
-                
-                <h3>Q4: Is MLFQ fair?</h3>
-                <p>A4: MLFQ aims to be responsive for short jobs and interactive tasks by giving them higher priority. However, it can starve long CPU-bound jobs if no aging is applied. Fairness depends on the chosen parameters (number of queues, quanta, aging policy). Proper tuning ensures a balance between responsiveness and fairness.</p>
-                
-                <h3>Q5: How to verify your MLFQ simulation?</h3>
-                <p>A5: Verify correctness by:</p>
-                <ul>
-                  <li>Checking that the sum of execution intervals for each process equals its burst time.</li>
-                  <li>Confirming that completion times are consistent with the scheduled intervals.</li>
-                  <li>Recomputing TAT and WT with the formulae and ensuring averages match manual sums divided by number of processes.</li>
-                </ul>
-                
-                <h2>Closing notes</h2>
-                
-                <p>This worked example demonstrates the mechanics of an explicit MLFQ policy with 4 queues and doubling quantum sizes. The derived numeric values are tied to the uniqueness seed 2517454940 so that the example is reproducible and distinct. In exam settings always show the timeline/Gantt, intermediate demotions, and final TAT/WT computations as done above — examiners expect the step-by-step trace as evidence of correct scheduling logic.</p>
+                    
+                    <p>This is a complete exam-style worked example of a Multilevel Feedback Queue (MLFQ) scheduling run. All numeric values in this example were deterministically derived from the uniqueness seed 2517454940 (see mapping below), so this instance is different from other pages. The solution is presented step-by-step, with intermediate tables, a textual Gantt chart, final numeric answers, common mistakes, and a short FAQ.</p>
+                    
+                    <h2>Seed mapping and MLFQ parameters</h2>
+                    
+                    <p>We derive numeric values from seed = 2517454940 as follows (explicit mapping so the example is reproducible):</p>
+                    
+                    <ul>
+                      <li>Use the first five digits for arrival times (in time units): 2, 5, 1, 7, 4 → Arrival times for P1..P5 respectively.</li>
+                      <li>Use the last five digits, transform each digit d into a burst time with formula burst = 4*d + 9. The last five digits are 5,4,9,4,0 → bursts 29, 25, 45, 25, 9 for P1..P5 respectively.</li>
+                      <li>Number of queues = (second digit mod 3) + 2 = (5 mod 3) + 2 = 4 queues (Q0..Q3).</li>
+                      <li>Base time quantum = (last digit mod 5) + 4 = (0 mod 5) + 4 = 4. The queue quanta double each level: Q0=4, Q1=8, Q2=16, Q3=32.</li>
+                      <li>Aging threshold = (third digit) * 10 = 1 * 10 = 10 time units (used for explanation; aging does not trigger in this short example).</li>
+                    </ul>
+                    
+                    <h2>Problem setup — processes and parameters</h2>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Process</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                      </tr>
+                      <tr><td>P1</td><td>2</td><td>29</td></tr>
+                      <tr><td>P2</td><td>5</td><td>25</td></tr>
+                      <tr><td>P3</td><td>1</td><td>45</td></tr>
+                      <tr><td>P4</td><td>7</td><td>25</td></tr>
+                      <tr><td>P5</td><td>4</td><td>9</td></tr>
+                    </table>
+                    
+                    <p>MLFQ configuration (derived from seed): 4 queues Q0..Q3 with time quanta 4, 8, 16, 32 respectively. New arrivals enter Q0. If a process exhausts its quantum in a queue without finishing, it is demoted to the next lower queue. The lowest queue (Q3) uses RR with quantum 32 (effectively long). Preemption: any arrival to a higher-priority queue will preempt running lower-priority work at the next scheduling decision. We assume context-switch overhead = 0 for clarity.</p>
+                    
+                    <h2>High-level scheduling plan</h2>
+                    
+                    <p>We simulate from time 0 onward. Important arrival times: P3 at 1, P1 at 2, P5 at 4, P2 at 5, P4 at 7. We will show each queue's dispatch events in chronological order and record remaining time and demotion/completion actions.</p>
+                    
+                    <h2>Step-by-step run (Queue-by-queue dispatch table)</h2>
+                    
+                    <p>All step tables below use the format: interval, process, run length, remaining after run, action (demoted/finished).</p>
+                    
+                    <h3>Q0 (highest priority) — quantum = 4</h3>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Time interval</th>
+                        <th>Process</th>
+                        <th>Run length</th>
+                        <th>Remaining after run</th>
+                        <th>Action</th>
+                        <th>Notes / arrivals during this interval</th>
+                      </tr>
+                      <tr><td>0 – 1</td><td>—</td><td>idle</td><td>—</td><td>idle</td><td>no processes yet</td></tr>
+                      <tr><td>1 – 5</td><td>P3</td><td>4</td><td>41</td><td>demoted to Q1</td><td>P1 arrives at 2, P5 at 4</td></tr>
+                      <tr><td>5 – 9</td><td>P1</td><td>4</td><td>25</td><td>demoted to Q1</td><td>P2 arrives at 5; P4 will arrive later at 7</td></tr>
+                      <tr><td>9 – 13</td><td>P5</td><td>4</td><td>5</td><td>demoted to Q1</td><td>P4 arrives at 7 (before this run finishes)</td></tr>
+                      <tr><td>13 – 17</td><td>P2</td><td>4</td><td>21</td><td>demoted to Q1</td><td>—</td></tr>
+                      <tr><td>17 – 21</td><td>P4</td><td>4</td><td>21</td><td>demoted to Q1</td><td>—</td></tr>
+                      <tr><td>21</td><td colspan="5">Q0 is now empty; move to Q1</td></tr>
+                    </table>
+                    
+                    <h3>Q1 — quantum = 8</h3>
+                    
+                    <p>Order of processes that have been demoted into Q1 (by demotion time): P3 (demoted at 5), P1 (9), P5 (13), P2 (17), P4 (21).</p>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Time interval</th>
+                        <th>Process</th>
+                        <th>Run length</th>
+                        <th>Remaining after run</th>
+                        <th>Action</th>
+                        <th>Notes</th>
+                      </tr>
+                      <tr><td>21 – 29</td><td>P3</td><td>8</td><td>33</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
+                      <tr><td>29 – 37</td><td>P1</td><td>8</td><td>17</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
+                      <tr><td>37 – 42</td><td>P5</td><td>5</td><td>0</td><td>finished</td><td>P5 required < 8, so completes here (CT = 42)</td></tr>
+                      <tr><td>42 – 50</td><td>P2</td><td>8</td><td>13</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
+                      <tr><td>50 – 58</td><td>P4</td><td>8</td><td>13</td><td>demoted to Q2</td><td>Used full Q1 quantum</td></tr>
+                      <tr><td>58</td><td colspan="5">Q1 is now empty; move to Q2</td></tr>
+                    </table>
+                    
+                    <h3>Q2 — quantum = 16</h3>
+                    
+                    <p>Order of processes in Q2 (by time they were demoted): P3 (demoted at 29), P1 (37), P2 (50), P4 (58).</p>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Time interval</th>
+                        <th>Process</th>
+                        <th>Run length</th>
+                        <th>Remaining after run</th>
+                        <th>Action</th>
+                        <th>Notes</th>
+                      </tr>
+                      <tr><td>58 – 74</td><td>P3</td><td>16</td><td>17</td><td>demoted to Q3</td><td>Used full Q2 quantum</td></tr>
+                      <tr><td>74 – 90</td><td>P1</td><td>16</td><td>1</td><td>demoted to Q3</td><td>Used full Q2 quantum, small remaining</td></tr>
+                      <tr><td>90 – 103</td><td>P2</td><td>13</td><td>0</td><td>finished</td><td>P2 completes (CT = 103)</td></tr>
+                      <tr><td>103 – 116</td><td>P4</td><td>13</td><td>0</td><td>finished</td><td>P4 completes (CT = 116)</td></tr>
+                      <tr><td>116</td><td colspan="5">Q2 is now empty; move to Q3</td></tr>
+                    </table>
+                    
+                    <h3>Q3 (lowest) — quantum = 32</h3>
+                    
+                    <p>Remaining processes at entry to Q3: P3 (remaining 17), P1 (remaining 1). Q3 is the last queue; long quantum means processes will usually finish when scheduled here.</p>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Time interval</th>
+                        <th>Process</th>
+                        <th>Run length</th>
+                        <th>Remaining after run</th>
+                        <th>Action</th>
+                        <th>Notes</th>
+                      </tr>
+                      <tr><td>116 – 133</td><td>P3</td><td>17</td><td>0</td><td>finished</td><td>P3 completes (CT = 133)</td></tr>
+                      <tr><td>133 – 134</td><td>P1</td><td>1</td><td>0</td><td>finished</td><td>P1 completes (CT = 134)</td></tr>
+                      <tr><td>134</td><td colspan="5">All processes finished</td></tr>
+                    </table>
+                    
+                    <h2>Textual Gantt chart (compressed timeline)</h2>
+                    
+                    <pre>
+                    Time:   0    1    5    9   13   17   21   29   37   42   50   58   74   90  103  116  133  134
+                            |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+                    Event:  idle P3   P1   P5   P2   P4   P3   P1   P5   P2   P4   P3   P1   P2   P4   P3   P1   end
+                            [1-5][5-9][9-13][13-17][17-21][21-29][29-37][37-42][42-50][50-58][58-74][74-90][90-103][103-116][116-133][133-134]
+                    
+                    Legend: bracketed intervals show which process was on CPU. Processes are demoted when they use the full quantum in a queue.
+                    </pre>
+                    
+                    <h2>Final completion / turnaround / waiting time calculations</h2>
+                    
+                    <p>Completion times (CT) were recorded when each process finished. Turnaround Time (TAT) = CT − Arrival. Waiting Time (WT) = TAT − Burst.</p>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Process</th>
+                        <th>Arrival</th>
+                        <th>Burst</th>
+                        <th>Completion (CT)</th>
+                        <th>Turnaround (CT − Arrival)</th>
+                        <th>Waiting (TAT − Burst)</th>
+                      </tr>
+                      <tr><td>P1</td><td>2</td><td>29</td><td>134</td><td>132</td><td>103</td></tr>
+                      <tr><td>P2</td><td>5</td><td>25</td><td>103</td><td>98</td><td>73</td></tr>
+                      <tr><td>P3</td><td>1</td><td>45</td><td>133</td><td>132</td><td>87</td></tr>
+                      <tr><td>P4</td><td>7</td><td>25</td><td>116</td><td>109</td><td>84</td></tr>
+                      <tr><td>P5</td><td>4</td><td>9</td><td>42</td><td>38</td><td>29</td></tr>
+                    </table>
+                    
+                    <p>Check sums for averages:</p>
+                    
+                    <table border="1">
+                      <tr>
+                        <th>Sum of Turnaround times</th><th>509</th>
+                      </tr>
+                      <tr>
+                        <th>Average Turnaround time = 509 / 5</th><th>101.8</th>
+                      </tr>
+                      <tr>
+                        <th>Sum of Waiting times</th><th>376</th>
+                      </tr>
+                      <tr>
+                        <th>Average Waiting time = 376 / 5</th><th>75.2</th>
+                      </tr>
+                    </table>
+                    
+                    <h2>Final numeric answers (summary)</h2>
+                    
+                    <table border="1">
+                      <tr><th>Metric</th><th>Value</th></tr>
+                      <tr><td>Average Turnaround Time</td><td>101.8 time units</td></tr>
+                      <tr><td>Average Waiting Time</td><td>75.2 time units</td></tr>
+                      <tr><td>Completion Times</td><td>P1=134, P2=103, P3=133, P4=116, P5=42</td></tr>
+                    </table>
+                    
+                    <h2>Step-by-step reasoning recap (exam-style)</h2>
+                    
+                    <p>1) Identify arrivals and initial queue: earliest arrival is P3 at t=1. CPU sits idle from 0 to 1. All arriving processes enter Q0.</p>
+                    
+                    <p>2) Apply Q0 round-robin with quantum 4. Each process gets up to 4 units. If it doesn't finish, it is demoted to Q1. Track arrivals that happen while the CPU is busy; newly arriving processes join Q0 at the back of the Q0 ready list.</p>
+                    
+                    <p>3) After Q0 empties at t=21, switch to Q1 and process each entry with quantum 8. If process completes within the quantum, mark its completion time; otherwise demote to Q2. Continue until Q1 empties.</p>
+                    
+                    <p>4) Repeat for Q2 (quantum 16), demoting to Q3 if needed. Finally process Q3 with quantum 32; processes typically finish here.</p>
+                    
+                    <p>5) At every demotion and completion, record remaining burst and CT when completed. Finally compute TAT and WT using the simple formulae.</p>
+                    
+                    <h2>Common mistakes to avoid (brief checklist)</h2>
+                    
+                    <ul>
+                      <li>Confusing arrival times ordering: always insert newly arriving processes into Q0 immediately; they can preempt later when scheduler cycles back to Q0.</li>
+                      <li>Forgetting demotion after the quantum: if a process uses the entire quantum at a level and is not finished, it must be demoted to the next lower queue.</li>
+                      <li>Applying aging rules incorrectly: aging moves processes up after waiting threshold is exceeded. In this example aging threshold = 10; however none of the processes waited that long in a lower queue before being scheduled (so aging did not change order). Always check aging triggers explicitly.</li>
+                      <li>Mixing up turnaround and waiting times: Turnaround = completion − arrival; Waiting = turnaround − burst. Do not subtract arrival from burst or mix up the two.</li>
+                      <li>Rounding errors: keep integer time units consistent; do not introduce fractional times unless the model requires them.</li>
+                    </ul>
+                    
+                    <h2>Frequently Asked Questions (FAQ)</h2>
+                    
+                    <h3>Q1: Why does a process get demoted in MLFQ?</h3>
+                    <p>A1: The MLFQ design assumes that short jobs should get fast service at high priority queues. If a job uses a full quantum at a higher queue, the system assumes it is "long" and demotes it so that interactive/short tasks in higher queues receive the CPU more often. Demotion therefore helps prioritize short/interactive workloads.</p>
+                    
+                    <h3>Q2: What if a new process arrives while a lower-queued process is running?</h3>
+                    <p>A2: New arrivals go into Q0 (highest priority). They do not immediately preempt the running process mid-quantum in this simplified simulation (we assumed preemption happens at scheduling decision points). In preemptive MLFQ variants, an arrival to a higher-priority queue may preempt a running lower-priority job immediately; always state your preemption model clearly.</p>
+                    
+                    <h3>Q3: How would aging change this example?</h3>
+                    <p>A3: Aging periodically promotes waiting processes to prevent starvation. If a process in a lower queue waits longer than the aging threshold (here computed as 10), it would be moved up a queue. In this specific run none of the processes waited continuously in a lower queue beyond 10 units before being scheduled, so aging did not alter the order. If aging had promoted a long-waiting job, it could have been scheduled earlier and would change completion and waiting times.</p>
+                    
+                    <h3>Q4: Is MLFQ fair?</h3>
+                    <p>A4: MLFQ aims to be responsive for short jobs and interactive tasks by giving them higher priority. However, it can starve long CPU-bound jobs if no aging is applied. Fairness depends on the chosen parameters (number of queues, quanta, aging policy). Proper tuning ensures a balance between responsiveness and fairness.</p>
+                    
+                    <h3>Q5: How to verify your MLFQ simulation?</h3>
+                    <p>A5: Verify correctness by:</p>
+                    <ul>
+                      <li>Checking that the sum of execution intervals for each process equals its burst time.</li>
+                      <li>Confirming that completion times are consistent with the scheduled intervals.</li>
+                      <li>Recomputing TAT and WT with the formulae and ensuring averages match manual sums divided by number of processes.</li>
+                    </ul>
+                    
+                    <h2>Closing notes</h2>
+                    
+                    <p>This worked example demonstrates the mechanics of an explicit MLFQ policy with 4 queues and doubling quantum sizes. The derived numeric values are tied to the uniqueness seed 2517454940 so that the example is reproducible and distinct. In exam settings always show the timeline/Gantt, intermediate demotions, and final TAT/WT computations as done above — examiners expect the step-by-step trace as evidence of correct scheduling logic.</p>
   </main>
 
   <section class="card">
@@ -268,7 +268,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-19</span>
+    <span class="badge">Updated • 2026-02-20</span>
   </div>
 
 </div>

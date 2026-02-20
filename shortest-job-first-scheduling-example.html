@@ -38,159 +38,159 @@
 
   <main class="card">
     <h1>Shortest Job First Scheduling Example (Step by Step)</h1>
-                            
-                                <p>
-                                    Shortest Job First (SJF) is a CPU scheduling algorithm that selects the process with the smallest burst time
-                                    first. This example uses the non-preemptive SJF algorithm.
-                                </p>
-                            
-                                <h2>Given Processes</h2>
-                            
-                                <p>
-                                    Assume all processes arrive at time 0.
-                                </p>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Burst Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>7</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>3</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>SJF Order</h2>
-                            
-                                <pre>
-                            Smallest burst time first:
-                            P4 (3) -> P1 (6) -> P3 (7) -> P2 (8)
-                            </pre>
-                            
-                                <h2>Gantt Chart</h2>
-                            
-                                <pre>
-                            0    3    9    16   24
-                            | P4 | P1 | P3 | P2 |
-                            </pre>
-                            
-                                <h2>Completion Time</h2>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Completion Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>9</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>24</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Turnaround Time</h2>
-                            
-                                <pre>
-                            Turnaround Time = Completion Time - Arrival Time
-                            Arrival Time = 0 for all processes
-                            </pre>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Turnaround Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>9</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>24</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Waiting Time</h2>
-                            
-                                <pre>
-                            Waiting Time = Turnaround Time - Burst Time
-                            </pre>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Waiting Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>3 - 3 = 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>9 - 6 = 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>16 - 7 = 9</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>24 - 8 = 16</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Average Waiting Time</h2>
-                            
-                                <pre>
-                            (0 + 3 + 9 + 16) / 4 = 28 / 4 = 7
-                            Average Waiting Time = 7
-                            </pre>
-                            
-                                <h2>Average Turnaround Time</h2>
-                            
-                                <pre>
-                            (3 + 9 + 16 + 24) / 4 = 52 / 4 = 13
-                            Average Turnaround Time = 13
-                            </pre>
-                            
-                                <h2>Conclusion</h2>
-                            
-                                <p>
-                                    Non-preemptive SJF minimizes average waiting time compared to many other scheduling algorithms, but it may cause
-                                    starvation for long processes if short processes keep arriving.
-                                </p>
+                                
+                                    <p>
+                                        Shortest Job First (SJF) is a CPU scheduling algorithm that selects the process with the smallest burst time
+                                        first. This example uses the non-preemptive SJF algorithm.
+                                    </p>
+                                
+                                    <h2>Given Processes</h2>
+                                
+                                    <p>
+                                        Assume all processes arrive at time 0.
+                                    </p>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Burst Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>3</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>SJF Order</h2>
+                                
+                                    <pre>
+                                Smallest burst time first:
+                                P4 (3) -> P1 (6) -> P3 (7) -> P2 (8)
+                                </pre>
+                                
+                                    <h2>Gantt Chart</h2>
+                                
+                                    <pre>
+                                0    3    9    16   24
+                                | P4 | P1 | P3 | P2 |
+                                </pre>
+                                
+                                    <h2>Completion Time</h2>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Completion Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>9</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>16</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>24</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Turnaround Time</h2>
+                                
+                                    <pre>
+                                Turnaround Time = Completion Time - Arrival Time
+                                Arrival Time = 0 for all processes
+                                </pre>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Turnaround Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>9</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>16</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>24</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Waiting Time</h2>
+                                
+                                    <pre>
+                                Waiting Time = Turnaround Time - Burst Time
+                                </pre>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Waiting Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>3 - 3 = 0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>9 - 6 = 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>16 - 7 = 9</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>24 - 8 = 16</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Average Waiting Time</h2>
+                                
+                                    <pre>
+                                (0 + 3 + 9 + 16) / 4 = 28 / 4 = 7
+                                Average Waiting Time = 7
+                                </pre>
+                                
+                                    <h2>Average Turnaround Time</h2>
+                                
+                                    <pre>
+                                (3 + 9 + 16 + 24) / 4 = 52 / 4 = 13
+                                Average Turnaround Time = 13
+                                </pre>
+                                
+                                    <h2>Conclusion</h2>
+                                
+                                    <p>
+                                        Non-preemptive SJF minimizes average waiting time compared to many other scheduling algorithms, but it may cause
+                                        starvation for long processes if short processes keep arriving.
+                                    </p>
   </main>
 
   <section class="card">
@@ -207,7 +207,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-19</span>
+    <span class="badge">Updated • 2026-02-20</span>
   </div>
 
 </div>

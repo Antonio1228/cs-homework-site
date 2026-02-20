@@ -38,181 +38,181 @@
 
   <main class="card">
     <h1>Priority Scheduling Example (Step by Step)</h1>
-                            
-                                <p>
-                                    Priority scheduling selects the process with the highest priority first. This example uses non-preemptive
-                                    priority scheduling where a smaller priority number means higher priority.
-                                </p>
-                            
-                                <h2>Given Processes</h2>
-                            
-                                <p>
-                                    Assume all processes arrive at time 0.
-                                </p>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Burst Time</th>
-                                        <th>Priority (smaller = higher)</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>10</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>2</td>
-                                        <td>4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>1</td>
-                                        <td>5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P5</td>
-                                        <td>5</td>
-                                        <td>2</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Scheduling Order</h2>
-                            
-                                <pre>
-                            Sort by priority (smallest first):
-                            P2 (priority 1) -> P5 (priority 2) -> P1 (priority 3) -> P3 (priority 4) -> P4 (priority 5)
-                            </pre>
-                            
-                                <h2>Gantt Chart</h2>
-                            
-                                <pre>
-                            0   1     6          16   18  19
-                            |P2|  P5  |    P1     | P3 |P4|
-                            </pre>
-                            
-                                <h2>Completion Time</h2>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Completion Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P5</td>
-                                        <td>6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>18</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>19</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Turnaround Time</h2>
-                            
-                                <pre>
-                            Turnaround Time = Completion Time - Arrival Time
-                            Arrival Time = 0 for all processes
-                            </pre>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Turnaround Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P5</td>
-                                        <td>6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>18</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>19</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Waiting Time</h2>
-                            
-                                <pre>
-                            Waiting Time = Turnaround Time - Burst Time
-                            </pre>
-                            
-                                <table border="1">
-                                    <tr>
-                                        <th>Process</th>
-                                        <th>Waiting Time</th>
-                                    </tr>
-                                    <tr>
-                                        <td>P2</td>
-                                        <td>1 - 1 = 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P5</td>
-                                        <td>6 - 5 = 1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P1</td>
-                                        <td>16 - 10 = 6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P3</td>
-                                        <td>18 - 2 = 16</td>
-                                    </tr>
-                                    <tr>
-                                        <td>P4</td>
-                                        <td>19 - 1 = 18</td>
-                                    </tr>
-                                </table>
-                            
-                                <h2>Average Waiting Time</h2>
-                            
-                                <pre>
-                            (0 + 1 + 6 + 16 + 18) / 5 = 41 / 5 = 8.2
-                            Average Waiting Time = 8.2
-                            </pre>
-                            
-                                <h2>Average Turnaround Time</h2>
-                            
-                                <pre>
-                            (1 + 6 + 16 + 18 + 19) / 5 = 60 / 5 = 12
-                            Average Turnaround Time = 12
-                            </pre>
-                            
-                                <h2>Conclusion</h2>
-                            
-                                <p>
-                                    Priority scheduling is simple and effective, but it may cause starvation for low-priority processes. Aging can
-                                    be used to gradually increase the priority of waiting processes to prevent starvation.
-                                </p>
+                                
+                                    <p>
+                                        Priority scheduling selects the process with the highest priority first. This example uses non-preemptive
+                                        priority scheduling where a smaller priority number means higher priority.
+                                    </p>
+                                
+                                    <h2>Given Processes</h2>
+                                
+                                    <p>
+                                        Assume all processes arrive at time 0.
+                                    </p>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Burst Time</th>
+                                            <th>Priority (smaller = higher)</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>10</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>2</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>1</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P5</td>
+                                            <td>5</td>
+                                            <td>2</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Scheduling Order</h2>
+                                
+                                    <pre>
+                                Sort by priority (smallest first):
+                                P2 (priority 1) -> P5 (priority 2) -> P1 (priority 3) -> P3 (priority 4) -> P4 (priority 5)
+                                </pre>
+                                
+                                    <h2>Gantt Chart</h2>
+                                
+                                    <pre>
+                                0   1     6          16   18  19
+                                |P2|  P5  |    P1     | P3 |P4|
+                                </pre>
+                                
+                                    <h2>Completion Time</h2>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Completion Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P5</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>16</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>18</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>19</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Turnaround Time</h2>
+                                
+                                    <pre>
+                                Turnaround Time = Completion Time - Arrival Time
+                                Arrival Time = 0 for all processes
+                                </pre>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Turnaround Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P5</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>16</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>18</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>19</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Waiting Time</h2>
+                                
+                                    <pre>
+                                Waiting Time = Turnaround Time - Burst Time
+                                </pre>
+                                
+                                    <table border="1">
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Waiting Time</th>
+                                        </tr>
+                                        <tr>
+                                            <td>P2</td>
+                                            <td>1 - 1 = 0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P5</td>
+                                            <td>6 - 5 = 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P1</td>
+                                            <td>16 - 10 = 6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P3</td>
+                                            <td>18 - 2 = 16</td>
+                                        </tr>
+                                        <tr>
+                                            <td>P4</td>
+                                            <td>19 - 1 = 18</td>
+                                        </tr>
+                                    </table>
+                                
+                                    <h2>Average Waiting Time</h2>
+                                
+                                    <pre>
+                                (0 + 1 + 6 + 16 + 18) / 5 = 41 / 5 = 8.2
+                                Average Waiting Time = 8.2
+                                </pre>
+                                
+                                    <h2>Average Turnaround Time</h2>
+                                
+                                    <pre>
+                                (1 + 6 + 16 + 18 + 19) / 5 = 60 / 5 = 12
+                                Average Turnaround Time = 12
+                                </pre>
+                                
+                                    <h2>Conclusion</h2>
+                                
+                                    <p>
+                                        Priority scheduling is simple and effective, but it may cause starvation for low-priority processes. Aging can
+                                        be used to gradually increase the priority of waiting processes to prevent starvation.
+                                    </p>
   </main>
 
   <section class="card">
@@ -229,7 +229,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-19</span>
+    <span class="badge">Updated • 2026-02-20</span>
   </div>
 
 </div>

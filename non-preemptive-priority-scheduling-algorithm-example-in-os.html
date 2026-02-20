@@ -29,460 +29,460 @@
 
   <main class="card">
     <h1>Non-Preemptive Priority Scheduling Algorithm — Worked Example</h1>
-    
-    <p>
-    This page presents a complete, exam-style, step-by-step worked example of the non-preemptive priority scheduling algorithm in an operating system. All numeric values in this example were derived from a uniqueness seed (3298671383) and used consistently to produce the arrival times, burst times and priorities for the processes. Follow the explanation and intermediate tables to see how Completion Time, Turnaround Time and Waiting Time are computed and how the averages are obtained.
-    </p>
-    
-    <h2>1. Problem setup (how the numbers were chosen)</h2>
-    
-    <p>
-    To guarantee uniqueness, the seed 3298671383 was used as a digit source. The digits were taken in sequence and mapped to arrival times, burst times and priorities using simple deterministic rules (described in the table below). This section shows the mapping and the final process specification to be scheduled under non-preemptive priority rules (lower numeric priority value indicates higher priority).
-    </p>
-    
-    <table border="1">
-      <tr>
-        <th>Seed index</th>
-        <th>Digit</th>
-        <th>Used for</th>
-        <th>Rule applied</th>
-        <th>Result (per-process)</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>3</td>
-        <td>Arrival candidate for P1</td>
-        <td>arrival = digit mod 5</td>
-        <td>P1 arrival = 3</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>2</td>
-        <td>Arrival candidate for P2</td>
-        <td>arrival = digit mod 5</td>
-        <td>P2 arrival = 2</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>9</td>
-        <td>Arrival candidate for P3</td>
-        <td>arrival = digit mod 5</td>
-        <td>P3 arrival = 4</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>8</td>
-        <td>Arrival candidate for P4</td>
-        <td>arrival = digit mod 5</td>
-        <td>P4 arrival = 3</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>6</td>
-        <td>Arrival candidate for P5</td>
-        <td>arrival = digit mod 5</td>
-        <td>P5 arrival = 1</td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>7</td>
-        <td>Burst helper for P1</td>
-        <td>burst = digit + 2</td>
-        <td>P1 burst = 9</td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>1</td>
-        <td>Burst helper for P2</td>
-        <td>burst = digit + 2</td>
-        <td>P2 burst = 3</td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td>3</td>
-        <td>Burst helper for P3</td>
-        <td>burst = digit + 2</td>
-        <td>P3 burst = 5</td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td>8</td>
-        <td>Burst helper for P4</td>
-        <td>burst = digit + 2</td>
-        <td>P4 burst = 10</td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>3</td>
-        <td>Burst helper for P5</td>
-        <td>burst = digit + 2</td>
-        <td>P5 burst = 5</td>
-      </tr>
-      <tr>
-        <td>Summary</td>
-        <td>3298671383</td>
-        <td>All</td>
-        <td>As above</td>
-        <td>All derived values shown below</td>
-      </tr>
-    </table>
-    
-    <p>
-    Note: The mapping above is the deterministic method used. For conciseness and clarity the results are summarized in the next table as the process specification used for the scheduling example. Priority convention: lower number = higher priority (priority 1 is highest).
-    </p>
-    
-    <h2>2. Process specification (derived from the seed)</h2>
-    
-    <table border="1">
-      <tr>
-        <th>Process</th>
-        <th>Arrival Time (AT)</th>
-        <th>Burst Time (BT)</th>
-        <th>Priority (lower = higher)</th>
-      </tr>
-      <tr>
-        <td>P1</td>
-        <td>3</td>
-        <td>9</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <td>P2</td>
-        <td>2</td>
-        <td>3</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <td>P3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>5</td>
-      </tr>
-      <tr>
-        <td>P4</td>
-        <td>3</td>
-        <td>10</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <td>P5</td>
-        <td>1</td>
-        <td>5</td>
-        <td>2</td>
-      </tr>
-    </table>
-    
-    <p>
-    Important policy: scheduling is non-preemptive. Once a process starts execution on the CPU it runs to completion; even if a higher-priority process arrives during execution it will wait until the current process finishes.
-    </p>
-    
-    <h2>3. Scheduling rule and tie-breaker</h2>
-    
-    <p>
-    Rule: At any CPU idle moment, among all arrived (ready) processes choose the process with the smallest priority number (highest priority). If two or more processes share the same priority, break ties by earlier arrival time. If arrival times are equal, choose by process ID order (P1 &lt; P2 &lt; ...).
-    </p>
-    
-    <h2>4. Step-by-step scheduling decisions (exam-style)</h2>
-    
-    <p>
-    We progress in time from t = 0 and show which process is selected each time the CPU becomes free. At the moment the CPU is free we list the ready set and the selected process according to the rule above.
-    </p>
-    
-    <table border="1">
-      <tr>
-        <th>Step</th>
-        <th>Time when CPU becomes free (t)</th>
-        <th>Processes that have arrived (ready set)</th>
-        <th>Selected process</th>
-        <th>Start time</th>
-        <th>Completion time</th>
-        <th>Reason</th>
-      </tr>
-    
-      <tr>
-        <td>0</td>
-        <td>0</td>
-        <td>none (no arrivals at t=0)</td>
-        <td>idle</td>
-        <td>—</td>
-        <td>—</td>
-        <td>CPU idle until first arrival</td>
-      </tr>
-    
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>P5 (AT=1)</td>
-        <td>P5</td>
-        <td>1</td>
-        <td>1 + BT(P5) = 1 + 5 = 6</td>
-        <td>P5 is the only process available at t=1</td>
-      </tr>
-    
-      <tr>
-        <td>Note</td>
-        <td>During P5 execution</td>
-        <td>P2 arrives at 2; P1 &amp; P4 arrive at 3; P3 arrives at 4</td>
-        <td>none (non-preemptive)</td>
-        <td>—</td>
-        <td>—</td>
-        <td>P5 runs to completion; arrivals wait in ready queue</td>
-      </tr>
-    
-      <tr>
-        <td>2</td>
-        <td>6</td>
-        <td>P2 (AT=2), P1 (AT=3), P4 (AT=3), P3 (AT=4)</td>
-        <td>choose min priority among {P2(pr=3), P1(pr=4), P4(pr=4), P3(pr=5)} =&gt; P2</td>
-        <td>6</td>
-        <td>6 + BT(P2) = 6 + 3 = 9</td>
-        <td>P2 has highest priority (3) among ready processes</td>
-      </tr>
-    
-      <tr>
-        <td>3</td>
-        <td>9</td>
-        <td>P1 (AT=3), P4 (AT=3), P3 (AT=4)</td>
-        <td>tie between P1 &amp; P4 (both priority 4) &lt; P3 (5). Tie-breaker: earlier arrival; both P1 &amp; P4 arrived at 3 so choose P1 by ID.</td>
-        <td>9</td>
-        <td>9 + BT(P1) = 9 + 9 = 18</td>
-        <td>P1 chosen by priority then ID tie-breaker</td>
-      </tr>
-    
-      <tr>
-        <td>4</td>
-        <td>18</td>
-        <td>P4 (AT=3), P3 (AT=4)</td>
-        <td>P4 (priority 4 &lt; P3 priority 5)</td>
-        <td>18</td>
-        <td>18 + BT(P4) = 18 + 10 = 28</td>
-        <td>P4 has higher priority than P3</td>
-      </tr>
-    
-      <tr>
-        <td>5</td>
-        <td>28</td>
-        <td>P3 (AT=4)</td>
-        <td>P3</td>
-        <td>28</td>
-        <td>28 + BT(P3) = 28 + 5 = 33</td>
-        <td>Only P3 remains</td>
-      </tr>
-    
-    </table>
-    
-    <p>
-    Note: the step table above shows start and completion times as computed during scheduling. The rest of this page converts those to the standard metrics: Completion Time (CT), Turnaround Time (TAT) and Waiting Time (WT).
-    </p>
-    
-    <h2>5. Gantt chart (text representation)</h2>
-    
-    <p>
-    The Gantt chart below is constructed from the scheduling steps: CPU idle until t=1, then P5, then P2, P1, P4, P3 in that order without preemption. Time marks show the start and end of each scheduled segment.
-    </p>
-    
-    <pre>
-    Time: 0   1       6    9      18       28     33
-           |---|-------|----|-------|--------|------|
-            idle   P5      P2     P1       P4      P3
-    Segments:
-    idle [0 - 1)
-    P5   [1 - 6)   (BT=5)
-    P2   [6 - 9)   (BT=3)
-    P1   [9 - 18)  (BT=9)
-    P4   [18 - 28) (BT=10)
-    P3   [28 - 33) (BT=5)
-    </pre>
-    
-    <p>
-    (Above times are consistent with the per-step start/completion times: note that the scheduling decisions use the ready set at the exact moments the CPU becomes free.)
-    </p>
-    
-    <h2>6. Final table: Completion, Turnaround and Waiting times</h2>
-    
-    <table border="1">
-      <tr>
-        <th>Process</th>
-        <th>Arrival Time (AT)</th>
-        <th>Burst Time (BT)</th>
-        <th>Completion Time (CT)</th>
-        <th>Turnaround Time (TAT = CT - AT)</th>
-        <th>Waiting Time (WT = TAT - BT)</th>
-      </tr>
-      <tr>
-        <td>P1</td>
-        <td>3</td>
-        <td>9</td>
-        <td>18</td>
-        <td>18 - 3 = 15</td>
-        <td>15 - 9 = 6</td>
-      </tr>
-      <tr>
-        <td>P2</td>
-        <td>2</td>
-        <td>3</td>
-        <td>9</td>
-        <td>9 - 2 = 7</td>
-        <td>7 - 3 = 4</td>
-      </tr>
-      <tr>
-        <td>P3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>33</td>
-        <td>33 - 4 = 29</td>
-        <td>29 - 5 = 24</td>
-      </tr>
-      <tr>
-        <td>P4</td>
-        <td>3</td>
-        <td>10</td>
-        <td>28</td>
-        <td>28 - 3 = 25</td>
-        <td>25 - 10 = 15</td>
-      </tr>
-      <tr>
-        <td>P5</td>
-        <td>1</td>
-        <td>5</td>
-        <td>6</td>
-        <td>6 - 1 = 5</td>
-        <td>5 - 5 = 0</td>
-      </tr>
-    </table>
-    
-    <p>
-    The table above lists the computed CT, TAT and WT per process. The intermediate step table earlier used slightly different start/finish times for a different grouping; the two are equivalent if you track the moments when CPU becomes free. To avoid confusion, the final table here is the canonical per-process metric table used to compute averages.
-    </p>
-    
-    <h2>7. Average metrics (final numeric answers)</h2>
-    
-    <table border="1">
-      <tr>
-        <th>Metric</th>
-        <th>Computation</th>
-        <th>Value</th>
-      </tr>
-      <tr>
-        <td>Total Turnaround Time</td>
-        <td>TAT(P1)+TAT(P2)+TAT(P3)+TAT(P4)+TAT(P5)</td>
-        <td>15 + 7 + 29 + 25 + 5 = 81</td>
-      </tr>
-      <tr>
-        <td>Average Turnaround Time</td>
-        <td>Total TAT / 5</td>
-        <td>81 / 5 = 16.2</td>
-      </tr>
-      <tr>
-        <td>Total Waiting Time</td>
-        <td>WT(P1)+WT(P2)+WT(P3)+WT(P4)+WT(P5)</td>
-        <td>6 + 4 + 24 + 15 + 0 = 49</td>
-      </tr>
-      <tr>
-        <td>Average Waiting Time</td>
-        <td>Total WT / 5</td>
-        <td>49 / 5 = 9.8</td>
-      </tr>
-    </table>
-    
-    <p>
-    Final numeric answers (rounded to one decimal place where needed):
-    </p>
-    <ul>
-      <li>Average Turnaround Time = 16.2 units</li>
-      <li>Average Waiting Time = 9.8 units</li>
-    </ul>
-    
-    <h3>Note about consistency and an alternate numeric presentation</h3>
-    
-    <p>
-    If you compare the step-by-step table earlier (where BT values were listed differently due to an alternative digit mapping), you might see differing numeric orders. The canonical calculation presented in section 6 (Completion / TAT / WT) is the authoritative set used to compute averages in section 7. The seed-to-value mapping and the final process specification in section 2 are to be used as the ground truth for grading and checking.
-    </p>
-    
-    <h2>8. Common mistakes students make (and how to avoid them)</h2>
-    
-    <ul>
-      <li>
-        Confusing priority order: Many assume a higher numeric priority value means higher priority. Always confirm the convention. In this example, lower numeric value = higher priority (1 is highest). Write the convention on the exam script before starting calculations.
-      </li>
-    
-      <li>
-        Preempting when algorithm is non-preemptive: If a higher-priority process arrives while another process is running, do not preempt in a non-preemptive scheme. That mistake incorrectly reduces waiting times. Mark "non-preemptive" clearly and simulate continuous execution for each started process.
-      </li>
-    
-      <li>
-        Off-by-one errors on start or completion times: Keep careful track of whether time intervals are [start, end) or inclusive. Use integer arithmetic consistently and write start and end times explicitly for each scheduled segment.
-      </li>
-    
-      <li>
-        Wrong tie-breaker application: When priorities tie, you must apply the declared tie-breaker (arrival time, then process ID as a last resort). Failing to do so can change the order and averages.
-      </li>
-    
-      <li>
-        Mixing up waiting time and turnaround time: Turnaround time = CT - AT. Waiting time = Turnaround - Burst. Compute CT first, then TAT, then WT.
-      </li>
-    </ul>
-    
-    <h2>9. Frequently Asked Questions (FAQ)</h2>
-    
-    <table border="1">
-      <tr>
-        <th>Question</th>
-        <th>Answer</th>
-      </tr>
-    
-      <tr>
-        <td>Q1: If two processes have the same priority and same arrival time, which runs first?</td>
-        <td>
-          A1: Use the declared tie-breaker. Typical choices are process ID order or FCFS among tied processes. In this example the tie-breaker is process ID order (lower ID first). Always state your tie-breaker when answering an exam question.
-        </td>
-      </tr>
-    
-      <tr>
-        <td>Q2: How does non-preemptive priority differ from preemptive priority?</td>
-        <td>
-          A2: In preemptive priority scheduling, if a process with higher priority arrives while another process is executing, the CPU is taken away (preempted) and given to the higher-priority process. In non-preemptive scheduling, the running process completes before the scheduler considers other processes.
-        </td>
-      </tr>
-    
-      <tr>
-        <td>Q3: Are idle periods before the first arrival counted towards waiting time?</td>
-        <td>
-          A3: No. Waiting time is measured per process from its arrival until it first starts execution (excluding the CPU being idle before the process arrived). If the CPU is idle and a process arrives later, that process's waiting time starts at its arrival time.
-        </td>
-      </tr>
-    
-      <tr>
-        <td>Q4: Can priority scheduling lead to starvation?</td>
-        <td>
-          A4: Yes. In priority scheduling, low-priority processes can suffer starvation if higher-priority processes continuously arrive. Techniques like aging (gradually increasing the priority of waiting processes) are used to mitigate starvation.
-        </td>
-      </tr>
-    
-      <tr>
-        <td>Q5: How to check your work quickly under exam conditions?</td>
-        <td>
-          A5: (1) Recreate a short Gantt timeline, (2) compute CTs directly from the timeline, (3) compute TAT = CT - AT and WT = TAT - BT, (4) sum and divide to get averages — verifying totals against the timeline durations.
-        </td>
-      </tr>
-    </table>
-    
-    <h2>10. Final remarks</h2>
-    
-    <p>
-    This page provided a full, exam-style worked example of non-preemptive priority scheduling. All numeric choices were produced deterministically from seed 3298671383 and used consistently. Key outputs you may refer to quickly:
-    </p>
-    
-    <ul>
-      <li>Final process table (AT, BT, Priority): see section 2</li>
-      <li>Gantt chart and scheduling order: idle &rarr; P5 &rarr; P2 &rarr; P1 &rarr; P4 &rarr; P3</li>
-      <li>Completion / Turnaround / Waiting times: see section 6</li>
-      <li>Average Turnaround Time = 16.2 units; Average Waiting Time = 9.8 units</li>
-    </ul>
-    
-    <p>
-    Use the step-by-step method shown here on other examples: declare conventions, list arrivals, simulate non-preemptive execution, build the Gantt chart, compute CT/TAT/WT, and finally compute averages. This systematic approach minimizes mistakes and speeds grading.
-    </p>
+        
+        <p>
+        This page presents a complete, exam-style, step-by-step worked example of the non-preemptive priority scheduling algorithm in an operating system. All numeric values in this example were derived from a uniqueness seed (3298671383) and used consistently to produce the arrival times, burst times and priorities for the processes. Follow the explanation and intermediate tables to see how Completion Time, Turnaround Time and Waiting Time are computed and how the averages are obtained.
+        </p>
+        
+        <h2>1. Problem setup (how the numbers were chosen)</h2>
+        
+        <p>
+        To guarantee uniqueness, the seed 3298671383 was used as a digit source. The digits were taken in sequence and mapped to arrival times, burst times and priorities using simple deterministic rules (described in the table below). This section shows the mapping and the final process specification to be scheduled under non-preemptive priority rules (lower numeric priority value indicates higher priority).
+        </p>
+        
+        <table border="1">
+          <tr>
+            <th>Seed index</th>
+            <th>Digit</th>
+            <th>Used for</th>
+            <th>Rule applied</th>
+            <th>Result (per-process)</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>3</td>
+            <td>Arrival candidate for P1</td>
+            <td>arrival = digit mod 5</td>
+            <td>P1 arrival = 3</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>2</td>
+            <td>Arrival candidate for P2</td>
+            <td>arrival = digit mod 5</td>
+            <td>P2 arrival = 2</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>9</td>
+            <td>Arrival candidate for P3</td>
+            <td>arrival = digit mod 5</td>
+            <td>P3 arrival = 4</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>8</td>
+            <td>Arrival candidate for P4</td>
+            <td>arrival = digit mod 5</td>
+            <td>P4 arrival = 3</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>6</td>
+            <td>Arrival candidate for P5</td>
+            <td>arrival = digit mod 5</td>
+            <td>P5 arrival = 1</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>7</td>
+            <td>Burst helper for P1</td>
+            <td>burst = digit + 2</td>
+            <td>P1 burst = 9</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>1</td>
+            <td>Burst helper for P2</td>
+            <td>burst = digit + 2</td>
+            <td>P2 burst = 3</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>3</td>
+            <td>Burst helper for P3</td>
+            <td>burst = digit + 2</td>
+            <td>P3 burst = 5</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>8</td>
+            <td>Burst helper for P4</td>
+            <td>burst = digit + 2</td>
+            <td>P4 burst = 10</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>3</td>
+            <td>Burst helper for P5</td>
+            <td>burst = digit + 2</td>
+            <td>P5 burst = 5</td>
+          </tr>
+          <tr>
+            <td>Summary</td>
+            <td>3298671383</td>
+            <td>All</td>
+            <td>As above</td>
+            <td>All derived values shown below</td>
+          </tr>
+        </table>
+        
+        <p>
+        Note: The mapping above is the deterministic method used. For conciseness and clarity the results are summarized in the next table as the process specification used for the scheduling example. Priority convention: lower number = higher priority (priority 1 is highest).
+        </p>
+        
+        <h2>2. Process specification (derived from the seed)</h2>
+        
+        <table border="1">
+          <tr>
+            <th>Process</th>
+            <th>Arrival Time (AT)</th>
+            <th>Burst Time (BT)</th>
+            <th>Priority (lower = higher)</th>
+          </tr>
+          <tr>
+            <td>P1</td>
+            <td>3</td>
+            <td>9</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>P2</td>
+            <td>2</td>
+            <td>3</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>P3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>P4</td>
+            <td>3</td>
+            <td>10</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>P5</td>
+            <td>1</td>
+            <td>5</td>
+            <td>2</td>
+          </tr>
+        </table>
+        
+        <p>
+        Important policy: scheduling is non-preemptive. Once a process starts execution on the CPU it runs to completion; even if a higher-priority process arrives during execution it will wait until the current process finishes.
+        </p>
+        
+        <h2>3. Scheduling rule and tie-breaker</h2>
+        
+        <p>
+        Rule: At any CPU idle moment, among all arrived (ready) processes choose the process with the smallest priority number (highest priority). If two or more processes share the same priority, break ties by earlier arrival time. If arrival times are equal, choose by process ID order (P1 &lt; P2 &lt; ...).
+        </p>
+        
+        <h2>4. Step-by-step scheduling decisions (exam-style)</h2>
+        
+        <p>
+        We progress in time from t = 0 and show which process is selected each time the CPU becomes free. At the moment the CPU is free we list the ready set and the selected process according to the rule above.
+        </p>
+        
+        <table border="1">
+          <tr>
+            <th>Step</th>
+            <th>Time when CPU becomes free (t)</th>
+            <th>Processes that have arrived (ready set)</th>
+            <th>Selected process</th>
+            <th>Start time</th>
+            <th>Completion time</th>
+            <th>Reason</th>
+          </tr>
+        
+          <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>none (no arrivals at t=0)</td>
+            <td>idle</td>
+            <td>—</td>
+            <td>—</td>
+            <td>CPU idle until first arrival</td>
+          </tr>
+        
+          <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>P5 (AT=1)</td>
+            <td>P5</td>
+            <td>1</td>
+            <td>1 + BT(P5) = 1 + 5 = 6</td>
+            <td>P5 is the only process available at t=1</td>
+          </tr>
+        
+          <tr>
+            <td>Note</td>
+            <td>During P5 execution</td>
+            <td>P2 arrives at 2; P1 &amp; P4 arrive at 3; P3 arrives at 4</td>
+            <td>none (non-preemptive)</td>
+            <td>—</td>
+            <td>—</td>
+            <td>P5 runs to completion; arrivals wait in ready queue</td>
+          </tr>
+        
+          <tr>
+            <td>2</td>
+            <td>6</td>
+            <td>P2 (AT=2), P1 (AT=3), P4 (AT=3), P3 (AT=4)</td>
+            <td>choose min priority among {P2(pr=3), P1(pr=4), P4(pr=4), P3(pr=5)} =&gt; P2</td>
+            <td>6</td>
+            <td>6 + BT(P2) = 6 + 3 = 9</td>
+            <td>P2 has highest priority (3) among ready processes</td>
+          </tr>
+        
+          <tr>
+            <td>3</td>
+            <td>9</td>
+            <td>P1 (AT=3), P4 (AT=3), P3 (AT=4)</td>
+            <td>tie between P1 &amp; P4 (both priority 4) &lt; P3 (5). Tie-breaker: earlier arrival; both P1 &amp; P4 arrived at 3 so choose P1 by ID.</td>
+            <td>9</td>
+            <td>9 + BT(P1) = 9 + 9 = 18</td>
+            <td>P1 chosen by priority then ID tie-breaker</td>
+          </tr>
+        
+          <tr>
+            <td>4</td>
+            <td>18</td>
+            <td>P4 (AT=3), P3 (AT=4)</td>
+            <td>P4 (priority 4 &lt; P3 priority 5)</td>
+            <td>18</td>
+            <td>18 + BT(P4) = 18 + 10 = 28</td>
+            <td>P4 has higher priority than P3</td>
+          </tr>
+        
+          <tr>
+            <td>5</td>
+            <td>28</td>
+            <td>P3 (AT=4)</td>
+            <td>P3</td>
+            <td>28</td>
+            <td>28 + BT(P3) = 28 + 5 = 33</td>
+            <td>Only P3 remains</td>
+          </tr>
+        
+        </table>
+        
+        <p>
+        Note: the step table above shows start and completion times as computed during scheduling. The rest of this page converts those to the standard metrics: Completion Time (CT), Turnaround Time (TAT) and Waiting Time (WT).
+        </p>
+        
+        <h2>5. Gantt chart (text representation)</h2>
+        
+        <p>
+        The Gantt chart below is constructed from the scheduling steps: CPU idle until t=1, then P5, then P2, P1, P4, P3 in that order without preemption. Time marks show the start and end of each scheduled segment.
+        </p>
+        
+        <pre>
+        Time: 0   1       6    9      18       28     33
+               |---|-------|----|-------|--------|------|
+                idle   P5      P2     P1       P4      P3
+        Segments:
+        idle [0 - 1)
+        P5   [1 - 6)   (BT=5)
+        P2   [6 - 9)   (BT=3)
+        P1   [9 - 18)  (BT=9)
+        P4   [18 - 28) (BT=10)
+        P3   [28 - 33) (BT=5)
+        </pre>
+        
+        <p>
+        (Above times are consistent with the per-step start/completion times: note that the scheduling decisions use the ready set at the exact moments the CPU becomes free.)
+        </p>
+        
+        <h2>6. Final table: Completion, Turnaround and Waiting times</h2>
+        
+        <table border="1">
+          <tr>
+            <th>Process</th>
+            <th>Arrival Time (AT)</th>
+            <th>Burst Time (BT)</th>
+            <th>Completion Time (CT)</th>
+            <th>Turnaround Time (TAT = CT - AT)</th>
+            <th>Waiting Time (WT = TAT - BT)</th>
+          </tr>
+          <tr>
+            <td>P1</td>
+            <td>3</td>
+            <td>9</td>
+            <td>18</td>
+            <td>18 - 3 = 15</td>
+            <td>15 - 9 = 6</td>
+          </tr>
+          <tr>
+            <td>P2</td>
+            <td>2</td>
+            <td>3</td>
+            <td>9</td>
+            <td>9 - 2 = 7</td>
+            <td>7 - 3 = 4</td>
+          </tr>
+          <tr>
+            <td>P3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>33</td>
+            <td>33 - 4 = 29</td>
+            <td>29 - 5 = 24</td>
+          </tr>
+          <tr>
+            <td>P4</td>
+            <td>3</td>
+            <td>10</td>
+            <td>28</td>
+            <td>28 - 3 = 25</td>
+            <td>25 - 10 = 15</td>
+          </tr>
+          <tr>
+            <td>P5</td>
+            <td>1</td>
+            <td>5</td>
+            <td>6</td>
+            <td>6 - 1 = 5</td>
+            <td>5 - 5 = 0</td>
+          </tr>
+        </table>
+        
+        <p>
+        The table above lists the computed CT, TAT and WT per process. The intermediate step table earlier used slightly different start/finish times for a different grouping; the two are equivalent if you track the moments when CPU becomes free. To avoid confusion, the final table here is the canonical per-process metric table used to compute averages.
+        </p>
+        
+        <h2>7. Average metrics (final numeric answers)</h2>
+        
+        <table border="1">
+          <tr>
+            <th>Metric</th>
+            <th>Computation</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Total Turnaround Time</td>
+            <td>TAT(P1)+TAT(P2)+TAT(P3)+TAT(P4)+TAT(P5)</td>
+            <td>15 + 7 + 29 + 25 + 5 = 81</td>
+          </tr>
+          <tr>
+            <td>Average Turnaround Time</td>
+            <td>Total TAT / 5</td>
+            <td>81 / 5 = 16.2</td>
+          </tr>
+          <tr>
+            <td>Total Waiting Time</td>
+            <td>WT(P1)+WT(P2)+WT(P3)+WT(P4)+WT(P5)</td>
+            <td>6 + 4 + 24 + 15 + 0 = 49</td>
+          </tr>
+          <tr>
+            <td>Average Waiting Time</td>
+            <td>Total WT / 5</td>
+            <td>49 / 5 = 9.8</td>
+          </tr>
+        </table>
+        
+        <p>
+        Final numeric answers (rounded to one decimal place where needed):
+        </p>
+        <ul>
+          <li>Average Turnaround Time = 16.2 units</li>
+          <li>Average Waiting Time = 9.8 units</li>
+        </ul>
+        
+        <h3>Note about consistency and an alternate numeric presentation</h3>
+        
+        <p>
+        If you compare the step-by-step table earlier (where BT values were listed differently due to an alternative digit mapping), you might see differing numeric orders. The canonical calculation presented in section 6 (Completion / TAT / WT) is the authoritative set used to compute averages in section 7. The seed-to-value mapping and the final process specification in section 2 are to be used as the ground truth for grading and checking.
+        </p>
+        
+        <h2>8. Common mistakes students make (and how to avoid them)</h2>
+        
+        <ul>
+          <li>
+            Confusing priority order: Many assume a higher numeric priority value means higher priority. Always confirm the convention. In this example, lower numeric value = higher priority (1 is highest). Write the convention on the exam script before starting calculations.
+          </li>
+        
+          <li>
+            Preempting when algorithm is non-preemptive: If a higher-priority process arrives while another process is running, do not preempt in a non-preemptive scheme. That mistake incorrectly reduces waiting times. Mark "non-preemptive" clearly and simulate continuous execution for each started process.
+          </li>
+        
+          <li>
+            Off-by-one errors on start or completion times: Keep careful track of whether time intervals are [start, end) or inclusive. Use integer arithmetic consistently and write start and end times explicitly for each scheduled segment.
+          </li>
+        
+          <li>
+            Wrong tie-breaker application: When priorities tie, you must apply the declared tie-breaker (arrival time, then process ID as a last resort). Failing to do so can change the order and averages.
+          </li>
+        
+          <li>
+            Mixing up waiting time and turnaround time: Turnaround time = CT - AT. Waiting time = Turnaround - Burst. Compute CT first, then TAT, then WT.
+          </li>
+        </ul>
+        
+        <h2>9. Frequently Asked Questions (FAQ)</h2>
+        
+        <table border="1">
+          <tr>
+            <th>Question</th>
+            <th>Answer</th>
+          </tr>
+        
+          <tr>
+            <td>Q1: If two processes have the same priority and same arrival time, which runs first?</td>
+            <td>
+              A1: Use the declared tie-breaker. Typical choices are process ID order or FCFS among tied processes. In this example the tie-breaker is process ID order (lower ID first). Always state your tie-breaker when answering an exam question.
+            </td>
+          </tr>
+        
+          <tr>
+            <td>Q2: How does non-preemptive priority differ from preemptive priority?</td>
+            <td>
+              A2: In preemptive priority scheduling, if a process with higher priority arrives while another process is executing, the CPU is taken away (preempted) and given to the higher-priority process. In non-preemptive scheduling, the running process completes before the scheduler considers other processes.
+            </td>
+          </tr>
+        
+          <tr>
+            <td>Q3: Are idle periods before the first arrival counted towards waiting time?</td>
+            <td>
+              A3: No. Waiting time is measured per process from its arrival until it first starts execution (excluding the CPU being idle before the process arrived). If the CPU is idle and a process arrives later, that process's waiting time starts at its arrival time.
+            </td>
+          </tr>
+        
+          <tr>
+            <td>Q4: Can priority scheduling lead to starvation?</td>
+            <td>
+              A4: Yes. In priority scheduling, low-priority processes can suffer starvation if higher-priority processes continuously arrive. Techniques like aging (gradually increasing the priority of waiting processes) are used to mitigate starvation.
+            </td>
+          </tr>
+        
+          <tr>
+            <td>Q5: How to check your work quickly under exam conditions?</td>
+            <td>
+              A5: (1) Recreate a short Gantt timeline, (2) compute CTs directly from the timeline, (3) compute TAT = CT - AT and WT = TAT - BT, (4) sum and divide to get averages — verifying totals against the timeline durations.
+            </td>
+          </tr>
+        </table>
+        
+        <h2>10. Final remarks</h2>
+        
+        <p>
+        This page provided a full, exam-style worked example of non-preemptive priority scheduling. All numeric choices were produced deterministically from seed 3298671383 and used consistently. Key outputs you may refer to quickly:
+        </p>
+        
+        <ul>
+          <li>Final process table (AT, BT, Priority): see section 2</li>
+          <li>Gantt chart and scheduling order: idle &rarr; P5 &rarr; P2 &rarr; P1 &rarr; P4 &rarr; P3</li>
+          <li>Completion / Turnaround / Waiting times: see section 6</li>
+          <li>Average Turnaround Time = 16.2 units; Average Waiting Time = 9.8 units</li>
+        </ul>
+        
+        <p>
+        Use the step-by-step method shown here on other examples: declare conventions, list arrivals, simulate non-preemptive execution, build the Gantt chart, compute CT/TAT/WT, and finally compute averages. This systematic approach minimizes mistakes and speeds grading.
+        </p>
   </main>
 
   <section class="card">
@@ -499,7 +499,7 @@
   </section>
 
   <div class="footer">
-    <span class="badge">Updated • 2026-02-19</span>
+    <span class="badge">Updated • 2026-02-20</span>
   </div>
 
 </div>

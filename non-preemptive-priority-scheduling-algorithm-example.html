@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>non preemptive priority scheduling algorithm example</title>
+  <meta name="description" content="Worked example of non-preemptive priority CPU scheduling. Step-by-step solution with process table, Gantt chart, completion/turnaround/waiting times, averages, common mistakes and FAQ.">
+  <meta name="keywords" content="CPU scheduling, non-preemptive, priority scheduling, Gantt chart, turnaround time, waiting time, completion time, worked example">
+  <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://antonio1228.github.io/cs-homework-site/non-preemptive-priority-scheduling-algorithm-example.html">
+</head>
+<body>
+<!-- SITE_WRAPPER_START -->
+<div class="site">
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-title">CS Homework &amp; Exam Solutions</div>
+      <div class="brand-sub">non preemptive priority scheduling algorithm example</div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html#top">Home</a>
+      <a href="index.html#top-examples">Top Examples</a>
+      <a href="articles.html">All Articles</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="card">
+    <h1>Non-Preemptive Priority Scheduling — Worked Example</h1>
+    
+      <p>
+        This page presents a complete, exam-style worked example of the non-preemptive priority scheduling algorithm (CPU scheduling). All numeric values on this page were chosen using uniqueness seed 624841575 to ensure this example is different from others. The example includes a problem setup, an explicit step-by-step schedule, all intermediate tables and calculations, the Gantt chart, the final numeric answers (completion times, turnaround times, waiting times and their averages), a list of common mistakes, and a short FAQ.
+      </p>
+    
+      <h2>Problem statement and conventions</h2>
+    
+      <p>
+        We are given five processes arriving at different times. Each process has a burst time (CPU time required) and a static priority number. This schedule uses a non-preemptive priority policy: when the CPU becomes free it selects the waiting process with the highest priority and runs it to completion (no preemption). In this example, a lower numeric priority value means higher scheduling priority (i.e., priority 1 is higher than priority 2).
+      </p>
+    
+      <p>
+        Processes (names, arrival times, burst times and priority values) are listed below. These particular numbers were generated from the provided uniqueness seed mentioned above. You must assume that when multiple processes have the same priority and are available at the same decision point, we break ties by earliest arrival time (FCFS among ties).
+      </p>
+    
+      <h2>Initial process table (problem setup)</h2>
+    
+      <table border="1">
+        <tr>
+          <th>Process</th>
+          <th>Arrival Time (AT)</th>
+          <th>Burst Time (BT)</th>
+          <th>Priority (lower = higher)</th>
+        </tr>
+        <tr><td>P1</td><td>0</td><td>7</td><td>3</td></tr>
+        <tr><td>P2</td><td>2</td><td>4</td><td>1</td></tr>
+        <tr><td>P3</td><td>4</td><td>1</td><td>4</td></tr>
+        <tr><td>P4</td><td>5</td><td>4</td><td>2</td></tr>
+        <tr><td>P5</td><td>9</td><td>3</td><td>5</td></tr>
+      </table>
+    
+      <p>
+        Interpretation reminder:
+      </p>
+      <ul>
+        <li>Arrival Time (AT): time when the process joins the ready queue.</li>
+        <li>Burst Time (BT): CPU time the process needs.</li>
+        <li>Priority: lower number means higher priority.</li>
+      </ul>
+    
+      <h2>High-level scheduling reasoning (step-by-step)</h2>
+    
+      <p>
+        We simulate time from 0 onwards. At each time the CPU becomes idle and there are one or more ready processes, select the ready process with the highest priority (lowest numeric value) and run it to completion. If the CPU is idle and no process has yet arrived, the CPU remains idle until the first arrival.
+      </p>
+    
+      <p>
+        Step-by-step reasoning:
+      </p>
+    
+      <table border="1">
+        <tr>
+          <th>Decision point (time)</th>
+          <th>Ready processes at this time</th>
+          <th>Selected process (highest priority)</th>
+          <th>Start time</th>
+          <th>Completion time</th>
+          <th>Notes</th>
+        </tr>
+        <tr>
+          <td>0</td>
+          <td>P1 (AT 0)</td>
+          <td>P1 (priority 3)</td>
+          <td>0</td>
+          <td>0 + 7 = 7</td>
+          <td>Only P1 has arrived; run P1 non-preemptively until 7.</td>
+        </tr>
+        <tr>
+          <td>7 (P1 finished)</td>
+          <td>P2 (AT 2, pr=1), P3 (AT 4, pr=4), P4 (AT 5, pr=2)</td>
+          <td>P2 (priority 1)</td>
+          <td>7</td>
+          <td>7 + 4 = 11</td>
+          <td>P2 arrived at 2; although higher priority, it waited until P1 finished at 7.</td>
+        </tr>
+        <tr>
+          <td>11 (P2 finished)</td>
+          <td>P3 (pr=4), P4 (pr=2), P5 (AT 9, pr=5)</td>
+          <td>P4 (priority 2)</td>
+          <td>11</td>
+          <td>11 + 4 = 15</td>
+          <td>P4 has next-highest priority among ready processes at 11.</td>
+        </tr>
+        <tr>
+          <td>15 (P4 finished)</td>
+          <td>P3 (pr=4), P5 (pr=5)</td>
+          <td>P3 (priority 4)</td>
+          <td>15</td>
+          <td>15 + 1 = 16</td>
+          <td>P3 has higher priority than P5 (4 < 5).</td>
+        </tr>
+        <tr>
+          <td>16 (P3 finished)</td>
+          <td>P5 (pr=5)</td>
+          <td>P5</td>
+          <td>16</td>
+          <td>16 + 3 = 19</td>
+          <td>Last remaining process.</td>
+        </tr>
+      </table>
+    
+      <h2>Gantt chart (text timeline)</h2>
+    
+      <pre>
+      Time: 0    7    11   15   16   19
+             |----|----|----|----|
+             P1   P2   P4   P3   P5
+    
+      More explicitly:
+      P1 runs from 0 to 7
+      P2 runs from 7 to 11
+      P4 runs from 11 to 15
+      P3 runs from 15 to 16
+      P5 runs from 16 to 19
+      </pre>
+    
+      <h2>Compute Completion Time (CT), Turnaround Time (TAT) and Waiting Time (WT)</h2>
+    
+      <p>
+        Definitions:
+      </p>
+      <ul>
+        <li>Completion Time (CT): the time at which the process finishes execution.</li>
+        <li>Turnaround Time (TAT) = CT - Arrival Time.</li>
+        <li>Waiting Time (WT) = TAT - Burst Time (time spent waiting in ready queue).</li>
+      </ul>
+    
+      <p>
+        Using the schedule above we calculate the exact numeric values for each process.
+      </p>
+    
+      <table border="1">
+        <tr>
+          <th>Process</th>
+          <th>AT</th>
+          <th>BT</th>
+          <th>Start Time (ST)</th>
+          <th>Completion Time (CT)</th>
+          <th>Turnaround Time (TAT = CT - AT)</th>
+          <th>Waiting Time (WT = TAT - BT)</th>
+        </tr>
+        <tr>
+          <td>P1</td>
+          <td>0</td>
+          <td>7</td>
+          <td>0</td>
+          <td>7</td>
+          <td>7 - 0 = 7</td>
+          <td>7 - 7 = 0</td>
+        </tr>
+        <tr>
+          <td>P2</td>
+          <td>2</td>
+          <td>4</td>
+          <td>7</td>
+          <td>11</td>
+          <td>11 - 2 = 9</td>
+          <td>9 - 4 = 5</td>
+        </tr>
+        <tr>
+          <td>P3</td>
+          <td>4</td>
+          <td>1</td>
+          <td>15</td>
+          <td>16</td>
+          <td>16 - 4 = 12</td>
+          <td>12 - 1 = 11</td>
+        </tr>
+        <tr>
+          <td>P4</td>
+          <td>5</td>
+          <td>4</td>
+          <td>11</td>
+          <td>15</td>
+          <td>15 - 5 = 10</td>
+          <td>10 - 4 = 6</td>
+        </tr>
+        <tr>
+          <td>P5</td>
+          <td>9</td>
+          <td>3</td>
+          <td>16</td>
+          <td>19</td>
+          <td>19 - 9 = 10</td>
+          <td>10 - 3 = 7</td>
+        </tr>
+      </table>
+    
+      <h2>Aggregate results and averages</h2>
+    
+      <p>
+        Sum and average calculations:
+      </p>
+    
+      <table border="1">
+        <tr>
+          <th>Metric</th>
+          <th>Numeric calculation</th>
+          <th>Result</th>
+        </tr>
+        <tr>
+          <td>Sum of Turnaround Times</td>
+          <td>7 + 9 + 12 + 10 + 10</td>
+          <td>48</td>
+        </tr>
+        <tr>
+          <td>Average Turnaround Time</td>
+          <td>48 / 5</td>
+          <td>9.6</td>
+        </tr>
+        <tr>
+          <td>Sum of Waiting Times</td>
+          <td>0 + 5 + 11 + 6 + 7</td>
+          <td>29</td>
+        </tr>
+        <tr>
+          <td>Average Waiting Time</td>
+          <td>29 / 5</td>
+          <td>5.8</td>
+        </tr>
+        <tr>
+          <td>Overall CPU finish time (makespan)</td>
+          <td>Final completion time CT of last process</td>
+          <td>19</td>
+        </tr>
+      </table>
+    
+      <h2>Final numeric answers (summary)</h2>
+    
+      <table border="1">
+        <tr>
+          <th>Process</th>
+          <th>AT</th>
+          <th>BT</th>
+          <th>Priority</th>
+          <th>CT</th>
+          <th>TAT</th>
+          <th>WT</th>
+        </tr>
+        <tr><td>P1</td><td>0</td><td>7</td><td>3</td><td>7</td><td>7</td><td>0</td></tr>
+        <tr><td>P2</td><td>2</td><td>4</td><td>1</td><td>11</td><td>9</td><td>5</td></tr>
+        <tr><td>P3</td><td>4</td><td>1</td><td>4</td><td>16</td><td>12</td><td>11</td></tr>
+        <tr><td>P4</td><td>5</td><td>4</td><td>2</td><td>15</td><td>10</td><td>6</td></tr>
+        <tr><td>P5</td><td>9</td><td>3</td><td>5</td><td>19</td><td>10</td><td>7</td></tr>
+        <tr>
+          <td colspan="4">Average TAT</td><td colspan="3">9.6</td>
+        </tr>
+        <tr>
+          <td colspan="4">Average WT</td><td colspan="3">5.8</td>
+        </tr>
+      </table>
+    
+      <h2>Step-by-step calculations (worked details)</h2>
+    
+      <p>
+        Below are the explicit arithmetic steps used for each process. This is helpful for exam presentation, showing the formula application:
+      </p>
+    
+      <table border="1">
+        <tr>
+          <th>Process</th>
+          <th>Start Time</th>
+          <th>CT calculation</th>
+          <th>CT</th>
+          <th>TAT = CT - AT</th>
+          <th>WT = TAT - BT</th>
+        </tr>
+        <tr>
+          <td>P1</td>
+          <td>0</td>
+          <td>0 + 7</td>
+          <td>7</td>
+          <td>7 - 0 = 7</td>
+          <td>7 - 7 = 0</td>
+        </tr>
+        <tr>
+          <td>P2</td>
+          <td>7</td>
+          <td>7 + 4</td>
+          <td>11</td>
+          <td>11 - 2 = 9</td>
+          <td>9 - 4 = 5</td>
+        </tr>
+        <tr>
+          <td>P4</td>
+          <td>11</td>
+          <td>11 + 4</td>
+          <td>15</td>
+          <td>15 - 5 = 10</td>
+          <td>10 - 4 = 6</td>
+        </tr>
+        <tr>
+          <td>P3</td>
+          <td>15</td>
+          <td>15 + 1</td>
+          <td>16</td>
+          <td>16 - 4 = 12</td>
+          <td>12 - 1 = 11</td>
+        </tr>
+        <tr>
+          <td>P5</td>
+          <td>16</td>
+          <td>16 + 3</td>
+          <td>19</td>
+          <td>19 - 9 = 10</td>
+          <td>10 - 3 = 7</td>
+        </tr>
+      </table>
+    
+      <h2>Common mistakes and pitfalls (what to avoid)</h2>
+    
+      <p>
+        When solving non-preemptive priority scheduling problems, students commonly make the following mistakes. Read this list carefully and verify your own steps.
+      </p>
+    
+      <ul>
+        <li>Assuming preemption: forgetting that once a process starts in non-preemptive scheduling it must run to completion. If a higher-priority process arrives while another is running, it must wait.</li>
+        <li>Wrong priority direction: not clarifying whether a lower numeric priority means higher scheduling priority (and using the opposite convention). Always state the convention before scheduling.</li>
+        <li>Ignoring arrival times at decision points: selecting a process that hasn't arrived yet at the CPU decision time. Only processes with arrival time <= current time are eligible.</li>
+        <li>Incorrect tie-breaking: when priorities tie, forget to apply the tie-break rule (commonly FCFS among tied processes). This can change start times and all subsequent metrics.</li>
+        <li>Arithmetic errors when computing CT, TAT, or WT: compute step-by-step and double-check sums; one incorrect completion time cascades into wrong TAT and WT for later processes.</li>
+        <li>Misordering when CPU finishes at a time when new arrivals occur exactly at that moment: processes with AT equal to the decision time are considered arrived and eligible.</li>
+      </ul>
+    
+      <h2>Short FAQ (3–5 questions and answers)</h2>
+    
+      <h3>Q1: If a higher-priority process arrives while another process is running, do we interrupt in non-preemptive priority scheduling?</h3>
+      <p>
+        A1: No. In non-preemptive priority scheduling the currently running process is not interrupted. The newly arrived higher-priority process will be placed in the ready queue and selected once the CPU becomes free.
+      </p>
+    
+      <h3>Q2: How are ties in priority handled in this example?</h3>
+      <p>
+        A2: Ties are resolved by FCFS (first-come, first-served) among the tied processes: the one with the earliest arrival time is chosen first. If arrival times are also equal, choose the process with the lowest index or follow problem-specific tie-breaking rules.
+      </p>
+    
+      <h3>Q3: Does arrival at the exact same time the CPU becomes free count as "arrived" for selection?</h3>
+      <p>
+        A3: Yes. If a process has arrival time equal to the decision time (the time the CPU becomes free), it is considered arrived and eligible for immediate selection.
+      </p>
+    
+      <h3>Q4: How would averages change if we used a different priority convention (higher number = higher priority)?</h3>
+      <p>
+        A4: The scheduling order would likely change, which changes completion times and therefore TAT and WT for many processes. The only reliable method is to reschedule with the new convention (select the process with the numerically largest priority among ready processes at each decision point) and recompute CT, TAT, and WT.
+      </p>
+    
+      <h3>Q5: Is the average waiting time always minimized by priority scheduling?</h3>
+      <p>
+        A5: No. Priority scheduling optimizes according to a given priority attribute, not necessarily to minimize average waiting time. Algorithms like Shortest Job First are designed to minimize average waiting time under certain conditions. Priority scheduling can produce poor fairness or starvation for low-priority processes unless aging or other mechanisms are used.
+      </p>
+    
+      <h2>Conclusion</h2>
+    
+      <p>
+        This worked example demonstrates how to apply non-preemptive priority scheduling in a step-by-step, exam-style manner. The key outputs for the provided dataset (seed 624841575) are:
+      </p>
+    
+      <ul>
+        <li>Completion times: P1=7, P2=11, P3=16, P4=15, P5=19</li>
+        <li>Turnaround times: P1=7, P2=9, P3=12, P4=10, P5=10</li>
+        <li>Waiting times: P1=0, P2=5, P3=11, P4=6, P5=7</li>
+        <li>Average Turnaround Time = 9.6</li>
+        <li>Average Waiting Time = 5.8</li>
+      </ul>
+    
+      <p>
+        When writing your solution in an exam, present the initial table, the decision-by-decision scheduling table, the Gantt chart, and the final metric table (CT, TAT, WT) — exactly the components included above — and show the arithmetic for at least one or two processes to prove correctness.
+      </p>
+  </main>
+
+  <section class="card">
+    <h2>Related Examples</h2>
+    <p>Auto-generated links to help you continue practicing.</p>
+    <ul class="links">
+      <li><a href="banker-algorithm-example-step-by-step.html">Banker&#39;s Algorithm Example Step by Step (Safety Algorithm)</a></li>
+      <li><a href="belady-anomaly-example.html">Belady&#39;s Anomaly Example (FIFO) with Step by Step Solution</a></li>
+      <li><a href="context-switch-calculation-example.html">Context Switch Calculation Example (CPU Utilization)</a></li>
+      <li><a href="deadlock-detection-example.html">Deadlock Detection Example Step by Step (OS)</a></li>
+      <li><a href="page-replacement-fifo-example.html">FIFO Page Replacement Example with Step by Step Solution</a></li>
+      <li><a href="first-and-follow-set-example.html">First and Follow Set Example Step by Step (Compiler Design)</a></li>
+    </ul>
+  </section>
+
+  <div class="footer">
+    <span class="badge">Updated • 2026-02-20</span>
+  </div>
+
+</div>
+<!-- SITE_WRAPPER_END -->
+</body>
+</html>
